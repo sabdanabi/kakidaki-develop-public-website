@@ -5,6 +5,7 @@ export default <Partial<Config>>{
   theme: {
     extend: {
       colors: {
+        // MD3 style colors from TS config
         "tertiary-container": "#00769d",
         "on-background": "#1b1c1c",
         "error-container": "#ffdad6",
@@ -36,13 +37,11 @@ export default <Partial<Config>>{
         "tertiary-fixed": "#c2e8ff",
         "outline-variant": "#bfcaba",
         "on-tertiary-fixed": "#001e2b",
-        "primary": "#023C23",
         "on-error": "#ffffff",
         "secondary": "#006e1c",
         "surface-variant": "#e5e2e1",
         "on-primary-container": "#cbffc2",
         "tertiary-fixed-dim": "#75d1ff",
-        "surface": "#fcf9f8",
         "on-error-container": "#93000a",
         "inverse-on-surface": "#f3f0ef",
         "primary-fixed-dim": "#88d982",
@@ -51,7 +50,51 @@ export default <Partial<Config>>{
         "surface-container-low": "#f6f3f2",
         "on-secondary-container": "#0c7521",
         "on-tertiary-container": "#e2f3ff",
-        "on-secondary-fixed": "#002204"
+        "on-secondary-fixed": "#002204",
+
+        // JS config color overrides and objects
+        primary: {
+          DEFAULT: '#118c13',
+          50: '#edfaed',
+          100: '#d4f3d5',
+          200: '#a8e7ab',
+          300: '#6dd672',
+          400: '#3abf3f',
+          500: '#118c13',
+          600: '#0e7310',
+          700: '#0b5a0d',
+          800: '#09470a',
+          900: '#063507',
+        },
+        danger: {
+          DEFAULT: '#b81212',
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#f87171',
+          400: '#ef4444',
+          500: '#b81212',
+          600: '#a10f0f',
+          700: '#8a0c0c',
+          800: '#730a0a',
+          900: '#5c0808',
+        },
+        surface: '#FFFFFF',
+        base: '#F9FAFB',
+        teal: {
+          DEFAULT: '#0f4c5c',
+          50: '#f0f9fa',
+          100: '#d2eef2',
+          200: '#a5dde5',
+          300: '#5cbdcc',
+          400: '#2e99ab',
+          500: '#0f4c5c',
+          600: '#0d3f4d',
+          700: '#0a323e',
+          800: '#08262e',
+          900: '#051a1f',
+          950: '#030f13',
+        },
       },
       borderRadius: {
         "DEFAULT": "0.25rem",
@@ -70,6 +113,10 @@ export default <Partial<Config>>{
         "base": "8px"
       },
       fontFamily: {
+        // JS config custom families
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Plus Jakarta Sans', 'Syne', 'Inter', 'system-ui', 'sans-serif'],
+        // Custom key labels
         "label-bold": ["Inter", "sans-serif"],
         "headline-md": ["Plus Jakarta Sans", "sans-serif"],
         "display-hero": ["Plus Jakarta Sans", "sans-serif"],
@@ -92,7 +139,10 @@ export default <Partial<Config>>{
         "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
         "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
         "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
-      }
+      },
+      letterSpacing: {
+        'tight-body': '-0.01em',
+      },
     }
   }
 }
