@@ -18,15 +18,23 @@
 
         <!-- Right Controls -->
         <div class="flex items-center gap-4">
-          <button class="hidden lg:flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-slate-50 rounded-full transition-all">
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <span class="font-label-md text-slate-500 font-medium">Search routes</span>
-          </button>
-          <NuxtLink to="#" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
-            Start Assessment
+           <div class="flex items-center gap-3">
+          <NuxtLink
+            to="/login"
+            class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
+          >
+            Masuk
           </NuxtLink>
+          <NuxtLink
+            to="/register"
+            class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+          >
+            Daftar
+          </NuxtLink>
+        </div>
+          <!-- <NuxtLink to="#" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
+            Start Assessment
+          </NuxtLink> -->
         </div>
       </div>
     </nav>
@@ -50,7 +58,7 @@
           </p>
           <div class="flex flex-wrap gap-4">
             <button class="px-8 py-4 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full font-headline-sm flex items-center gap-3 shadow-xl hover:scale-105 transition-all font-semibold">
-              Get Started
+            Start Assessment
               <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
