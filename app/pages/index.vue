@@ -32,9 +32,9 @@
             Daftar
           </NuxtLink>
         </div>
-          <!-- <NuxtLink to="#" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
+          <NuxtLink to="/trainingDasboard" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
             Start Assessment
-          </NuxtLink> -->
+          </NuxtLink>
         </div>
       </div>
     </nav>
