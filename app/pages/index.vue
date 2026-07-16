@@ -20,7 +20,7 @@
         <div class="flex items-center gap-4">
            <div class="flex items-center gap-3">
           <NuxtLink
-            to="/login"
+            to="/health"
             class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
           >
             Masuk
