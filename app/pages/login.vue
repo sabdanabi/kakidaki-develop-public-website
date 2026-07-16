@@ -94,13 +94,13 @@
 
             <button
               type="submit"
-              class="w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
             >
               Masuk
             </button>
           </form>
 
-          <p class="mt-8 text-center text-sm text-slate-500">
+          <p class="mt-10 text-center text-sm text-slate-500">
             Belum punya akun?
             <NuxtLink to="/register" class="font-semibold text-primary transition-colors hover:text-primary-600">
               Daftar

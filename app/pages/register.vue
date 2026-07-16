@@ -208,7 +208,7 @@
 
             <button
               type="submit"
-              class="!mt-6 w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
             >
               Daftar
             </button>
@@ -216,7 +216,7 @@
 
           <p class="mt-6 text-center text-sm text-slate-500">
             Sudah punya akun?
-            <NuxtLink to="/login" class="font-semibold text-primary transition-colors hover:text-primary-600">
+            <NuxtLink to="/login" class="font-semibold text-[#023C23] transition-colors hover:text-primary-600">
               Masuk
             </NuxtLink>
           </p>

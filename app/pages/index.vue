@@ -20,7 +20,7 @@
           </NuxtLink>
           <NuxtLink
             to="/register"
-            class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+            class="rounded-lg bg-023C23 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-023C23-600 active:scale-[0.98]"
           >
             Daftar
           </NuxtLink>
@@ -29,7 +29,7 @@
 
       <main class="flex flex-1 flex-col items-center justify-center px-6 pb-20 pt-10 md:px-12">
         <div class="mx-auto max-w-2xl text-center">
-          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary-700">
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-023C23-200 bg-023C23-50 px-4 py-1.5 text-sm font-medium text-023C23-700">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5z" />
               <path d="M2 17l10 5 10-5" />
@@ -49,7 +49,7 @@
           <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <NuxtLink
               to="/register"
-              class="w-full rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98] sm:w-auto"
+              class="w-full rounded-xl bg-023C23 px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-023C23-600 active:scale-[0.98] sm:w-auto"
             >
               Mulai Sekarang
             </NuxtLink>
