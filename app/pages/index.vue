@@ -26,7 +26,7 @@
             Masuk
           </NuxtLink>
           <NuxtLink
-            to="/register"
+            to="/weatherDasboard"
             class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
           >
             Daftar
