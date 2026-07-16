@@ -1,17 +1,23 @@
 <template>
-  <NuxtLayout name="dashboard">
-    <div class="h-full overflow-y-auto px-6 py-6 md:px-8 max-w-[1600px] mx-auto bg-slate-50 text-slate-900">
-      
-      <!-- Header -->
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h1 class="font-heading text-2xl font-medium tracking-tight">Asisten Packing</h1>
-          <p class="text-sm text-slate-500 mt-1 font-normal tracking-tight">Ceklis perlengkapan pintar untuk ekspedisimu.</p>
-        </div>
-      </div>
+  <div class="flex h-screen overflow-hidden bg-slate-50 text-slate-900 font-sans">
+    <!-- Sidebar -->
+    <Sidebar />
 
-      <!-- Bento Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-min items-start pb-20">
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+      <!-- Scrollable content area -->
+      <div class="flex-1 overflow-y-auto px-6 py-6 md:px-8 max-w-[1600px] w-full mx-auto flex flex-col justify-between">
+        <div>
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h1 class="font-heading text-2xl font-medium tracking-tight">Asisten Packing</h1>
+              <p class="text-sm text-slate-500 mt-1 font-normal tracking-tight">Ceklis perlengkapan pintar untuk ekspedisimu.</p>
+            </div>
+          </div>
+
+          <!-- Bento Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-min items-start pb-10">
         
         <!-- Readiness (Kesiapan Ekspedisi) -->
         <div class="col-span-1 md:col-span-5 md:row-span-2 rounded-xl bg-white p-6 flex flex-col justify-between shadow-sm transition-shadow hover:shadow-md h-full">
@@ -158,9 +164,13 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
+
+    <!-- Footer -->
+    <Footer />
+  </div>
+</div>
 
     <!-- AI Scanner Modal -->
     <div v-if="isModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
@@ -226,7 +236,7 @@
         </div>
       </div>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <script setup>

@@ -54,7 +54,7 @@
               Mulai Sekarang
             </NuxtLink>
             <NuxtLink
-              to="/login"
+              to="/dashboard/packing-assistant"
               class="w-full rounded-xl border border-slate-200 bg-white px-8 py-3.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98] sm:w-auto"
             >
               Masuk ke Dashboard
