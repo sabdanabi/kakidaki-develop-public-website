@@ -18,7 +18,7 @@
 
         <!-- Right Controls -->
         <div class="flex items-center gap-4">
-           <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3">
           <NuxtLink
             to="/login"
             class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
@@ -26,7 +26,7 @@
             Masuk
           </NuxtLink>
           <NuxtLink
-            to="/register"
+            to="/dashboard"
             class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
           >
             Daftar
@@ -37,7 +37,7 @@
           </NuxtLink> -->
         </div>
       </div>
-    </nav>
+      </nav>
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 px-gutter overflow-hidden hero-gradient">
@@ -325,13 +325,13 @@
           </div>
         </div>
       </div>
-    </footer>
+      </footer>
 
     <!-- Back to Top FAB -->
     <button class="fixed bottom-8 right-8 w-14 h-14 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group" @click="scrollToTop">
       <span class="material-symbols-outlined group-hover:-translate-y-1 transition-transform">north</span>
     </button>
-  </div>
+    </div>
 </template>
 
 <script setup>
