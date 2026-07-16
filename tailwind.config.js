@@ -1,0 +1,60 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#118c13',
+          50: '#edfaed',
+          100: '#d4f3d5',
+          200: '#a8e7ab',
+          300: '#6dd672',
+          400: '#3abf3f',
+          500: '#118c13',
+          600: '#0e7310',
+          700: '#0b5a0d',
+          800: '#09470a',
+          900: '#063507',
+        },
+        danger: {
+          DEFAULT: '#b81212',
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#f87171',
+          400: '#ef4444',
+          500: '#b81212',
+          600: '#a10f0f',
+          700: '#8a0c0c',
+          800: '#730a0a',
+          900: '#5c0808',
+        },
+        surface: '#FFFFFF',
+        base: '#F9FAFB',
+        teal: {
+          DEFAULT: '#0f4c5c',
+          50: '#f0f9fa',
+          100: '#d2eef2',
+          200: '#a5dde5',
+          300: '#5cbdcc',
+          400: '#2e99ab',
+          500: '#0f4c5c',
+          600: '#0d3f4d',
+          700: '#0a323e',
+          800: '#08262e',
+          900: '#051a1f',
+          950: '#030f13',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Syne', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      letterSpacing: {
+        'tight-body': '-0.01em',
+      },
+    },
+  },
+  plugins: [],
+}
