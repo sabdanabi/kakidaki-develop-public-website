@@ -66,10 +66,10 @@
 
       <!-- Bottom actions -->
       <div class="p-4 border-t border-slate-100">
-        <NuxtLink to="/login" class="flex w-full items-center justify-center gap-2 rounded-md bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-slate-800">
+        <button @click="handleLogout" class="flex w-full items-center justify-center gap-2 rounded-md bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-slate-800">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Log Out
-        </NuxtLink>
+        </button>
       </div>
     </aside>
 
@@ -82,6 +82,13 @@
 
 <script setup>
 import { h, ref, onMounted } from 'vue'
+
+const authStore = useAuthStore()
+
+const handleLogout = () => {
+  authStore.logout()
+  navigateTo('/login')
+}
 
 const isSidebarOpen = ref(true)
 

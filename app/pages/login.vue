@@ -94,32 +94,15 @@
 
             <button
               type="submit"
-              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-medium text-white shadow-lg transition-all hover:bg-emerald-800 active:scale-[0.98]"
+              :disabled="isLoading"
+              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Masuk
+              {{ isLoading ? 'Memproses...' : 'Masuk' }}
             </button>
           </form>
 
           <!-- Quick Demo Helper -->
-          <div class="mt-6 pt-6 border-t border-slate-100">
-            <p class="text-[11px] text-slate-400 text-center mb-2 font-medium">DEMO LOGIN CEPAT</p>
-            <div class="flex gap-2">
-              <button
-                type="button"
-                @click="quickLogin('user')"
-                class="flex-1 py-2 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200 transition-all flex items-center justify-center gap-1.5"
-              >
-                <span>Demo User (`pendaki@...`)</span>
-              </button>
-              <button
-                type="button"
-                @click="quickLogin('admin')"
-                class="flex-1 py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#023C23] text-xs font-medium border border-emerald-200 transition-all flex items-center justify-center gap-1.5"
-              >
-                <span>Demo Admin (`admin@...`)</span>
-              </button>
-            </div>
-          </div>
+         
 
           <p class="mt-6 text-center text-xs text-slate-500">
             Belum punya akun?
@@ -200,26 +183,21 @@ const form = ref({
 
 const showPassword = ref(false)
 const loginError = ref('')
+const isLoading = ref(false)
 
-const quickLogin = (targetRole) => {
-  if (targetRole === 'admin') {
-    form.value.email = 'admin@kakidaki.id'
-    form.value.password = 'admin123'
-    router.push('/admin/dashboard')
-  } else {
-    form.value.email = 'pendaki@kakidaki.id'
-    form.value.password = 'pendaki123'
-    router.push('/dashboard')
-  }
-}
+const authStore = useAuthStore()
 
-const handleLogin = () => {
+const handleLogin = async () => {
   loginError.value = ''
-  // Deteksi otomatis jika akun admin
-  if (form.value.email.toLowerCase().includes('admin') || form.value.email.toLowerCase() === 'admin@kakidaki.id') {
-    router.push('/admin/dashboard')
+  isLoading.value = true
+
+  const result = await authStore.login(form.value.email, form.value.password)
+
+  isLoading.value = false
+  if (result.success) {
+    navigateTo('/onboarding')
   } else {
-    router.push('/dashboard')
+    loginError.value = result.message
   }
 }
 </script>

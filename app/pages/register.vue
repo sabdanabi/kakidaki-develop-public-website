@@ -93,58 +93,86 @@
  </p>
  </div>
 
- <div>
- <label for="reg-phone"class="mb-1.5 block text-sm font-medium text-slate-700">Nomor HP</label>
- <div class="relative">
- <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
- <svg xmlns="http://www.w3.org/2000/svg"class="h-5 w-5"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="1.8"stroke-linecap="round"stroke-linejoin="round">
- <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
- </svg>
- </span>
- <input
- id="reg-phone"
- :value="form.phone"
- @input="handlePhoneInput"
- type="tel"
- inputmode="numeric"
- placeholder="08xxxxxxxxxx"
- class="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/20"
- />
- </div>
- </div>
+            <div>
+              <label for="reg-phone" class="mb-1.5 block text-sm font-medium text-slate-700">Nomor HP</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .8 2.81" />
+                  </svg>
+                </span>
+                <input
+                  id="reg-phone"
+                  :value="form.phone"
+                  @input="handlePhoneInput"
+                  type="tel"
+                  placeholder="08xxxxxxxxxx"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
+              </div>
+            </div>
 
- <div>
- <label for="reg-password"class="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
- <div class="relative">
- <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
- <svg xmlns="http://www.w3.org/2000/svg"class="h-5 w-5"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="1.8"stroke-linecap="round"stroke-linejoin="round">
- <rect width="18"height="11"x="3"y="11"rx="2"ry="2"/>
- <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
- </svg>
- </span>
- <input
- id="reg-password"
- v-model="form.password"
- :type="showPassword ? 'text' : 'password'"
- placeholder="Buat password"
- class="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-12 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/20"
- />
- <button
- type="button"
- @click="showPassword = !showPassword"
- class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600"
- >
- <svg v-if="!showPassword"xmlns="http://www.w3.org/2000/svg"class="h-5 w-5"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="1.8"stroke-linecap="round"stroke-linejoin="round">
- <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
- <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
- <line x1="1"y1="1"x2="23"y2="23"/>
- </svg>
- <svg v-else xmlns="http://www.w3.org/2000/svg"class="h-5 w-5"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="1.8"stroke-linecap="round"stroke-linejoin="round">
- <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
- <circle cx="12"cy="12"r="3"/>
- </svg>
- </button>
- </div>
+            <div>
+              <label for="reg-gender" class="mb-1.5 block text-sm font-medium text-slate-700">Jenis Kelamin</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </span>
+                <select
+                  id="reg-gender"
+                  v-model="form.gender"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-10 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none font-medium"
+                  required
+                >
+                  <option value="" disabled selected>Pilih jenis kelamin</option>
+                  <option value="MALE">Laki-laki</option>
+                  <option value="FEMALE">Perempuan</option>
+                </select>
+                <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <label for="reg-password" class="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  id="reg-password"
+                  v-model="form.password"
+                  :type="showPassword ? 'text' : 'password'"
+                  placeholder="Buat password"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-12 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
+                <button
+                  type="button"
+                  @click="showPassword = !showPassword"
+                  class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600"
+                >
+                  <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
 
  <div v-if="form.password.length > 0"class="mt-2 space-y-1">
  <div class="flex items-center gap-2 text-xs":class="hasMinLength ? 'text-[#023C23]' : 'text-red-500'">
@@ -206,13 +234,23 @@
  </div>
  </div>
 
- <button
- type="submit"
- class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-600 active:scale-[0.98]"
- >
- Daftar
- </button>
- </form>
+            <p v-if="registerError" class="flex items-center gap-1.5 text-xs text-danger">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              {{ registerError }}
+            </p>
+
+            <button
+              type="submit"
+              :disabled="isLoading"
+              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ isLoading ? 'Memproses...' : 'Daftar' }}
+            </button>
+          </form>
 
  <p class="mt-6 text-center text-sm text-slate-500">
  Sudah punya akun?
@@ -286,16 +324,20 @@ definePageMeta({
 })
 
 const form = ref({
- name: '',
- age: '',
- email: '',
- phone: '',
- password: '',
- confirmPassword: '',
+
+  name: '',
+  age: '',
+  email: '',
+  phone: '',
+  gender: '',
+  password: '',
+  confirmPassword: '',
 })
 
 const showPassword = ref(false)
 const showConfirm = ref(false)
+const isLoading = ref(false)
+const registerError = ref('')
 
 const hasMinLength = computed(() => form.value.password.length >= 8)
 const hasNumber = computed(() => /\d/.test(form.value.password))
@@ -304,11 +346,53 @@ const hasSpecial = computed(() => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(f
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email))
 
 const handlePhoneInput = (e) => {
- const digits = e.target.value.replace(/\D/g, '')
- form.value.phone = digits
- e.target.value = digits
+
+  const value = e.target.value.replace(/[^0-9+]/g, '')
+  form.value.phone = value
+  e.target.value = value
 }
 
-const handleRegister = () => {
+const authStore = useAuthStore()
+
+const handleRegister = async () => {
+  registerError.value = ''
+
+  if (!isEmailValid.value) {
+    registerError.value = 'Format email tidak valid.'
+    return
+  }
+
+  if (form.value.password !== form.value.confirmPassword) {
+    registerError.value = 'Password tidak sama.'
+    return
+  }
+
+  if (!hasMinLength.value || !hasNumber.value || !hasSpecial.value) {
+    registerError.value = 'Password belum memenuhi kriteria keamanan.'
+    return
+  }
+
+  if (!form.value.gender) {
+    registerError.value = 'Jenis kelamin wajib dipilih.'
+    return
+  }
+
+  isLoading.value = true
+
+  const result = await authStore.register({
+    name: form.value.name,
+    email: form.value.email,
+    password: form.value.password,
+    age: parseInt(form.value.age),
+    phone: form.value.phone,
+    gender: form.value.gender,
+  })
+
+  isLoading.value = false
+  if (result.success) {
+    navigateTo('/login')
+  } else {
+    registerError.value = result.message
+  }
 }
 </script>

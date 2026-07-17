@@ -424,11 +424,12 @@ const handleFinish = () => {
  isLoading.value = false
  showWelcome.value = true
 
- // Redirect to dashboard after welcome animation
- setTimeout(() => {
- router.push('/dashboard/packing-assistant')
- }, 2500)
- }, 800)
+
+    // Redirect to dashboard after welcome animation
+    setTimeout(() => {
+      router.push('/dashboard')
+    }, 2500)
+  }, 800)
 }
 
 const toggleMulti = (field, value) => {
