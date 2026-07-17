@@ -142,6 +142,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useCommentsStore } from '~/stores/comments'
+
+const commentsStore = useCommentsStore()
 
 const searchQuery = ref('')
 const activeFilter = ref('Semua')
@@ -204,9 +207,16 @@ const toggleFlag = (c) => {
   }
 }
 
-const deleteComment = (id, author) => {
-  if (confirm(`Yakin ingin menghapus komentar dari ${author}?`)) {
-    comments.value = comments.value.filter(c => c.id !== id)
+const deleteComment = async (id, author) => {
+  const blockReason = prompt(`Yakin ingin memblokir komentar dari ${author}? Masukkan alasannya:`, 'Mengandung kata-kata kasar atau promosi open trip ilegal')
+  if (blockReason !== null) {
+    const res = await commentsStore.blockComment(id, { blockReason })
+    if (res.success) {
+      comments.value = comments.value.filter(c => c.id !== id)
+      alert('Komentar berhasil diblokir.')
+    } else {
+      alert(res.message || 'Gagal memblokir komentar.')
+    }
   }
 }
 </script>

@@ -111,6 +111,35 @@ export const useExpeditionStore = defineStore('expedition', () => {
     }
   }
 
+  const createMountain = async (payload: {
+    name: string
+    elevationM: number
+    difficulty: string
+    distanceToPeakKm: number
+    latitude: number
+    longitude: number
+    baseTempC: number
+    description: string
+    imageUrl?: string
+  }) => {
+    isLoadingMountains.value = true
+    try {
+      const data: any = await $fetch('https://api.kakidaki.my.id/api/v1/admin/mountains', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+        body: payload,
+      })
+      mountains.value.unshift(data)
+      return { success: true, data }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal menambahkan gunung.' }
+    } finally {
+      isLoadingMountains.value = false
+    }
+  }
+
   return {
     expeditions,
     isLoading,
@@ -121,5 +150,6 @@ export const useExpeditionStore = defineStore('expedition', () => {
     fetchExpeditions,
     activeExpeditionDetails,
     fetchExpeditionById,
+    createMountain,
   }
 })

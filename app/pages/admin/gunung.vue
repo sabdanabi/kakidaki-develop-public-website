@@ -261,61 +261,30 @@
     </main>
   </div>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useExpeditionStore } from '~/stores/expedition'
+
+const expeditionStore = useExpeditionStore()
 
 const searchQuery = ref('')
 const showModal = ref(false)
 const isEditing = ref(false)
 const editingId = ref(null)
 
-const mountains = ref([
-  {
-    id: 1,
-    nama: 'Gunung Rinjani',
-    ketinggian: 3726,
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
-    jarak_puncak: 6,
-    latitude: '-8.4113',
-    longitude: '116.4572',
-    suhu_normal: 5,
-    desc: 'Gunung berapi tertinggi kedua di Indonesia dengan Danau Segara Anak di dalam kalderanya yang megah.'
-  },
-  {
-    id: 2,
-    nama: 'Gunung Semeru',
-    ketinggian: 3676,
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-    jarak_puncak: 5,
-    latitude: '-8.1081',
-    longitude: '112.9224',
-    suhu_normal: 3,
-    desc: 'Gunung tertinggi di Pulau Jawa dengan Puncak Mahameru dan kawah Jonggring Saloko yang terus mengepul.'
-  },
-  {
-    id: 3,
-    nama: 'Gunung Kerinci',
-    ketinggian: 3805,
-    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80',
-    jarak_puncak: 5,
-    latitude: '-1.6966',
-    longitude: '101.2642',
-    suhu_normal: 4,
-    desc: 'Gunung berapi tertinggi di Indonesia dan puncak tertinggi di Pulau Sumatra yang dikelilingi Taman Nasional Kerinci Seblat.'
-  },
-  {
-    id: 4,
-    nama: 'Gunung Gede Pangrango',
-    ketinggian: 2958,
-    image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80',
-    jarak_puncak: 4,
-    latitude: '-6.7884',
-    longitude: '106.9856',
-    suhu_normal: 8,
-    desc: 'Taman nasional tertua di Jawa Barat dengan padang edelweiss Surya Kencana dan keanekaragaman hayati tinggi.'
-  }
-])
+const mappedMountains = computed(() => {
+  return expeditionStore.mountains.map(m => ({
+    id: m.id || m._id,
+    nama: m.name || 'Gunung Tanpa Nama',
+    ketinggian: m.elevationM || 0,
+    image: m.imageUrl || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+    jarak_puncak: m.distanceToPeakKm || 0,
+    latitude: m.latitude || 0,
+    longitude: m.longitude || 0,
+    suhu_normal: m.baseTempC || 15,
+    desc: m.description || ''
+  }))
+})
 
 const formModal = ref({
   nama: '',
@@ -329,11 +298,15 @@ const formModal = ref({
 })
 
 const filteredMountains = computed(() => {
-  if (!searchQuery.value) return mountains.value
+  if (!searchQuery.value) return mappedMountains.value
   const q = searchQuery.value.toLowerCase()
-  return mountains.value.filter(mt =>
+  return mappedMountains.value.filter(mt =>
     mt.nama.toLowerCase().includes(q) || mt.desc.toLowerCase().includes(q)
   )
+})
+
+onMounted(async () => {
+  await expeditionStore.fetchMountains()
 })
 
 const openModal = (mt = null) => {
@@ -358,23 +331,45 @@ const openModal = (mt = null) => {
   showModal.value = true
 }
 
-const saveMountain = () => {
+const saveMountain = async () => {
+  const payload = {
+    name: formModal.value.nama,
+    elevationM: Number(formModal.value.ketinggian),
+    difficulty: 'HARD',
+    distanceToPeakKm: Number(formModal.value.jarak_puncak),
+    latitude: Number(formModal.value.latitude),
+    longitude: Number(formModal.value.longitude),
+    baseTempC: Number(formModal.value.suhu_normal),
+    description: formModal.value.desc,
+    imageUrl: formModal.value.image || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80'
+  }
+  
   if (isEditing.value && editingId.value) {
-    const idx = mountains.value.findIndex(m => m.id === editingId.value)
+    const idx = expeditionStore.mountains.findIndex(m => m.id === editingId.value)
     if (idx !== -1) {
-      mountains.value[idx] = { ...formModal.value, id: editingId.value }
+      expeditionStore.mountains[idx] = {
+        ...expeditionStore.mountains[idx],
+        name: payload.name,
+        elevationM: payload.elevationM,
+        imageUrl: payload.imageUrl,
+        distanceToPeakKm: payload.distanceToPeakKm,
+        latitude: payload.latitude,
+        longitude: payload.longitude,
+        baseTempC: payload.baseTempC,
+        description: payload.description
+      }
     }
   } else {
-    const newId = Date.now()
-    mountains.value.unshift({
-      ...formModal.value,
-      id: newId
-    })
+    const res = await expeditionStore.createMountain(payload)
+    if (!res.success) {
+      alert(res.message || 'Gagal menambahkan gunung.')
+      return
+    }
   }
   showModal.value = false
 }
 
 const deleteMountain = (id) => {
-  mountains.value = mountains.value.filter(m => m.id !== id)
+  expeditionStore.mountains = expeditionStore.mountains.filter(m => m.id !== id)
 }
 </script>

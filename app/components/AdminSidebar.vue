@@ -3,9 +3,7 @@
     <!-- Sidebar Header -->
     <div class="p-6 flex items-center justify-between">
       <NuxtLink to="/" class="flex items-center gap-2">
-        <svg class="w-7 h-7 text-[#023C23]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l7-12 5 8 2-3 4 7H3z" />
-        </svg>
+         <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
         <span class="text-xl font-medium tracking-tight text-[#023C23]">KakiDaki</span>
       </NuxtLink>
       <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-[#023C23] tracking-wide">

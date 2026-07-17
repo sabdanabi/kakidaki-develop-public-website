@@ -54,10 +54,29 @@ export const useCommentsStore = defineStore('comments', () => {
     }
   }
 
+  const blockComment = async (commentId: string, payload: { blockReason: string }) => {
+    isLoading.value = true
+    try {
+      const data: any = await $fetch(`https://api.kakidaki.my.id/api/v1/admin/comments/${commentId}/block`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+        body: payload,
+      })
+      return { success: true, data }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal memblokir komentar.' }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     comments,
     isLoading,
     fetchComments,
     postComment,
+    blockComment,
   }
 })
