@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
 
 definePageMeta({
   layout: false,
 })
 
+const authStore = useAuthStore()
 const destination = ref('Gn. Semeru')
 const conditions = ref('15°C / Hujan Ringan')
 
@@ -197,9 +199,27 @@ const handleGeneratePackingList = async () => {
 }
 
 onMounted(async () => {
-  isLoadingLogistics.value = true
   await profileStore.fetchProfile()
-  await logisticsStore.fetchExpeditions()
+  if (authStore.user?.role?.toUpperCase() === 'ADMIN') {
+    navigateTo('/admin/gunung')
+    return
+  }
+  
+  isLoadingLogistics.value = true
+  const expRes = await logisticsStore.fetchExpeditions()
+  let activeExpedition = null
+  if (expRes.success && Array.isArray(expRes.data) && expRes.data.length > 0) {
+    activeExpedition = expRes.data[0]
+  }
+  
+  if (activeExpedition && activeExpedition.mountain) {
+    destination.value = activeExpedition.mountain.name
+  } else if (activeExpedition && activeExpedition.mountainName) {
+    destination.value = activeExpedition.mountainName
+  } else {
+    destination.value = 'Gn. Rinjani'
+  }
+  
   await logisticsStore.fetchLogistics()
   updateCategoriesFromStore()
   isLoadingLogistics.value = false
@@ -298,7 +318,7 @@ onMounted(async () => {
 
           <!-- Destination (1x2) -->
           <div class="xl:col-span-1 xl:row-span-2 rounded-[2.5rem] bg-white shadow-sm relative overflow-hidden group min-h-[300px] flex flex-col justify-end p-6 border border-slate-100">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
             
             <div class="relative z-10">

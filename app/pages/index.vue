@@ -541,6 +541,12 @@ const submitExpedition = async () => {
   }
 }
 
+onMounted(() => {
+  if (authStore.user?.role?.toUpperCase() === 'ADMIN') {
+    navigateTo('/admin/gunung')
+  }
+})
+
 useHead({
   title: 'KakiDaki | Intelijen Pegunungan'
 })

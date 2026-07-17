@@ -3,7 +3,7 @@
     <!-- Sidebar Header -->
     <div class="p-6 flex items-center justify-between">
       <NuxtLink to="/" class="flex items-center gap-2">
-         <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
+        <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
         <span class="text-xl font-medium tracking-tight text-[#023C23]">KakiDaki</span>
       </NuxtLink>
       <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-[#023C23] tracking-wide">

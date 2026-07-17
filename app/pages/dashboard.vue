@@ -390,10 +390,15 @@ watch(selectedMountain, async (newMt) => {
 }, { immediate: false })
 
 onMounted(async () => {
+  await profileStore.fetchProfile()
+  if (authStore.user?.role?.toUpperCase() === 'ADMIN') {
+    navigateTo('/admin/gunung')
+    return
+  }
+  
   isLoading.value = true
   errorMessage.value = ''
   
-  await profileStore.fetchProfile()
   await expeditionStore.fetchMountains()
   
   const expRes = await expeditionStore.fetchExpeditions()

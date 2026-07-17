@@ -1,10 +1,12 @@
 <template>
     <aside class="w-64 h-full flex flex-col border-r border-slate-200/60 bg-[#FAFAFA] hidden md:flex shrink-0">
       <!-- Sidebar Header -->
-      <div class="p-6 flex items-center gap-2">
+     <NuxtLink to="/">
+       <div class="p-6 flex items-center gap-2">
         <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
         <span class="text-xl font-medium tracking-tight text-[#118c13]">KakiDaki</span>
       </div>
+     </NuxtLink>
 
       <!-- Navigation Menu -->
       <nav class="flex-1 px-4 py-4 space-y-1.5">

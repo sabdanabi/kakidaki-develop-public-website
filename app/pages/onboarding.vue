@@ -357,6 +357,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
 
 definePageMeta({
  layout: false,
@@ -424,6 +427,10 @@ const assessmentStore = useAssessmentStore()
 const googleFitStore = useGoogleFitStore()
 
 onMounted(async () => {
+  if (authStore.user?.role?.toUpperCase() === 'ADMIN') {
+    navigateTo('/admin/gunung')
+    return
+  }
   await googleFitStore.fetchTrainingLogs()
 })
 
