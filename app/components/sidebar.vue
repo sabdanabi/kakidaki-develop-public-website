@@ -68,6 +68,25 @@
         <button class="w-full bg-[#118c13] hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all hover:shadow-md active:scale-[0.98]">
           Upgrade to Pro
         </button>
+
+        <!-- Logout Button -->
+        <button @click="handleLogout" class="flex w-full items-center gap-3 px-4 py-2.5 text-danger hover:text-danger-700 hover:bg-red-50/50 rounded-xl font-medium text-sm transition-colors mt-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          LOG OUT
+        </button>
       </div>
     </aside>
 </template>
+
+<script setup>
+const authStore = useAuthStore()
+
+const handleLogout = () => {
+  authStore.logout()
+  navigateTo('/login')
+}
+</script>

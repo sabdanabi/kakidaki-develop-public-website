@@ -426,7 +426,7 @@ const handleFinish = () => {
 
     // Redirect to dashboard after welcome animation
     setTimeout(() => {
-      router.push('/dashboard/packing-assistant')
+      router.push('/dashboard')
     }, 2500)
   }, 800)
 }

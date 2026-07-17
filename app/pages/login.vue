@@ -94,9 +94,10 @@
 
             <button
               type="submit"
-              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+              :disabled="isLoading"
+              class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Masuk
+              {{ isLoading ? 'Memproses...' : 'Masuk' }}
             </button>
           </form>
 
@@ -178,8 +179,21 @@ const form = ref({
 
 const showPassword = ref(false)
 const loginError = ref('')
+const isLoading = ref(false)
 
-const handleLogin = () => {
-  loginError.value = 'Email atau password salah'
+const authStore = useAuthStore()
+
+const handleLogin = async () => {
+  loginError.value = ''
+  isLoading.value = true
+
+  const result = await authStore.login(form.value.email, form.value.password)
+
+  isLoading.value = false
+  if (result.success) {
+    navigateTo('/onboarding')
+  } else {
+    loginError.value = result.message
+  }
 }
 </script>
