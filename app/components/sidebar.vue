@@ -57,8 +57,8 @@
       <!-- Sidebar Footer -->
       <div class="p-4 border-t border-slate-200/50 mt-auto space-y-4">
         <!-- Profile Link -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-800 rounded-xl font-medium text-sm transition-colors">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <NuxtLink to="/profile" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-800 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
           </svg>
           Profile
