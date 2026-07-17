@@ -4,21 +4,20 @@
 
     <!-- MAIN CONTENT AREA -->
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
-      
       <!-- Top Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-semibold mb-1.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-[#023C23]"></span>
-            MOUNTAIN MANAGEMENT
+            MOUNTAIN DIRECTORY
           </div>
           <h1 class="text-2xl font-heading font-medium text-slate-900">Add & Detail Gunung</h1>
-          <p class="text-sm text-slate-500 mt-1">Kelola direktori gunung Nusantara, data elevasi, basecamp simaksi, dan status jalur pendakian.</p>
+          <p class="text-sm text-slate-500 mt-1">Kelola data detail gunung (nama, ketinggian, image, jarak puncak, koordinat, suhu, deskripsi).</p>
         </div>
 
         <button
           @click="openModal()"
-          class="px-5 py-3 bg-[#023C23] hover:bg-emerald-800 text-white text-xs font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+          class="px-5 py-3 bg-[#023C23] hover:bg-emerald-800 text-white text-xs font-medium rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -27,9 +26,8 @@
         </button>
       </div>
 
-      <!-- Filters & Search Bar -->
-      <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <!-- Search Input -->
+      <!-- Search Bar -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between gap-4">
         <div class="relative flex-1 max-w-md">
           <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -39,30 +37,16 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Cari nama gunung, provinsi, atau basecamp..."
+            placeholder="Cari nama gunung atau deskripsi..."
             class="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#023C23] transition-all"
           />
         </div>
-
-        <!-- Filter Buttons -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
-          <button
-            v-for="filter in ['Semua', 'Buka / Aman', 'Siaga Cuaca', 'Tutup Ekosistem']"
-            :key="filter"
-            @click="activeFilter = filter"
-            :class="[
-              activeFilter === filter
-                ? 'bg-[#023C23] text-white shadow-sm font-medium'
-                : 'bg-slate-100 hover:bg-slate-200/70 text-slate-600',
-              'px-3.5 py-1.5 rounded-lg text-xs transition-all whitespace-nowrap'
-            ]"
-          >
-            {{ filter }}
-          </button>
+        <div class="text-xs text-slate-400 font-medium hidden sm:block">
+          Total: <span class="text-slate-800 font-medium">{{ filteredMountains.length }} Gunung</span>
         </div>
       </div>
 
-      <!-- Mountains List / Grid -->
+      <!-- Mountains Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div
           v-for="mt in filteredMountains"
@@ -70,56 +54,41 @@
           class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
         >
           <div>
-            <!-- Header Row -->
-            <div class="flex items-start justify-between gap-3 mb-4">
-              <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#023C23] to-emerald-800 text-white flex flex-col items-center justify-center shadow-sm">
-                  <span class="text-xs font-heading font-bold">{{ mt.elev }}</span>
-                  <span class="text-[9px] text-emerald-200 uppercase tracking-tighter">MDPL</span>
-                </div>
-                <div>
-                  <h3 class="text-base font-heading font-semibold text-slate-900 group-hover:text-[#023C23] transition-colors">
-                    {{ mt.name }}
+            <!-- Header with Image & Name -->
+            <div class="flex items-start gap-4 mb-4">
+              <img
+                :src="mt.image || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80'"
+                :alt="mt.nama"
+                class="w-20 h-20 rounded-2xl object-cover border border-slate-100 shadow-sm shrink-0"
+              />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="text-base font-heading font-medium text-slate-900 group-hover:text-[#023C23] transition-colors truncate">
+                    {{ mt.nama }}
                   </h3>
-                  <p class="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                    </svg>
-                    {{ mt.location }}
-                  </p>
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-[#023C23] text-xs font-medium border border-emerald-100 shrink-0">
+                    {{ mt.ketinggian }} mdpl
+                  </span>
                 </div>
+                <p class="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
+                  {{ mt.desc }}
+                </p>
               </div>
-
-              <!-- Status Badge -->
-              <span
-                :class="[
-                  mt.status === 'Buka / Aman' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
-                  mt.status === 'Siaga Cuaca' ? 'bg-amber-100 text-amber-800 border-amber-200' :
-                  'bg-red-100 text-red-800 border-red-200',
-                  'px-3 py-1 rounded-full text-[10px] font-semibold border'
-                ]"
-              >
-                {{ mt.status }}
-              </span>
             </div>
 
             <!-- Details Box -->
-            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100/80 mb-5 space-y-2.5 text-xs">
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100/80 mb-5 space-y-2 text-xs">
               <div class="flex items-center justify-between text-slate-600">
-                <span class="font-medium text-slate-400">Jalur Resmi (Basecamp):</span>
-                <span class="font-medium text-slate-800">{{ mt.basecamps }}</span>
+                <span class="font-medium text-slate-400">Jarak dari Basecamp ke Puncak:</span>
+                <span class="font-medium text-slate-800">{{ mt.jarak_puncak }} km</span>
               </div>
               <div class="flex items-center justify-between text-slate-600">
-                <span class="font-medium text-slate-400">Stasiun Telemetri Cuaca:</span>
-                <span class="font-medium text-[#023C23] flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#023C23]"></span>
-                  {{ mt.telemetry }}
-                </span>
+                <span class="font-medium text-slate-400">Suhu Normal Puncak:</span>
+                <span class="font-medium text-amber-700">{{ mt.suhu_normal }}°C</span>
               </div>
               <div class="flex items-center justify-between text-slate-600">
-                <span class="font-medium text-slate-400">Simaksi / Tiket Resmi:</span>
-                <span class="font-medium text-slate-800">Rp {{ mt.ticket.toLocaleString('id-ID') }} / Hari</span>
+                <span class="font-medium text-slate-400">Koordinat (Lat, Long):</span>
+                <span class="font-medium text-slate-800">{{ mt.latitude }}, {{ mt.longitude }}</span>
               </div>
             </div>
           </div>
@@ -161,10 +130,10 @@
           <div class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
               <div>
-                <h3 class="font-heading text-lg font-semibold text-slate-900">
+                <h3 class="font-heading text-lg font-medium text-slate-900">
                   {{ isEditing ? 'Edit Data Gunung' : 'Tambah Data Gunung Baru' }}
                 </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Lengkapi profil elevasi dan konfigurasi stasiun telemetri</p>
+                <p class="text-xs text-slate-400 mt-0.5">Lengkapi detail spesifikasi gunung</p>
               </div>
               <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 p-1">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -174,12 +143,12 @@
             </div>
 
             <form @submit.prevent="saveMountain" class="space-y-4 text-xs">
-              <!-- Nama Gunung & Elevasi -->
+              <!-- Nama Gunung & Ketinggian -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="sm:col-span-2">
                   <label class="block font-medium text-slate-700 mb-1">Nama Gunung</label>
                   <input
-                    v-model="formModal.name"
+                    v-model="formModal.nama"
                     type="text"
                     placeholder="Contoh: Gunung Rinjani"
                     class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
@@ -187,9 +156,9 @@
                   />
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Ketinggian (MDPL)</label>
+                  <label class="block font-medium text-slate-700 mb-1">Ketinggian (mdpl)</label>
                   <input
-                    v-model="formModal.elev"
+                    v-model.number="formModal.ketinggian"
                     type="number"
                     placeholder="3726"
                     class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
@@ -198,65 +167,75 @@
                 </div>
               </div>
 
-              <!-- Lokasi & Status -->
+              <!-- URL Image & Jarak ke Puncak -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Lokasi / Provinsi</label>
+                  <label class="block font-medium text-slate-700 mb-1">URL Image (Foto Gunung)</label>
                   <input
-                    v-model="formModal.location"
-                    type="text"
-                    placeholder="Contoh: Lombok, NTB"
+                    v-model="formModal.image"
+                    type="url"
+                    placeholder="https://images.unsplash.com/..."
                     class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
-                    required
                   />
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Status Pendakian</label>
-                  <select
-                    v-model="formModal.status"
-                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
-                  >
-                    <option value="Buka / Aman">Buka / Aman</option>
-                    <option value="Siaga Cuaca">Siaga Cuaca</option>
-                    <option value="Tutup Ekosistem">Tutup Ekosistem</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Basecamps & Telemetry ID -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block font-medium text-slate-700 mb-1">Daftar Basecamp & Jalur Resmi</label>
+                  <label class="block font-medium text-slate-700 mb-1">Jarak dari Basecamp ke Puncak (km - Integer)</label>
                   <input
-                    v-model="formModal.basecamps"
-                    type="text"
-                    placeholder="Senaru, Sembalun, Torean, Aik Berik"
-                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
-                    required
-                  />
-                </div>
-                <div>
-                  <label class="block font-medium text-slate-700 mb-1">ID Stasiun Telemetri</label>
-                  <input
-                    v-model="formModal.telemetry"
-                    type="text"
-                    placeholder="ST-RNJ-01 (Lombok Nord)"
+                    v-model.number="formModal.jarak_puncak"
+                    type="number"
+                    placeholder="Contoh: 6"
                     class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
                     required
                   />
                 </div>
               </div>
 
-              <!-- Tiket Simaksi -->
+              <!-- Latitude & Longitude -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Latitude</label>
+                  <input
+                    v-model="formModal.latitude"
+                    type="text"
+                    placeholder="Contoh: -8.4113"
+                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Longitude</label>
+                  <input
+                    v-model="formModal.longitude"
+                    type="text"
+                    placeholder="Contoh: 116.4572"
+                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Suhu Normal Puncak -->
               <div>
-                <label class="block font-medium text-slate-700 mb-1">Harga Tiket Simaksi (IDR / Hari)</label>
+                <label class="block font-medium text-slate-700 mb-1">Suhu Normal Puncak (°C - Integer)</label>
                 <input
-                  v-model.number="formModal.ticket"
+                  v-model.number="formModal.suhu_normal"
                   type="number"
-                  placeholder="35000"
+                  placeholder="Contoh: 5"
                   class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
                   required
                 />
+              </div>
+
+              <!-- Deskripsi -->
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Deskripsi Gunung</label>
+                <textarea
+                  v-model="formModal.desc"
+                  rows="3"
+                  placeholder="Tuliskan deskripsi singkat gunung..."
+                  class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#023C23]"
+                  required
+                ></textarea>
               </div>
 
               <!-- Submit Footer -->
@@ -270,7 +249,7 @@
                 </button>
                 <button
                   type="submit"
-                  class="px-5 py-2.5 rounded-xl bg-[#023C23] hover:bg-emerald-800 text-white font-semibold shadow-md transition-all active:scale-[0.98]"
+                  class="px-5 py-2.5 rounded-xl bg-[#023C23] hover:bg-emerald-800 text-white font-medium shadow-sm transition-all active:scale-[0.98]"
                 >
                   {{ isEditing ? 'Simpan Perubahan' : 'Tambah Gunung' }}
                 </button>
@@ -279,7 +258,6 @@
           </div>
         </div>
       </Transition>
-
     </main>
   </div>
 </template>
@@ -288,7 +266,6 @@
 import { ref, computed } from 'vue'
 
 const searchQuery = ref('')
-const activeFilter = ref('Semua')
 const showModal = ref(false)
 const isEditing = ref(false)
 const editingId = ref(null)
@@ -296,74 +273,67 @@ const editingId = ref(null)
 const mountains = ref([
   {
     id: 1,
-    name: 'Gunung Rinjani',
-    location: 'Lombok, Nusa Tenggara Barat',
-    elev: 3726,
-    basecamps: 'Senaru, Sembalun, Torean, Aik Berik',
-    telemetry: 'ST-RNJ-01 (12°C, Angin 24km/h)',
-    status: 'Buka / Aman',
-    ticket: 35000
+    nama: 'Gunung Rinjani',
+    ketinggian: 3726,
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+    jarak_puncak: 6,
+    latitude: '-8.4113',
+    longitude: '116.4572',
+    suhu_normal: 5,
+    desc: 'Gunung berapi tertinggi kedua di Indonesia dengan Danau Segara Anak di dalam kalderanya yang megah.'
   },
   {
     id: 2,
-    name: 'Gunung Semeru',
-    location: 'Lumajang, Jawa Timur',
-    elev: 3676,
-    basecamps: 'Ranu Pani (Taman Nasional Bromo Tengger Semeru)',
-    telemetry: 'ST-SMR-04 (10°C, Angin 18km/h)',
-    status: 'Tutup Ekosistem',
-    ticket: 29000
+    nama: 'Gunung Semeru',
+    ketinggian: 3676,
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+    jarak_puncak: 5,
+    latitude: '-8.1081',
+    longitude: '112.9224',
+    suhu_normal: 3,
+    desc: 'Gunung tertinggi di Pulau Jawa dengan Puncak Mahameru dan kawah Jonggring Saloko yang terus mengepul.'
   },
   {
     id: 3,
-    name: 'Gunung Kerinci',
-    location: 'Jambi, Sumatra Barat',
-    elev: 3805,
-    basecamps: 'Kersik Tuo, Solok Selatan',
-    telemetry: 'ST-KRC-02 (11°C, Kelembaban 85%)',
-    status: 'Buka / Aman',
-    ticket: 40000
+    nama: 'Gunung Kerinci',
+    ketinggian: 3805,
+    image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80',
+    jarak_puncak: 5,
+    latitude: '-1.6966',
+    longitude: '101.2642',
+    suhu_normal: 4,
+    desc: 'Gunung berapi tertinggi di Indonesia dan puncak tertinggi di Pulau Sumatra yang dikelilingi Taman Nasional Kerinci Seblat.'
   },
   {
     id: 4,
-    name: 'Gunung Gede Pangrango',
-    location: 'Cianjur - Sukabumi, Jawa Barat',
-    elev: 2958,
-    basecamps: 'Cibodas, Gunung Putri, Selabintana',
-    telemetry: 'ST-GDE-01 (14°C, Hujan Ringan)',
-    status: 'Siaga Cuaca',
-    ticket: 30000
-  },
-  {
-    id: 5,
-    name: 'Gunung Merbabu',
-    location: 'Boyolali - Magelang, Jawa Tengah',
-    elev: 3145,
-    basecamps: 'Selo, Suwanting, Wekas, Cuntel, Thekelan',
-    telemetry: 'ST-MRB-03 (13°C, Angin 15km/h)',
-    status: 'Buka / Aman',
-    ticket: 25000
+    nama: 'Gunung Gede Pangrango',
+    ketinggian: 2958,
+    image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80',
+    jarak_puncak: 4,
+    latitude: '-6.7884',
+    longitude: '106.9856',
+    suhu_normal: 8,
+    desc: 'Taman nasional tertua di Jawa Barat dengan padang edelweiss Surya Kencana dan keanekaragaman hayati tinggi.'
   }
 ])
 
 const formModal = ref({
-  name: '',
-  location: '',
-  elev: '',
-  basecamps: '',
-  telemetry: '',
-  status: 'Buka / Aman',
-  ticket: 30000
+  nama: '',
+  ketinggian: '',
+  image: '',
+  jarak_puncak: '',
+  latitude: '',
+  longitude: '',
+  suhu_normal: '',
+  desc: ''
 })
 
 const filteredMountains = computed(() => {
-  return mountains.value.filter(mt => {
-    const matchQuery = mt.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                       mt.location.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                       mt.basecamps.toLowerCase().includes(searchQuery.value.toLowerCase())
-    const matchFilter = activeFilter.value === 'Semua' || mt.status === activeFilter.value
-    return matchQuery && matchFilter
-  })
+  if (!searchQuery.value) return mountains.value
+  const q = searchQuery.value.toLowerCase()
+  return mountains.value.filter(mt =>
+    mt.nama.toLowerCase().includes(q) || mt.desc.toLowerCase().includes(q)
+  )
 })
 
 const openModal = (mt = null) => {
@@ -375,13 +345,14 @@ const openModal = (mt = null) => {
     isEditing.value = false
     editingId.value = null
     formModal.value = {
-      name: '',
-      location: '',
-      elev: '',
-      basecamps: '',
-      telemetry: 'ST-NEW-01 (Sensor Aktif)',
-      status: 'Buka / Aman',
-      ticket: 35000
+      nama: '',
+      ketinggian: '',
+      image: '',
+      jarak_puncak: '',
+      latitude: '',
+      longitude: '',
+      suhu_normal: '',
+      desc: ''
     }
   }
   showModal.value = true

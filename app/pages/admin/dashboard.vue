@@ -8,7 +8,7 @@
       <!-- Top Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-semibold mb-1.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-[#023C23] animate-ping"></span>
             OPERATION CENTER
           </div>
@@ -30,12 +30,12 @@
       </div>
 
       <!-- Quick Metrics Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- Metric 1 -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">TOTAL GUNUNG</p>
-            <h3 class="text-2xl font-heading font-semibold text-slate-900">824 Puncak</h3>
+            <h3 class="text-2xl font-heading font-medium text-slate-900">824 Puncak</h3>
             <p class="text-[11px] text-emerald-600 font-medium mt-1">+12 ditambahkan bulan ini</p>
           </div>
           <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#023C23] flex items-center justify-center">
@@ -49,7 +49,7 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">PENDAKI TERDAFTAR</p>
-            <h3 class="text-2xl font-heading font-semibold text-slate-900">54,230 User</h3>
+            <h3 class="text-2xl font-heading font-medium text-slate-900">54,230 User</h3>
             <p class="text-[11px] text-emerald-600 font-medium mt-1">98.4% akun terverifikasi</p>
           </div>
           <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -63,26 +63,12 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">ULASAN / KOMENTAR</p>
-            <h3 class="text-2xl font-heading font-semibold text-slate-900">14,890 Laporan</h3>
+            <h3 class="text-2xl font-heading font-medium text-slate-900">14,890 Laporan</h3>
             <p class="text-[11px] text-amber-600 font-medium mt-1">5 menunggu moderasi</p>
           </div>
           <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- Metric 4 -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs text-slate-400 font-medium mb-1">SATELIT CUACA BMKG</p>
-            <h3 class="text-2xl font-heading font-semibold text-[#023C23]">Aktif 99.9%</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1">Sinkronisasi terakhir 2m lalu</p>
-          </div>
-          <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
             </svg>
           </div>
         </div>
@@ -94,7 +80,7 @@
         <div class="lg:col-span-2 space-y-6">
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm">
             <div class="flex items-center justify-between mb-6">
-              <h3 class="text-lg font-heading font-semibold text-slate-900">Aksi Cepat & Manajemen Opsi</h3>
+              <h3 class="text-lg font-heading font-medium text-slate-900">Aksi Cepat & Manajemen Opsi</h3>
               <span class="text-xs text-slate-400">Sistem Administrator</span>
             </div>
 
@@ -108,7 +94,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                   </svg>
                 </div>
-                <h4 class="font-heading font-semibold text-slate-900 text-sm mb-1">Add & Detail Gunung</h4>
+                <h4 class="font-heading font-medium text-slate-900 text-sm mb-1">Add & Detail Gunung</h4>
                 <p class="text-xs text-slate-500 leading-relaxed">Kelola profil gunung, elevasi, basecamp, harga tiket, dan jalur resmi.</p>
               </NuxtLink>
 
@@ -121,7 +107,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                   </svg>
                 </div>
-                <h4 class="font-heading font-semibold text-slate-900 text-sm mb-1">Control Akun User</h4>
+                <h4 class="font-heading font-medium text-slate-900 text-sm mb-1">Control Akun User</h4>
                 <p class="text-xs text-slate-500 leading-relaxed">Pantau pendaki aktif, verifikasi data fisik VO2Max, dan tangguhkan pelanggar.</p>
               </NuxtLink>
 
@@ -134,7 +120,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                   </svg>
                 </div>
-                <h4 class="font-heading font-semibold text-slate-900 text-sm mb-1">Control Komentar</h4>
+                <h4 class="font-heading font-medium text-slate-900 text-sm mb-1">Control Komentar</h4>
                 <p class="text-xs text-slate-500 leading-relaxed">Moderasi laporan cuaca langsung, ulasan jalur, dan verifikasi kondisi pos.</p>
               </NuxtLink>
             </div>
@@ -143,7 +129,7 @@
           <!-- Recent Mountain Additions -->
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base font-heading font-semibold text-slate-900">Gunung Terakhir Ditambahkan</h3>
+              <h3 class="text-base font-heading font-medium text-slate-900">Gunung Terakhir Ditambahkan</h3>
               <NuxtLink to="/admin/gunung" class="text-xs text-[#023C23] font-medium hover:underline">Lihat Semua (824)</NuxtLink>
             </div>
 
@@ -167,13 +153,13 @@
         <!-- Right: Moderation Queue Summary -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm flex flex-col justify-between">
           <div>
-            <h3 class="text-base font-heading font-semibold text-slate-900 mb-1">Antrean Moderasi Laporan</h3>
+            <h3 class="text-base font-heading font-medium text-slate-900 mb-1">Antrean Moderasi Laporan</h3>
             <p class="text-xs text-slate-500 mb-5">Laporan jalur pendaki yang menunggu tindakan Anda</p>
 
             <div class="space-y-4">
               <div v-for="report in pendingReports" :key="report.id" class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-[11px] font-semibold text-slate-700">{{ report.user }}</span>
+                  <span class="text-[11px] font-medium text-slate-700">{{ report.user }}</span>
                   <span class="text-[10px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100 font-medium">Perlu Cek</span>
                 </div>
                 <p class="text-xs text-slate-600 mb-2 italic">"{{ report.comment }}"</p>
@@ -188,7 +174,7 @@
           <div class="pt-6 mt-6 border-t border-slate-100">
             <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 flex items-center justify-between">
               <div>
-                <p class="text-xs font-semibold text-slate-900">Sistem Telemetri AI</p>
+                <p class="text-xs font-medium text-slate-900">Sistem Telemetri AI</p>
                 <p class="text-[11px] text-slate-600">Sinkron cuaca mikro otomatis berjalan normal.</p>
               </div>
               <span class="w-2.5 h-2.5 rounded-full bg-[#023C23] animate-pulse"></span>

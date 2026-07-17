@@ -67,6 +67,18 @@
                   </svg>
                   <span class="font-medium">{{ selectedMountain.difficulty }}</span>
                 </div>
+                <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10">
+                  <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  </svg>
+                  <span class="font-medium">{{ selectedMountain.jarak_puncak }} km</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10">
+                  <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+                  </svg>
+                  <span class="font-medium">{{ selectedMountain.suhu_normal }}°C</span>
+                </div>
                 <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10 truncate max-w-[200px]">
                   <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -292,6 +304,8 @@ const mountains = [
     elevation: '14,505 ft',
     difficulty: 'Hard',
     location: 'Sierra Nevada, CA',
+    jarak_puncak: 17,
+    suhu_normal: 2,
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop'
   },
   {
@@ -299,6 +313,8 @@ const mountains = [
     elevation: '12,224 ft',
     difficulty: 'Hard',
     location: 'Lombok, Indonesia',
+    jarak_puncak: 6,
+    suhu_normal: 5,
     image: 'https://images.unsplash.com/photo-1570530221087-0b1a03e1e247?q=80&w=1200&auto=format&fit=crop'
   },
   {
@@ -306,6 +322,8 @@ const mountains = [
     elevation: '12,060 ft',
     difficulty: 'Hard',
     location: 'Java, Indonesia',
+    jarak_puncak: 5,
+    suhu_normal: 3,
     image: 'https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1200&auto=format&fit=crop'
   }
 ]

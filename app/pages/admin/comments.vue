@@ -8,7 +8,7 @@
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-semibold mb-1.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-[#023C23]"></span>
             COMMENT & TRAIL REPORT CONTROL
           </div>
@@ -18,18 +18,14 @@
       </div>
 
       <!-- Quick Metrics -->
-      <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
           <p class="text-xs text-slate-400 font-medium">TOTAL KOMENTAR / ULASAN</p>
-          <p class="text-2xl font-heading font-semibold text-slate-900 mt-1">{{ comments.length }} Laporan</p>
+          <p class="text-2xl font-heading font-medium text-slate-900 mt-1">{{ comments.length }} Laporan</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
           <p class="text-xs text-slate-400 font-medium">DITANDAI & DILAPORKAN KE BASECAMP</p>
-          <p class="text-2xl font-heading font-semibold text-amber-600 mt-1">{{ comments.filter(c => c.isFlagged).length }} Laporan</p>
-        </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
-          <p class="text-xs text-slate-400 font-medium">STATUS MODERASI</p>
-          <p class="text-2xl font-heading font-semibold text-emerald-600 mt-1">Siaga / Aktif</p>
+          <p class="text-2xl font-heading font-medium text-amber-600 mt-1">{{ comments.filter(c => c.isFlagged).length }} Laporan</p>
         </div>
       </div>
 
@@ -75,11 +71,11 @@
           <div class="flex-1 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 font-heading font-bold text-xs flex items-center justify-center border border-slate-200">
+                <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 font-heading font-medium text-xs flex items-center justify-center border border-slate-200">
                   {{ c.avatar }}
                 </div>
                 <div>
-                  <h4 class="font-heading font-semibold text-slate-900 text-sm">
+                  <h4 class="font-heading font-medium text-slate-900 text-sm">
                     {{ c.author }}
                   </h4>
                   <p class="text-xs text-slate-400">{{ c.timestamp }} • {{ c.mountain }}</p>
@@ -89,7 +85,7 @@
               <!-- Flag Status Badge -->
               <span
                 v-if="c.isFlagged"
-                class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[11px] border border-amber-200 flex items-center gap-1.5 animate-pulse"
+                class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-medium text-[11px] border border-amber-200 flex items-center gap-1.5 animate-pulse"
               >
                 <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
@@ -118,7 +114,7 @@
                 c.isFlagged
                   ? 'bg-amber-100 hover:bg-amber-200/80 text-amber-800 border-amber-300'
                   : 'bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200',
-                'w-full py-2.5 px-3 rounded-xl font-semibold text-xs transition-all border flex items-center justify-center gap-1.5 active:scale-[0.98]'
+                'w-full py-2.5 px-3 rounded-xl font-medium text-xs transition-all border flex items-center justify-center gap-1.5 active:scale-[0.98]'
               ]"
             >
               <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -129,7 +125,7 @@
 
             <button
               @click="deleteComment(c.id, c.author)"
-              class="w-full py-2.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1 active:scale-[0.98]"
+              class="w-full py-2.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-medium text-xs rounded-xl transition-all flex items-center justify-center gap-1 active:scale-[0.98]"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />

@@ -65,9 +65,12 @@
         </NuxtLink>
 
         <!-- Upgrade Button -->
-        <button class="w-full bg-[#118c13] hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all hover:shadow-md active:scale-[0.98]">
-          Upgrade to Pro
-        </button>
+        <NuxtLink
+          to="/payment"
+          class="w-full block text-center bg-[#023C23] hover:bg-emerald-800 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
+        >
+          Top Up Credit / Pro
+        </NuxtLink>
       </div>
     </aside>
 </template>

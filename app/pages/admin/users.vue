@@ -8,7 +8,7 @@
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-semibold mb-1.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-[#023C23]"></span>
             USER MANAGEMENT
           </div>
@@ -21,15 +21,15 @@
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
           <p class="text-xs text-slate-400 font-medium">TOTAL PENDAKI TERDAFTAR</p>
-          <p class="text-2xl font-heading font-semibold text-slate-900 mt-1">{{ users.length }} User</p>
+          <p class="text-2xl font-heading font-medium text-slate-900 mt-1">{{ users.length }} User</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
-          <p class="text-xs text-slate-400 font-medium">AKUN TERVERIFIKASI</p>
-          <p class="text-2xl font-heading font-semibold text-emerald-600 mt-1">{{ users.filter(u => u.status === 'Aktif').length }} User</p>
+          <p class="text-xs text-slate-400 font-medium">PENDACI AKTIF</p>
+          <p class="text-2xl font-heading font-medium text-emerald-600 mt-1">{{ users.filter(u => u.status === 'Aktif').length }} User</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
-          <p class="text-xs text-slate-400 font-medium">DITANDAI / MENCURIGAKAN</p>
-          <p class="text-2xl font-heading font-semibold text-amber-600 mt-1">{{ users.filter(u => u.status !== 'Aktif').length }} User</p>
+          <p class="text-xs text-slate-400 font-medium">AKUN DITANGGUHKAN / PERINGATAN</p>
+          <p class="text-2xl font-heading font-medium text-amber-600 mt-1">{{ users.filter(u => u.status !== 'Aktif').length }} User</p>
         </div>
       </div>
 
@@ -55,7 +55,7 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
                 <th class="py-4 px-6">Pendaki / User</th>
                 <th class="py-4 px-6">Email</th>
                 <th class="py-4 px-6">Status Akun</th>
@@ -71,11 +71,11 @@
                 <!-- User Info -->
                 <td class="py-4 px-6">
                   <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-heading font-bold text-xs border border-slate-200">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-heading font-medium text-xs border border-slate-200">
                       {{ user.avatar }}
                     </div>
                     <div>
-                      <p class="font-heading font-semibold text-slate-900">{{ user.name }}</p>
+                      <p class="font-heading font-medium text-slate-900">{{ user.name }}</p>
                       <p class="text-[11px] text-slate-400">Terdaftar sejak {{ user.joined }}</p>
                     </div>
                   </div>
@@ -92,7 +92,7 @@
                     :class="[
                       user.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
                       'bg-amber-100 text-amber-800 border-amber-200',
-                      'px-2.5 py-1 rounded-full text-[10px] font-semibold border'
+                      'px-2.5 py-1 rounded-full text-[10px] font-medium border'
                     ]"
                   >
                     {{ user.status }}
