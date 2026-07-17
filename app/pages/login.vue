@@ -5,7 +5,7 @@
       <div class="flex w-full flex-col justify-between px-6 py-8 md:px-12 lg:w-1/2 lg:px-16 xl:px-24">
         <NuxtLink to="/" class="flex items-center gap-3">
           <img
-            src="/images/logo.svg"
+            src="~assets/images/logo_.svg"
             alt="Kaki Daki"
             class="h-9 w-9"
           />
@@ -115,11 +115,11 @@
 
       <div class="hidden p-5 lg:block lg:w-1/2">
         <div class="relative h-full overflow-hidden rounded-3xl">
-          <img
+          <!-- <img
             src="/images/login-hero.jpg"
             alt="Aviation dashboard"
             class="absolute inset-0 h-full w-full object-cover"
-          />
+          /> -->
           <div class="absolute inset-0 bg-gradient-to-b from-danger-800/90 via-slate-900/85 to-primary-800/90"></div>
 
           <div class="relative z-10 flex h-full flex-col justify-between p-12 xl:p-16">
