@@ -73,6 +73,24 @@ export const useExpeditionStore = defineStore('expedition', () => {
     }
   }
 
+  const fetchExpeditions = async () => {
+    isLoading.value = true
+    try {
+      const data: any = await $fetch('https://api.kakidaki.my.id/api/v1/expeditions', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      })
+      expeditions.value = Array.isArray(data) ? data : (data.data || [])
+      return { success: true, data: expeditions.value }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal memuat data ekspedisi.' }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     expeditions,
     isLoading,
@@ -80,5 +98,6 @@ export const useExpeditionStore = defineStore('expedition', () => {
     isLoadingMountains,
     fetchMountains,
     createExpedition,
+    fetchExpeditions,
   }
 })

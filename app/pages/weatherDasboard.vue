@@ -1,6 +1,196 @@
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+import { useExpeditionStore } from '~/stores/expedition'
+import { useWeatherStore } from '~/stores/weather'
+
 definePageMeta({
   layout: false,
+})
+
+const authStore = useAuthStore()
+const expeditionStore = useExpeditionStore()
+const weatherStore = useWeatherStore()
+
+const isLoading = ref(true)
+const errorMessage = ref('')
+const activeExpedition = ref(null)
+
+const weekOutlook = computed(() => weatherStore.weatherData?.weekOutlook || [])
+
+onMounted(async () => {
+  isLoading.value = true
+  errorMessage.value = ''
+  
+  // 1. Fetch expeditions
+  const expRes = await expeditionStore.fetchExpeditions()
+  if (!expRes.success) {
+    errorMessage.value = expRes.message || 'Gagal memuat data ekspedisi.'
+    isLoading.value = false
+    return
+  }
+  
+  if (expeditionStore.expeditions.length === 0) {
+    activeExpedition.value = null
+    isLoading.value = false
+    return
+  }
+  
+  // Get active expedition (e.g. the first one)
+  const exp = expeditionStore.expeditions[0]
+  activeExpedition.value = exp
+  
+  // 2. Fetch weather for active expedition
+  const weatherRes = await weatherStore.fetchWeather(exp.id || exp._id)
+  if (!weatherRes.success) {
+    errorMessage.value = weatherRes.message || 'Gagal memuat data cuaca.'
+  }
+  
+  isLoading.value = false
+})
+
+const formatDayName = (dateStr) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('id-ID', { weekday: 'short' })
+}
+
+const getWeatherIcon = (code) => {
+  // WMO Weather interpretation codes mapping
+  if (code === 0) return '☀️' // Clear sky
+  if (code >= 1 && code <= 3) return '⛅' // Mainly clear, partly cloudy, and overcast
+  if (code >= 45 && code <= 48) return '🌫️' // Fog
+  if (code >= 51 && code <= 57) return '🌦️' // Drizzle
+  if (code >= 61 && code <= 67) return '🌧️' // Rain
+  if (code >= 71 && code <= 77) return '❄️' // Snow fall
+  if (code >= 80 && code <= 82) return '🌦️' // Rain showers
+  if (code >= 95 && code <= 99) return '⛈️' // Thunderstorm
+  return '☀️'
+}
+
+const getRiskLabel = (precip, wind) => {
+  if (precip > 5 || wind > 25) return 'Challenging'
+  if (precip > 2 || wind > 15) return 'Moderate'
+  return 'Easy'
+}
+
+const getRiskClass = (precip, wind) => {
+  if (precip > 5 || wind > 25) return 'bg-red-50 text-red-600'
+  if (precip > 2 || wind > 15) return 'bg-slate-200 text-slate-600'
+  return 'bg-green-100 text-green-700'
+}
+
+const bestDay = computed(() => {
+  if (weekOutlook.value.length === 0) return null
+  // Sort by safest conditions: low precipitation, low wind speed
+  return [...weekOutlook.value].sort((a, b) => {
+    const scoreA = a.precipitationMm * 2.5 + a.windSpeedMax
+    const scoreB = b.precipitationMm * 2.5 + b.windSpeedMax
+    return scoreA - scoreB
+  })[0]
+})
+
+const bestDayFormatted = computed(() => {
+  if (!bestDay.value) return ''
+  const date = new Date(bestDay.value.date)
+  const dayName = date.toLocaleDateString('id-ID', { weekday: 'long' })
+  return `${dayName} at 08:00`
+})
+
+const visibilityText = computed(() => {
+  if (!bestDay.value) return '25km+'
+  return bestDay.value.precipitationMm > 2 ? '10km' : '25km+'
+})
+
+const windSpeedText = computed(() => {
+  if (!bestDay.value) return '12km/h'
+  return `${Math.round(bestDay.value.windSpeedMax)} km/h`
+})
+
+const successRateText = computed(() => {
+  if (!bestDay.value) return '92%'
+  const windFactor = Math.max(0, 100 - bestDay.value.windSpeedMax * 2)
+  const rainFactor = Math.max(0, 100 - bestDay.value.precipitationMm * 10)
+  return `${Math.round((windFactor + rainFactor) / 2)}%`
+})
+
+const todayWeather = computed(() => {
+  return weekOutlook.value[0] || null
+})
+
+const goStatusLabel = computed(() => {
+  if (!todayWeather.value) return 'Optimal'
+  const precip = todayWeather.value.precipitationMm
+  const wind = todayWeather.value.windSpeedMax
+  if (precip > 5 || wind > 25) return 'Danger'
+  if (precip > 2 || wind > 15) return 'Caution'
+  return 'Optimal'
+})
+
+const goStatusColorClass = computed(() => {
+  const label = goStatusLabel.value
+  if (label === 'Danger') return 'text-red-600'
+  if (label === 'Caution') return 'text-amber-600'
+  return 'text-[#118c13]'
+})
+
+const goStatusDescription = computed(() => {
+  if (!todayWeather.value) return 'Current window is safe for high-altitude trekking.'
+  const label = goStatusLabel.value
+  if (label === 'Danger') return 'Bahaya: Kecepatan angin tinggi atau curah hujan tinggi terdeteksi di jalur.'
+  if (label === 'Caution') return 'Peringatan: Kondisi cuaca sedang kurang stabil. Lakukan persiapan ekstra.'
+  return 'Optimal: Kondisi cuaca stabil dan aman untuk pendakian malam/pagi.'
+})
+
+const atmosphericStability = computed(() => {
+  if (!todayWeather.value) return 'Stable'
+  const wind = todayWeather.value.windSpeedMax
+  if (wind > 25) return 'Unstable'
+  if (wind > 15) return 'Moderate'
+  return 'Stable'
+})
+
+const atmosphericStabilityPercent = computed(() => {
+  if (!todayWeather.value) return '100%'
+  const wind = todayWeather.value.windSpeedMax
+  return `${Math.max(10, Math.min(100, Math.round(100 - wind * 2.5)))}%`
+})
+
+const frostbiteRisk = computed(() => {
+  if (!todayWeather.value) return 'Low'
+  const temp = todayWeather.value.tempMinC
+  if (temp < 0) return 'High'
+  if (temp < 10) return 'Moderate'
+  return 'Low'
+})
+
+const frostbiteRiskPercent = computed(() => {
+  if (!todayWeather.value) return '15%'
+  const temp = todayWeather.value.tempMinC
+  const score = Math.max(10, Math.min(100, Math.round(50 - temp * 3)))
+  return `${score}%`
+})
+
+const currentTempText = computed(() => {
+  if (!todayWeather.value) return '-4°c'
+  return `${Math.round(todayWeather.value.tempMeanC)}°c`
+})
+
+const feelsLikeTempText = computed(() => {
+  if (!todayWeather.value) return '-11°c'
+  return `${Math.round(todayWeather.value.tempMeanC - 4)}°c`
+})
+
+const microClimateTitle = computed(() => {
+  return todayWeather.value?.summary || 'Clear Skies'
+})
+
+const microClimateDescription = computed(() => {
+  if (!todayWeather.value) return 'No storm fronts detected within a 200km radius.'
+  const precip = todayWeather.value.precipitationMm
+  if (precip > 5) return 'Peringatan: Hujan deras terdeteksi di sekitar gunung.'
+  if (todayWeather.value.windSpeedMax > 25) return 'Peringatan: Angin kencang di area puncak.'
+  return `Curah hujan ${precip} mm dengan angin bersahabat.`
 })
 </script>
 
@@ -10,8 +200,43 @@ definePageMeta({
     <Sidebar active="weather"/>
 
     <!-- Main Content Area -->
-    <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
-      <div class="w-full max-w-[1600px] mx-auto space-y-6">
+    <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 flex flex-col justify-between">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center">
+        <svg class="animate-spin h-8 w-8 text-[#023C23] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-sm text-slate-500 font-medium">Memuat data cuaca...</p>
+      </div>
+
+      <!-- No Active Expedition State -->
+      <div v-else-if="!activeExpedition" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
+        <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#023C23] flex items-center justify-center mb-6">
+          <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-heading font-medium text-slate-900 mb-2">Belum Ada Ekspedisi Aktif</h2>
+        <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+          Silakan mulai penilaian (Start Assessment) di halaman beranda terlebih dahulu untuk membuat ekspedisi baru dan memantau perkiraan cuaca gunung tujuan.
+        </p>
+        <NuxtLink to="/" class="px-6 py-2.5 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full text-sm font-semibold transition-all shadow-sm">
+          Kembali ke Beranda
+        </NuxtLink>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="errorMessage" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
+        <div class="h-16 w-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h2 class="text-xl font-heading font-medium text-slate-900 mb-2">Gagal Memuat Cuaca</h2>
+        <p class="text-sm text-slate-500 mb-6">{{ errorMessage }}</p>
+      </div>
+
+      <!-- Main Weather Dashboard Content -->
+      <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         <!-- Header -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -41,7 +266,7 @@ definePageMeta({
               
               <!-- Description -->
               <p class="text-white/80 text-base leading-relaxed mt-4 max-w-[400px]">
-                Our AI identifies the optimal 48-hour window starting <strong class="font-medium text-green-200 underline decoration-green-200/50 decoration-2 underline-offset-4">Tuesday at 04:00</strong>. High visibility, low wind shear, and zero precipitation forecast.
+                Our AI identifies the optimal window starting <strong class="font-medium text-green-200 underline decoration-green-200/50 decoration-2 underline-offset-4">{{ bestDayFormatted }}</strong>. High visibility, low wind shear, and zero precipitation forecast.
               </p>
             </div>
 
@@ -49,15 +274,15 @@ definePageMeta({
             <div class="flex flex-wrap gap-8 mt-8 border-t border-white/10 pt-6 relative z-10">
               <div>
                 <div class="text-xs text-white/50 font-medium">Visibility</div>
-                <div class="text-2xl font-medium mt-1 text-white font-heading">25km+</div>
+                <div class="text-2xl font-medium mt-1 text-white font-heading">{{ visibilityText }}</div>
               </div>
               <div class="border-l border-white/10 pl-8">
                 <div class="text-xs text-white/50 font-medium">Wind Speed</div>
-                <div class="text-2xl font-medium mt-1 text-white font-heading">12km/h</div>
+                <div class="text-2xl font-medium mt-1 text-white font-heading">{{ windSpeedText }}</div>
               </div>
               <div class="border-l border-white/10 pl-8">
                 <div class="text-xs text-white/50 font-medium">Success Rate</div>
-                <div class="text-2xl font-medium mt-1 text-green-300 font-heading">92%</div>
+                <div class="text-2xl font-medium mt-1 text-green-300 font-heading">{{ successRateText }}</div>
               </div>
             </div>
 
@@ -77,11 +302,11 @@ definePageMeta({
                 </div>
                 <div>
                   <h2 class="font-medium text-slate-800 text-lg leading-tight">Go Status</h2>
-                  <p class="text-[#118c13] font-medium text-sm">Optimal</p>
+                  <p class="font-medium text-sm" :class="goStatusColorClass">{{ goStatusLabel }}</p>
                 </div>
               </div>
               <p class="text-sm text-slate-500 font-normal leading-relaxed mt-6">
-                Current window (next 12h) is safe for high-altitude trekking. Pressure is stable. No storm fronts detected within 200km radius.
+                {{ goStatusDescription }}
               </p>
             </div>
 
@@ -90,20 +315,20 @@ definePageMeta({
               <div>
                 <div class="flex justify-between text-xs font-medium text-slate-500 mb-2.5">
                   <span>Atmospheric Stability</span>
-                  <span class="text-[#118c13]">Stable</span>
+                  <span :class="goStatusColorClass">{{ atmosphericStability }}</span>
                 </div>
                 <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div class="bg-[#118c13] h-full rounded-full w-full transition-all duration-1000 ease-out"></div>
+                  <div class="bg-[#118c13] h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: atmosphericStabilityPercent }"></div>
                 </div>
               </div>
               
               <div>
                 <div class="flex justify-between text-xs font-medium text-slate-500 mb-2.5">
                   <span>Frostbite Risk</span>
-                  <span class="text-[#118c13]">Low</span>
+                  <span class="text-slate-700">{{ frostbiteRisk }}</span>
                 </div>
                 <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div class="bg-[#118c13] h-full rounded-full w-[15%] transition-all duration-1000 ease-out"></div>
+                  <div class="bg-red-500 h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: frostbiteRiskPercent }"></div>
                 </div>
               </div>
             </div>
@@ -111,14 +336,14 @@ definePageMeta({
 
           <!-- Current Temperature Card (1x1) -->
           <div class="xl:col-span-1 xl:row-span-1 bg-white border border-slate-100 rounded-[2.5rem] p-6 shadow-sm flex flex-col items-center justify-center text-center">
-             <svg class="w-12 h-12 text-amber-400 fill-current animate-spin-slow" viewBox="0 0 24 24">
+            <svg class="w-12 h-12 text-amber-400 fill-current animate-spin-slow" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="5"/>
               <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
             </svg>
-            <div class="text-4xl font-medium text-slate-800 mt-4 font-heading">-4°c</div>
+            <div class="text-4xl font-medium text-slate-800 mt-4 font-heading">{{ currentTempText }}</div>
             <div class="flex items-center gap-2 mt-2">
               <span class="text-xs text-slate-400 font-medium">Feels like</span>
-              <span class="text-sm text-slate-600 font-medium">-11°c</span>
+              <span class="text-sm text-slate-600 font-medium">{{ feelsLikeTempText }}</span>
             </div>
           </div>
 
@@ -129,8 +354,8 @@ definePageMeta({
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 class="font-medium text-slate-800">Clear Skies</h3>
-            <p class="text-xs text-slate-500 mt-1 leading-relaxed">No storm fronts detected within a 200km radius.</p>
+            <h3 class="font-medium text-slate-800">{{ microClimateTitle }}</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">{{ microClimateDescription }}</p>
           </div>
 
           <!-- 7-Day Forecast (4x1) -->
@@ -140,209 +365,45 @@ definePageMeta({
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-              <!-- MON -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border-2 border-[#118c13] transition-all">
-                <span class="text-xs font-medium text-slate-400">Mon</span>
-                <svg class="w-8 h-8 text-slate-400 fill-current mt-4" viewBox="0 0 24 24">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-                </svg>
+              <div 
+                v-for="(day, index) in weekOutlook" 
+                :key="day.date"
+                class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border transition-all hover:bg-slate-100"
+                :class="index === 0 ? 'border-[#118c13] bg-green-50/20' : 'border-slate-100'"
+              >
+                <span class="text-xs font-medium text-slate-400">{{ formatDayName(day.date) }}</span>
+                
+                <!-- Weather Icon -->
+                <span class="mt-4 text-3xl">{{ getWeatherIcon(day.weatherCode) }}</span>
+                
                 <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-2°</span>
-                  <span class="text-xs text-slate-400 font-medium">-8°</span>
+                  <span class="text-xl font-medium text-slate-800">{{ Math.round(day.tempMaxC) }}°</span>
+                  <span class="text-xs text-slate-400 font-medium">{{ Math.round(day.tempMinC) }}°</span>
                 </div>
+                
                 <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
                   <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
                     <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
                     </svg>
-                    <span>15%</span>
+                    <span>{{ day.precipitationMm }} mm</span>
                   </div>
                   <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
                     <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
                     </svg>
-                    <span>22km/h</span>
+                    <span>{{ Math.round(day.windSpeedMax) }} km/h</span>
                   </div>
                 </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-slate-200 text-slate-600 w-full text-center">Moderate</span>
+                
+                <span 
+                  class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 w-full text-center"
+                  :class="getRiskClass(day.precipitationMm, day.windSpeedMax)"
+                >
+                  {{ getRiskLabel(day.precipitationMm, day.windSpeedMax) }}
+                </span>
               </div>
-
-              <!-- TUE -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Tue</span>
-                <svg class="w-8 h-8 text-amber-500 fill-current mt-4 animate-spin-slow" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="5"/>
-                  <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-4°</span>
-                  <span class="text-xs text-slate-400 font-medium">-11°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>0%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>12km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-green-100 text-green-700 w-full text-center">Easy</span>
-              </div>
-
-              <!-- WED -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Wed</span>
-                <svg class="w-8 h-8 text-amber-500 fill-current mt-4 animate-spin-slow" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="5"/>
-                  <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-3°</span>
-                  <span class="text-xs text-slate-400 font-medium">-9°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>5%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>14km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-green-100 text-green-700 w-full text-center">Easy</span>
-              </div>
-
-              <!-- THU -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Thu</span>
-                <svg class="w-8 h-8 mt-4" viewBox="0 0 24 24" fill="none">
-                  <circle cx="16" cy="8" r="3.5" fill="#f59e0b"/>
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" fill="#94a3b8"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-1°</span>
-                  <span class="text-xs text-slate-400 font-medium">-5°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>30%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>35km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-slate-200 text-slate-600 w-full text-center">Moderate</span>
-              </div>
-
-              <!-- FRI -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Fri</span>
-                <svg class="w-8 h-8 text-sky-400 fill-none stroke-current mt-4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                  <path d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5"/>
-                  <path d="M12 6l3 3M12 18l-3-3M18 12l-3-3M6 12l3 3" stroke-width="2.5"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-6°</span>
-                  <span class="text-xs text-slate-400 font-medium">-15°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>80%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>55km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-red-50 text-red-600 w-full text-center">Challenging</span>
-              </div>
-
-              <!-- SAT -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Sat</span>
-                <svg class="w-8 h-8 mt-4" viewBox="0 0 24 24" fill="none">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" fill="#94a3b8"/>
-                  <circle cx="8" cy="22" r="1" fill="#38bdf8"/>
-                  <circle cx="12" cy="22" r="1" fill="#38bdf8"/>
-                  <circle cx="16" cy="22" r="1" fill="#38bdf8"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-8°</span>
-                  <span class="text-xs text-slate-400 font-medium">-20°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>95%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>70km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-red-50 text-red-600 w-full text-center">Challenging</span>
-              </div>
-
-              <!-- SUN -->
-              <div class="bg-slate-50 rounded-xl flex flex-col items-center p-5 border border-slate-100 transition-all hover:bg-slate-100">
-                <span class="text-xs font-medium text-slate-400">Sun</span>
-                <svg class="w-8 h-8 text-slate-400 fill-current mt-4" viewBox="0 0 24 24">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-                </svg>
-                <div class="flex items-baseline gap-1 mt-4">
-                  <span class="text-xl font-medium text-slate-800">-4°</span>
-                  <span class="text-xs text-slate-400 font-medium">-10°</span>
-                </div>
-                <div class="w-full mt-4 border-t border-slate-200 pt-3 space-y-1.5">
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-sky-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.35 10.04A7.49 7.49 0 0118 14H6a5 5 0 01-1-9.9m0 0A7.5 7.5 0 0116 8.5"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 18v2M12 18v2M16 18v2" stroke-width="3"/>
-                    </svg>
-                    <span>40%</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs font-medium text-slate-500 justify-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4M17 12H7M15 17H9"/>
-                    </svg>
-                    <span>40km/h</span>
-                  </div>
-                </div>
-                <span class="px-2.5 py-1 text-xs font-medium rounded-lg mt-5 bg-slate-200 text-slate-600 w-full text-center">Moderate</span>
-              </div>
-
             </div>
           </div>
 
