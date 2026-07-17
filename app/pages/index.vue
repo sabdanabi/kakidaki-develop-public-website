@@ -19,7 +19,7 @@
         <div class="flex items-center gap-4">
         <div class="flex items-center gap-3">
           <NuxtLink
-            to="/health"
+            to="/trainingDasboard"
             class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
           >
             Masuk
@@ -31,9 +31,9 @@
             Daftar
           </NuxtLink>
         </div>
-          <!-- <NuxtLink to="#" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
+          <NuxtLink to="/trainingDasboard" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
             Start Assessment
-          </NuxtLink> -->
+          </NuxtLink>
         </div>
       </div>
       </nav>
