@@ -113,39 +113,45 @@ const checklistProgressClass = computed(() => {
 })
 
 const profileStore = useProfileStore()
-const stravaStore = useStravaStore()
-const isStravaLoading = ref(false)
-const stravaError = ref('')
-const stravaSuccess = ref('')
+const googleFitStore = useGoogleFitStore()
+const isGoogleFitLoading = ref(false)
+const googleFitError = ref('')
+const googleFitSuccess = ref('')
 
 const user = computed(() => profileStore.user || {})
 
 onMounted(async () => {
   await profileStore.fetchProfile()
+  await googleFitStore.fetchTrainingLogs()
 })
 
-const handleStravaAction = async () => {
-  stravaError.value = ''
-  stravaSuccess.value = ''
+const handleGoogleFitAction = async () => {
+  googleFitError.value = ''
+  googleFitSuccess.value = ''
   
-  if (!user.value.stravaAthleteId) {
-    isStravaLoading.value = true
-    const result = await stravaStore.getConnectUrl()
-    isStravaLoading.value = false
+  if (!googleFitStore.isConnected) {
+    isGoogleFitLoading.value = true
+    const result = await googleFitStore.getConnectUrl()
+    isGoogleFitLoading.value = false
     if (result.success && result.url) {
       window.location.href = result.url
     } else {
-      stravaError.value = result.message || 'Gagal menghubungkan dengan Strava.'
+      googleFitError.value = result.message || 'Gagal mengambil URL koneksi Google Fit.'
     }
   } else {
-    isStravaLoading.value = true
-    setTimeout(() => {
-      isStravaLoading.value = false
-      stravaSuccess.value = 'Data Strava berhasil disinkronisasi!'
+    isGoogleFitLoading.value = true
+    const result = await googleFitStore.syncData()
+    if (result.success) {
+      await googleFitStore.fetchTrainingLogs()
+      isGoogleFitLoading.value = false
+      googleFitSuccess.value = 'Data Google Fit berhasil disinkronisasi!'
       setTimeout(() => {
-        stravaSuccess.value = ''
+        googleFitSuccess.value = ''
       }, 4000)
-    }, 1500)
+    } else {
+      isGoogleFitLoading.value = false
+      googleFitError.value = result.message || 'Gagal menyinkronkan data Google Fit.'
+    }
   }
 }
 </script>
@@ -165,25 +171,25 @@ const handleStravaAction = async () => {
         </div>
         <div class="flex flex-col items-end gap-1.5">
           <button 
-            @click="handleStravaAction"
-            :disabled="isStravaLoading"
+            @click="handleGoogleFitAction"
+            :disabled="isGoogleFitLoading"
             class="border border-slate-200 rounded-full px-5 py-2.5 text-xs font-medium text-slate-700 bg-white shadow-sm hover:bg-slate-50 flex items-center gap-2 transition-colors active:scale-95 disabled:opacity-50"
           >
-            <svg v-if="isStravaLoading" class="animate-spin h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <svg v-else class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+            <svg v-if="isGoogleFitLoading" class="animate-spin h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <svg v-else class="w-4 h-4 text-[#ea4335]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
-            {{ user.stravaAthleteId ? 'Sync Strava' : 'Hubungkan Strava' }}
+            {{ googleFitStore.isConnected ? 'Sync Google Fit' : 'Hubungkan Google Fit' }}
           </button>
-          <span v-if="stravaSuccess" class="text-xs text-[#118c13] font-medium flex items-center gap-1">
+          <span v-if="googleFitSuccess" class="text-xs text-[#118c13] font-medium flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
-            {{ stravaSuccess }}
+            {{ googleFitSuccess }}
           </span>
-          <span v-if="stravaError" class="text-xs text-danger font-medium flex items-center gap-1">
+          <span v-if="googleFitError" class="text-xs text-danger font-medium flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            {{ stravaError }}
+            {{ googleFitError }}
           </span>
         </div>
       </div>
