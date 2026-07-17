@@ -353,7 +353,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 definePageMeta({
@@ -368,16 +368,17 @@ const isLoading = ref(false)
 const showWelcome = ref(false)
 
 const form = ref({
- gender: '',
- height: '',
- weight: '',
- diseases: [],
- diseasesOther: '',
- injuries: [],
- injuriesOther: '',
- allergies: [],
- allergiesOther: '',
- stravaConnected: false,
+
+  gender: '',
+  height: '',
+  weight: '',
+  diseases: [],
+  diseasesOther: '',
+  injuries: [],
+  injuriesOther: '',
+  allergies: [],
+  allergiesOther: '',
+  googleFitConnected: false,
 })
 
 const clearWarn = () => { warning.value = '' }
@@ -418,12 +419,13 @@ const tryNext = () => {
 
 
 const assessmentStore = useAssessmentStore()
+const googleFitStore = useGoogleFitStore()
 
-const handleFinish = async () => {
-  warning.value = ''
-  isLoading.value = true
+onMounted(async () => {
+  await googleFitStore.fetchTrainingLogs()
+})
 
-  // Construct descriptive medicalHistory string
+const buildAssessmentPayload = () => {
   const parts = []
 
   if (form.value.diseases.length > 0 || form.value.diseasesOther) {
@@ -452,13 +454,19 @@ const handleFinish = async () => {
 
   const medicalHistory = parts.join(' ')
 
-  const payload = {
+  return {
     heightCm: parseInt(form.value.height),
     weightKg: parseInt(form.value.weight),
     gender: (form.value.gender || '').toUpperCase(),
     medicalHistory: medicalHistory,
   }
+}
 
+const handleFinish = async () => {
+  warning.value = ''
+  isLoading.value = true
+
+  const payload = buildAssessmentPayload()
   const result = await assessmentStore.submitAssessment(payload)
 
   isLoading.value = false
@@ -468,6 +476,31 @@ const handleFinish = async () => {
       router.push('/dashboard')
     }, 2500)
   } else {
+    warning.value = result.message || 'Gagal menyimpan data onboarding. Silakan coba lagi.'
+  }
+}
+
+const handleConnectGoogleFit = async () => {
+  warning.value = ''
+  isLoading.value = true
+
+  const payload = buildAssessmentPayload()
+  const result = await assessmentStore.submitAssessment(payload)
+
+  if (result.success) {
+    const fitResult = await googleFitStore.getConnectUrl()
+    isLoading.value = false
+    
+    if (fitResult.success && fitResult.url) {
+      window.location.href = fitResult.url
+    } else {
+      warning.value = fitResult.message || 'Gagal menghubungkan dengan Google Fit, tetapi profil Anda telah berhasil disimpan.'
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 3000)
+    }
+  } else {
+    isLoading.value = false
     warning.value = result.message || 'Gagal menyimpan data onboarding. Silakan coba lagi.'
   }
 }

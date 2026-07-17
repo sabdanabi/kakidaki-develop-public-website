@@ -4,14 +4,34 @@ definePageMeta({
 })
 
 const profileStore = useProfileStore()
+const googleFitStore = useGoogleFitStore()
 const isLoading = ref(true)
+const isGoogleFitLoading = ref(false)
+const googleFitError = ref('')
 
 onMounted(async () => {
   await profileStore.fetchProfile()
+  await googleFitStore.fetchTrainingLogs()
   isLoading.value = false
 })
 
 const user = computed(() => profileStore.user || {})
+
+const connectGoogleFit = async () => {
+  googleFitError.value = ''
+  isGoogleFitLoading.value = true
+  const result = await googleFitStore.getConnectUrl()
+  isGoogleFitLoading.value = false
+  if (result.success && result.url) {
+    window.location.href = result.url
+  } else {
+    googleFitError.value = result.message || 'Gagal menghubungkan dengan Google Fit.'
+  }
+}
+
+const manageGoogleFitConnection = async () => {
+  await connectGoogleFit()
+}
 
 // Compute BMI status description and colors
 const bmiLabel = computed(() => {
@@ -163,17 +183,17 @@ const formatGender = (gender) => {
             <p class="text-xs text-slate-400 text-center mt-6">Berdasarkan data biometrik Anda</p>
           </div>
 
-          <!-- Strava Sync Card (1x2) -->
+          <!-- Google Fit Sync Card (1x2) -->
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[300px]">
             <div class="flex items-start justify-between">
-              <div class="w-12 h-12 bg-[#FFF0E5] rounded-2xl flex items-center justify-center text-[#fc5200]">
+              <div class="w-12 h-12 bg-[#FEECEC] rounded-2xl flex items-center justify-center text-[#ea4335]">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </div>
 
               <!-- Connected Status -->
-              <span v-if="user.stravaAthleteId" class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
+              <span v-if="googleFitStore.isConnected" class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
                 <div class="w-1.5 h-1.5 rounded-full bg-[#118c13]"></div>
                 Connected
               </span>
@@ -181,29 +201,46 @@ const formatGender = (gender) => {
               <!-- Not Connected Status -->
               <span v-else class="bg-red-50 text-[#b81212] border border-red-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
                 <div class="w-1.5 h-1.5 rounded-full bg-[#b81212]"></div>
-                Not connecting strava
+                Not Connected
               </span>
             </div>
 
             <div class="mt-8 space-y-2 flex-1">
-              <h3 class="font-medium text-slate-800 text-xl font-heading">Strava Sync</h3>
+              <h3 class="font-medium text-slate-800 text-xl font-heading">Google Fit Sync</h3>
               <p class="text-sm text-slate-400 leading-relaxed">
-                Sinkronisasi otomatis untuk melacak riwayat kebugaran fisik dan denyut jantung Anda.
+                Sinkronisasi otomatis untuk melacak riwayat kebugaran fisik dan data kesehatan Anda dari Google Fit.
               </p>
             </div>
 
             <div>
-              <div v-if="user.stravaAthleteId" class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-500 font-medium flex justify-between items-center mb-4">
-                <span>Athlete ID</span>
-                <span class="text-slate-800">{{ user.stravaAthleteId }}</span>
+              <div v-if="googleFitStore.isConnected" class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-500 font-medium flex justify-between items-center mb-4">
+                <span>Status</span>
+                <span class="text-emerald-600 font-medium">Terhubung</span>
               </div>
 
-              <button v-if="user.stravaAthleteId" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98]">
+              <p v-if="googleFitError" class="text-xs text-danger mb-2 font-medium flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {{ googleFitError }}
+              </p>
+
+              <button 
+                v-if="googleFitStore.isConnected" 
+                @click="manageGoogleFitConnection"
+                :disabled="isGoogleFitLoading"
+                class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <svg v-if="isGoogleFitLoading" class="animate-spin h-3.5 w-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 Manage Connection
               </button>
               
-              <button v-else class="w-full bg-[#fc5200] hover:bg-[#e04900] text-white py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] shadow-sm">
-                Hubungkan Strava
+              <button 
+                v-else 
+                @click="connectGoogleFit"
+                :disabled="isGoogleFitLoading"
+                class="w-full bg-[#ea4335] hover:bg-[#d62d20] text-white py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <svg v-if="isGoogleFitLoading" class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                Hubungkan Google Fit
               </button>
             </div>
           </div>
