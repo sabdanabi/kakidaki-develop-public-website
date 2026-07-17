@@ -11,7 +11,7 @@
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center gap-8">
           <NuxtLink class="font-body-md text-[#023C23] font-bold border-b-2 border-[#023C23] pb-1 transition-colors" to="#">Explore</NuxtLink>
-          <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="#">Routes</NuxtLink>
+          <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="/health">Routes</NuxtLink>
           <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="#">Community</NuxtLink>
         </div>
 
