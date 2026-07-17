@@ -1,31 +1,89 @@
 <script setup>
 definePageMeta({
-  layout: false
+  layout: false,
 })
+
+const profileStore = useProfileStore()
+const isLoading = ref(true)
+
+onMounted(async () => {
+  await profileStore.fetchProfile()
+  isLoading.value = false
+})
+
+const user = computed(() => profileStore.user || {})
+
+// Compute BMI status description and colors
+const bmiLabel = computed(() => {
+  const v = parseFloat(user.value.bmi)
+  if (!v) return 'No Data'
+  if (v < 18.5) return 'Underweight'
+  if (v < 25) return 'Optimal'
+  if (v < 30) return 'Overweight'
+  return 'Obese'
+})
+
+const bmiColorClass = computed(() => {
+  const v = parseFloat(user.value.bmi)
+  if (!v) return 'text-slate-400'
+  if (v < 18.5) return 'text-amber-300'
+  if (v < 25) return 'text-green-300'
+  return 'text-red-400'
+})
+
+const bmiDescription = computed(() => {
+  const v = parseFloat(user.value.bmi)
+  if (!v) return 'Silakan lengkapi biometrik Anda untuk melihat kesiapan pendakian.'
+  if (v < 18.5) return 'Biometrik Anda menunjukkan berat badan kurang. Disarankan untuk berkonsultasi mengenai nutrisi tambahan sebelum pendakian.'
+  if (v < 25) return 'Indikator tubuh Anda menunjukkan kapasitas aerobik yang optimal dan rasio kekuatan-ke-berat badan yang ideal untuk mendaki puncak tinggi.'
+  return 'Biometrik Anda menunjukkan berat badan berlebih. Direkomendasikan latihan kardiovaskular teratur sebelum melakukan pendakian tinggi.'
+})
+
+// Dynamically split medicalHistory into insights sentences
+const medicalInsights = computed(() => {
+  if (!user.value.medicalHistory) return []
+  return user.value.medicalHistory
+    .split('.')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+})
+
+const formatGender = (gender) => {
+  if (!gender) return '-'
+  if (gender === 'MALE') return 'Laki-laki'
+  if (gender === 'FEMALE') return 'Perempuan'
+  return gender
+}
 </script>
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
-    <!-- Sidebar Component (Auto-imported) -->
+    <!-- Sidebar Component -->
     <Sidebar active="health" />
 
     <!-- MAIN CONTENT AREA -->
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
-      <div class="w-full max-w-[1600px] mx-auto space-y-6">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center space-y-4">
+        <div class="h-8 w-8 rounded-full border-4 border-slate-200 border-t-[#118c13] animate-spin"></div>
+        <p class="text-sm text-slate-500 font-medium">Memuat data biometrik & kesehatan...</p>
+      </div>
+
+      <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         
         <!-- HEADER -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Health & Readiness</h1>
-            <p class="text-sm text-slate-500 mt-1">Personal biometric data and physiological validation for alpine missions</p>
+            <p class="text-sm text-slate-500 mt-1">Data biometrik pribadi dan validasi fisiologis untuk misi pendakian Anda</p>
           </div>
 
-          <button class="inline-flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 text-slate-700 bg-white rounded-xl px-4 py-2.5 text-xs font-medium transition-all shadow-sm active:scale-[0.98]">
+          <NuxtLink to="/profile" class="inline-flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 text-slate-700 bg-white rounded-xl px-4 py-2.5 text-xs font-medium transition-all shadow-sm active:scale-[0.98]">
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
             </svg>
             Update Profile
-          </button>
+          </NuxtLink>
         </header>
 
         <!-- BENTO GRID -->
@@ -43,7 +101,7 @@ definePageMeta({
                   High-Altitude Readiness
                 </h2>
                 <p class="text-white/80 text-base leading-relaxed mt-4 max-w-[400px]">
-                  Your current biometrics indicate high aerobic capacity and optimal strength-to-weight ratio for peaks above 3,000m.
+                  {{ bmiDescription }}
                 </p>
               </div>
 
@@ -52,17 +110,17 @@ definePageMeta({
                 <div>
                   <p class="text-xs text-white/50 font-medium mb-1">BMI Index</p>
                   <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-medium text-white font-heading">23.1</span>
-                    <span class="text-xs font-medium text-green-300">Healthy</span>
+                    <span class="text-3xl font-medium text-white font-heading">{{ user.bmi || '-' }}</span>
+                    <span class="text-xs font-medium" :class="bmiColorClass">{{ bmiLabel }}</span>
                   </div>
                 </div>
                 <div>
-                  <p class="text-xs text-white/50 font-medium mb-1">Risk Category</p>
+                  <p class="text-xs text-white/50 font-medium mb-1">Status</p>
                   <div class="flex items-center gap-2 text-green-300">
                     <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
                     </svg>
-                    <span class="text-xl font-medium">Optimal</span>
+                    <span class="text-xl font-medium">Verified</span>
                   </div>
                 </div>
               </div>
@@ -102,7 +160,7 @@ definePageMeta({
                 <span class="text-xs font-medium text-slate-400 mt-1">/ 100</span>
               </div>
             </div>
-            <p class="text-xs text-slate-400 text-center mt-6">Based on VO2 Max and strength metrics</p>
+            <p class="text-xs text-slate-400 text-center mt-6">Berdasarkan data biometrik Anda</p>
           </div>
 
           <!-- Strava Sync Card (1x2) -->
@@ -113,27 +171,39 @@ definePageMeta({
                   <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
               </div>
-              <span class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
+
+              <!-- Connected Status -->
+              <span v-if="user.stravaAthleteId" class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
                 <div class="w-1.5 h-1.5 rounded-full bg-[#118c13]"></div>
                 Connected
+              </span>
+
+              <!-- Not Connected Status -->
+              <span v-else class="bg-red-50 text-[#b81212] border border-red-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#b81212]"></div>
+                Not connecting strava
               </span>
             </div>
 
             <div class="mt-8 space-y-2 flex-1">
               <h3 class="font-medium text-slate-800 text-xl font-heading">Strava Sync</h3>
               <p class="text-sm text-slate-400 leading-relaxed">
-                Automated data extraction for heart rate variability and VO2 Max metrics.
+                Sinkronisasi otomatis untuk melacak riwayat kebugaran fisik dan denyut jantung Anda.
               </p>
             </div>
 
             <div>
-              <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-500 font-medium flex justify-between items-center mb-4">
-                <span>Last Synced</span>
-                <span class="text-slate-800">Today, 08:45 AM</span>
+              <div v-if="user.stravaAthleteId" class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-500 font-medium flex justify-between items-center mb-4">
+                <span>Athlete ID</span>
+                <span class="text-slate-800">{{ user.stravaAthleteId }}</span>
               </div>
 
-              <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98]">
+              <button v-if="user.stravaAthleteId" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98]">
                 Manage Connection
+              </button>
+              
+              <button v-else class="w-full bg-[#fc5200] hover:bg-[#e04900] text-white py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] shadow-sm">
+                Hubungkan Strava
               </button>
             </div>
           </div>
@@ -155,7 +225,7 @@ definePageMeta({
                     </div>
                     <div>
                       <p class="text-xs text-slate-400 font-medium">Tinggi Badan</p>
-                      <p class="text-sm font-medium text-slate-800">182 cm</p>
+                      <p class="text-sm font-medium text-slate-800">{{ user.heightCm ? `${user.heightCm} cm` : '-' }}</p>
                     </div>
                   </div>
 
@@ -168,7 +238,7 @@ definePageMeta({
                     </div>
                     <div>
                       <p class="text-xs text-slate-400 font-medium">Berat Badan</p>
-                      <p class="text-sm font-medium text-slate-800">76 kg</p>
+                      <p class="text-sm font-medium text-slate-800">{{ user.weightKg ? `${user.weightKg} kg` : '-' }}</p>
                     </div>
                   </div>
 
@@ -184,7 +254,7 @@ definePageMeta({
                     </div>
                     <div>
                       <p class="text-xs text-slate-400 font-medium">Umur</p>
-                      <p class="text-sm font-medium text-slate-800">28 Tahun</p>
+                      <p class="text-sm font-medium text-slate-800">{{ user.age ? `${user.age} Tahun` : '-' }}</p>
                     </div>
                   </div>
 
@@ -197,7 +267,7 @@ definePageMeta({
                     </div>
                     <div>
                       <p class="text-xs text-slate-400 font-medium">Jenis Kelamin</p>
-                      <p class="text-sm font-medium text-slate-800">Laki-laki</p>
+                      <p class="text-sm font-medium text-slate-800">{{ formatGender(user.gender) }}</p>
                     </div>
                   </div>
                 </div>
@@ -207,40 +277,32 @@ definePageMeta({
               <div>
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="font-medium text-slate-800 text-lg">Medical Insights</h3>
-                  <div class="flex items-center gap-1.5 text-xs text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded-md">
+                  <div v-if="user.updatedAt" class="flex items-center gap-1.5 text-xs text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded-md">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                       <line x1="3" y1="10" x2="21" y2="10"/>
                     </svg>
-                    <span>Last Checkup: Oct 12, 2023</span>
+                    <span>Terakhir Update: {{ new Date(user.updatedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}</span>
                   </div>
                 </div>
 
                 <div class="space-y-3">
-                  <!-- Asthma -->
-                  <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
+                  <!-- Dynamic Insights -->
+                  <div v-for="(insight, idx) in medicalInsights" :key="idx" class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
                     <div class="flex items-center gap-3 text-slate-700 font-medium text-sm">
                       <div class="w-8 h-8 rounded-lg bg-emerald-100/50 flex items-center justify-center text-emerald-600">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697-.056-4.024-.166C6.845 7.996 6 7.11 6 6.062V5.25m6 3c1.355 0 2.697-.056 4.024-.166C17.155 7.996 18 7.11 18 6.062V5.25M6 6.062c0-1.243.912-2.311 2.148-2.42A42.164 42.164 0 0112 3.5c1.282 0 2.56.037 3.824.11C17.088 3.722 18 4.79 18 6.033"/>
                         </svg>
                       </div>
-                      Asthma (Mild)
+                      {{ insight }}
                     </div>
-                    <span class="bg-amber-50 text-amber-600 border border-amber-100 rounded-md px-2 py-0.5 text-xs font-medium">Monitor</span>
+                    <span class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-md px-2 py-0.5 text-xs font-medium">Recorded</span>
                   </div>
 
-                  <!-- Knee ACL Repair -->
-                  <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
-                    <div class="flex items-center gap-3 text-slate-700 font-medium text-sm">
-                      <div class="w-8 h-8 rounded-lg bg-emerald-100/50 flex items-center justify-center text-emerald-600">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7"/>
-                        </svg>
-                      </div>
-                      Knee ACL Repair
-                    </div>
-                    <span class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-md px-2 py-0.5 text-xs font-medium">Recovered</span>
+                  <!-- Fallback if empty -->
+                  <div v-if="medicalInsights.length === 0" class="text-sm text-slate-400 text-center py-6">
+                    Tidak ada riwayat medis yang tersimpan.
                   </div>
                 </div>
 
@@ -256,7 +318,3 @@ definePageMeta({
     </main>
   </div>
 </template>
-
-<style scoped>
-/* Custom animations if needed */
-</style>

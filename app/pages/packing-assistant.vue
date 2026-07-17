@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 definePageMeta({
   layout: false,
@@ -18,15 +18,35 @@ const openScanner = () => {
 const closeScanner = () => {
   isModalOpen.value = false
 }
+
+// Stores and States
+const logisticsStore = useLogisticsStore()
+const profileStore = useProfileStore()
+const isLoadingLogistics = ref(true)
+const isGenerating = ref(false)
+const errorMessage = ref('')
+
 const startScan = () => {
   scanStatus.value = 'scanning'
   setTimeout(() => {
     scanStatus.value = 'success'
     categories.value.forEach(cat => {
-      cat.items.forEach(item => {
+      cat.items.forEach(async (item) => {
         if (item.name === 'Carrier 60L' || item.name === 'Headlamp') {
           item.packed = true
           item.autoDetected = true
+          
+          if (item.id) {
+            const payload = {
+              itemName: item.raw?.itemName || item.name,
+              amount: item.raw?.amount || `${item.qty} unit`,
+              category: item.raw?.category || cat.key.toUpperCase(),
+              isMandatory: item.raw?.isMandatory || item.required,
+              note: item.raw?.note || item.note || '',
+              isPacked: true
+            }
+            await logisticsStore.updateItemPackedStatus(item.id, payload)
+          }
         }
       })
     })
@@ -50,68 +70,140 @@ const itemIcon = {
   alert: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
 }
 
+// Categories list schema (Empty by default, populated dynamically)
 const categories = ref([
   {
     key: 'clothing', label: 'Sistem Pakaian', color: 'blue', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.clothing,
-    items: [
-      { name: 'Pakaian Dalam (Dri-fit)', packed: true, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.shirt },
-      { name: 'Jaket Gunung Tebal', packed: false, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.shirt },
-      { name: 'Celana Trekking', packed: true, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.pants },
-      { name: 'Sarung Tangan Thermal', packed: false, qty: 1, note: 'Penting', required: true, autoDetected: false, icon: itemIcon.shirt },
-      { name: 'Jas Hujan', packed: false, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.shirt },
-    ],
+    items: [],
   },
   {
     key: 'gear', label: 'Peralatan Teknis', color: 'indigo', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.gear,
-    items: [
-      { name: 'Trekking Poles', packed: true, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.tool },
-      { name: 'Headlamp', packed: false, qty: 1, note: 'Minimal 400L', required: true, autoDetected: false, icon: itemIcon.tool },
-      { name: 'Carrier 60L', packed: false, qty: 1, note: 'Pastikan pas di punggung', required: true, autoDetected: false, icon: itemIcon.tool },
-      { name: 'Sleeping Bag', packed: false, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.tool },
-      { name: 'Matras Lipat', packed: true, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.tool },
-    ],
+    items: [],
   },
   {
     key: 'nutrition', label: 'Nutrisi & Air', color: 'amber', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.nutrition,
-    items: [
-      { name: 'Air Minum (3 Liter)', packed: true, qty: 3, note: 'Wajib', required: true, autoDetected: false, icon: itemIcon.water },
-      { name: 'Gel Energi', packed: false, qty: 6, note: null, required: false, autoDetected: false, icon: itemIcon.water },
-      { name: 'Makanan Kering', packed: false, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.water },
-    ],
+    items: [],
   },
   {
     key: 'health', label: 'Kesehatan & Medis', color: 'teal', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.health,
-    items: [
-      { name: 'P3K Pribadi', packed: true, qty: 1, note: 'Wajib', required: true, autoDetected: false, icon: itemIcon.meds },
-      { name: 'Emergency Bivvy', packed: false, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.meds },
-      { name: 'Tabir Surya', packed: true, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.meds },
-    ],
+    items: [],
   },
   {
     key: 'emergency', label: 'Komunikasi Darurat', color: 'rose', span: 'col-span-1 xl:col-span-4', iconSvg: iconSvg.emergency,
-    items: [
-      { name: 'Pesan Satelit', packed: false, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.alert },
-      { name: 'Peluit Darurat', packed: true, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.alert },
-    ],
+    items: [],
   },
 ])
+
+// Mapping categories from API to UI
+const mapCategoryKey = (backendCategory) => {
+  if (!backendCategory) return 'gear'
+  const cat = backendCategory.toUpperCase()
+  if (cat.includes('CLOTHING') || cat.includes('WEAR') || cat.includes('PAKAIAN')) return 'clothing'
+  if (cat.includes('GEAR') || cat.includes('TOOL') || cat.includes('SHELTER') || cat.includes('PERALATAN')) return 'gear'
+  if (cat.includes('NUTRITION') || cat.includes('FOOD') || cat.includes('WATER') || cat.includes('NUTRISI')) return 'nutrition'
+  if (cat.includes('HEALTH') || cat.includes('MED') || cat.includes('FIRST_AID') || cat.includes('KESEHATAN')) return 'health'
+  if (cat.includes('EMERGENCY') || cat.includes('SAFETY') || cat.includes('DARURAT')) return 'emergency'
+  return 'gear'
+}
+
+// Getting dynamic icon based on name and category
+const getItemIcon = (categoryKey, itemName) => {
+  const name = (itemName || '').toLowerCase()
+  if (categoryKey === 'clothing') {
+    if (name.includes('celana')) return itemIcon.pants
+    return itemIcon.shirt
+  }
+  if (categoryKey === 'nutrition') return itemIcon.water
+  if (categoryKey === 'health') return itemIcon.meds
+  if (categoryKey === 'emergency') return itemIcon.alert
+  return itemIcon.tool
+}
+
+const updateCategoriesFromStore = () => {
+  categories.value.forEach(c => {
+    c.items = []
+  })
+
+  logisticsStore.items.forEach(apiItem => {
+    const categoryKey = mapCategoryKey(apiItem.category)
+    const cat = categories.value.find(c => c.key === categoryKey)
+    if (cat) {
+      cat.items.push({
+        id: apiItem.id,
+        name: apiItem.itemName,
+        packed: apiItem.isPacked || false,
+        qty: parseInt(apiItem.amount) || 1,
+        note: apiItem.note,
+        required: apiItem.isMandatory || false,
+        autoDetected: false,
+        icon: getItemIcon(categoryKey, apiItem.itemName),
+        raw: apiItem
+      })
+    }
+  })
+}
 
 const allItems = computed(() => categories.value.flatMap(c => c.items))
 const packedCount = computed(() => allItems.value.filter(i => i.packed).length)
 const totalCount = computed(() => allItems.value.length)
-const readinessPercent = computed(() => Math.round((packedCount.value / totalCount.value) * 100))
+const readinessPercent = computed(() => totalCount.value > 0 ? Math.round((packedCount.value / totalCount.value) * 100) : 0)
 
-const toggleItem = (catKey, itemName) => {
+const toggleItem = async (catKey, itemName) => {
+  errorMessage.value = ''
   const cat = categories.value.find(c => c.key === catKey)
   if (!cat) return
   const item = cat.items.find(i => i.name === itemName)
-  if (item) {
-    item.packed = !item.packed
-    if (!item.packed && item.autoDetected) {
-      item.autoDetected = false
+  if (item && item.id) {
+    const newPackedState = !item.packed
+    
+    // Optimistic UI update
+    item.packed = newPackedState
+    
+    const payload = {
+      itemName: item.raw?.itemName || item.name,
+      amount: item.raw?.amount || `${item.qty} unit`,
+      category: item.raw?.category || catKey.toUpperCase(),
+      isMandatory: item.raw?.isMandatory || item.required,
+      note: item.raw?.note || item.note || '',
+      isPacked: newPackedState
+    }
+    
+    const result = await logisticsStore.updateItemPackedStatus(item.id, payload)
+    if (!result.success) {
+      // Revert state
+      item.packed = !newPackedState
+      errorMessage.value = result.message || 'Gagal memperbarui status barang.'
+    } else {
+      item.raw = result.data
     }
   }
 }
+
+const handleGeneratePackingList = async () => {
+  errorMessage.value = ''
+  isGenerating.value = true
+  
+  // Ensure we have active expedition
+  await logisticsStore.fetchExpeditions()
+  
+  const result = await logisticsStore.generatePackingList()
+  isGenerating.value = false
+  
+  if (result.success) {
+    updateCategoriesFromStore()
+  } else {
+    errorMessage.value = result.message || 'Gagal generate packing list.'
+  }
+}
+
+onMounted(async () => {
+  isLoadingLogistics.value = true
+  await profileStore.fetchProfile()
+  await logisticsStore.fetchExpeditions()
+  await logisticsStore.fetchLogistics()
+  updateCategoriesFromStore()
+  isLoadingLogistics.value = false
+})
 </script>
 
 <template>
@@ -121,7 +213,13 @@ const toggleItem = (catKey, itemName) => {
 
     <!-- Main Content Area -->
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
-      <div class="w-full max-w-[1600px] mx-auto space-y-6">
+      <!-- Loading State -->
+      <div v-if="isLoadingLogistics" class="flex-1 flex flex-col items-center justify-center space-y-4">
+        <div class="h-8 w-8 rounded-full border-4 border-slate-200 border-t-[#118c13] animate-spin"></div>
+        <p class="text-sm text-slate-500 font-medium">Memuat data logistik...</p>
+      </div>
+
+      <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         
         <!-- Header -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -129,7 +227,34 @@ const toggleItem = (catKey, itemName) => {
             <h1 class="text-2xl font-heading font-medium text-slate-900">Asisten Packing</h1>
             <p class="text-sm text-slate-500 mt-1">Ceklis perlengkapan pintar untuk ekspedisimu</p>
           </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button 
+              @click="handleGeneratePackingList"
+              :disabled="isGenerating"
+              class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-medium transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
+            >
+              AI Gear Guide
+            </button>
+            <button 
+              @click="handleGeneratePackingList"
+              :disabled="isGenerating"
+              class="inline-flex items-center justify-center gap-2 bg-[#023C23] hover:bg-[#012616] text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
+            >
+              <svg v-if="isGenerating" class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Auto-Generate Packing List
+            </button>
+          </div>
         </header>
+
+        <!-- Error Alert -->
+        <div v-if="errorMessage" class="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-xl text-red-800 text-sm font-medium transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span>{{ errorMessage }}</span>
+        </div>
 
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
@@ -146,7 +271,7 @@ const toggleItem = (catKey, itemName) => {
                   Status Peralatan
                 </h2>
                 <p class="text-white/80 text-base mt-4 max-w-[400px]">
-                  Kamu sudah menyortir sebagian besar perlengkapan penting. Lanjutkan mengecek kategori teknis.
+                  {{ totalCount > 0 ? 'Kamu sudah menyortir sebagian besar perlengkapan penting. Lanjutkan mengecek kategori teknis.' : 'Daftar logistik Anda kosong. Silakan generate untuk mulai menyortir perlengkapan.' }}
                 </p>
               </div>
 
@@ -221,73 +346,86 @@ const toggleItem = (catKey, itemName) => {
             </button>
           </div>
 
-          <!-- Category Bento Boxes -->
-          <div 
-            v-for="(cat) in categories" 
-            :key="cat.key"
-            class="rounded-[2.5rem] bg-white shadow-sm border border-slate-100 flex flex-col overflow-hidden relative z-0 h-fit"
-            :class="[cat.span]"
-          >
-            <!-- Big Background Icon Opacity 50% -->
-            <div class="absolute -bottom-6 -right-6 h-40 w-40 opacity-[0.15] z-[-1] pointer-events-none" :class="`text-${cat.color}-500`">
-              <span v-html="cat.iconSvg" class="block w-full h-full"></span>
+          <!-- Empty State (Shows when no items have been generated) -->
+          <div v-if="allItems.length === 0" class="col-span-1 md:col-span-2 xl:col-span-4 bg-white rounded-[2.5rem] p-12 text-center border border-slate-100 shadow-sm flex flex-col items-center justify-center space-y-4 my-4">
+            <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#118c13] flex items-center justify-center">
+              <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
             </div>
-
-            <!-- Category Header -->
-            <div class="px-6 py-5 flex items-center justify-between" :class="`bg-${cat.color}-50/60`">
-              <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl" :class="`bg-${cat.color}-100 text-${cat.color}-600`">
-                  <span v-html="cat.iconSvg" class="h-5 w-5"></span>
-                </div>
-                <div>
-                  <h3 class="text-base font-medium text-slate-800">{{ cat.label }}</h3>
-                  <p class="text-xs font-medium" :class="`text-${cat.color}-600/80`">
-                    {{ cat.items.filter(i => i.packed).length }} dari {{ cat.items.length }} Siap
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Items List -->
-            <div class="flex-1 p-3">
-              <div
-                v-for="item in cat.items"
-                :key="item.name"
-                @click="toggleItem(cat.key, item.name)"
-                class="group flex cursor-pointer items-start gap-3 px-3 py-3 transition-colors hover:bg-slate-50 rounded-xl"
-              >
-                <!-- Checkbox -->
-                <div
-                  class="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-[1.5px] transition-all mt-0.5 relative overflow-hidden"
-                  :class="item.packed ? `border-${cat.color}-500 bg-${cat.color}-500 text-white` : `border-slate-300 bg-white group-hover:border-${cat.color}-400`"
-                >
-                  <div v-if="item.autoDetected" class="absolute inset-0 bg-white/30 animate-pulse"></div>
-                  <svg v-if="item.packed" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                </div>
-
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-center gap-2">
-                    <span v-html="item.icon" class="h-4 w-4 text-slate-400"></span>
-                    <p class="text-sm transition-colors truncate" :class="item.packed ? 'text-slate-400 line-through' : (item.required ? 'font-medium text-slate-800' : 'text-slate-600')">
-                      {{ item.name }}
-                    </p>
-                    <span v-if="item.autoDetected" class="flex h-1.5 w-1.5 rounded-full animate-ping" :class="`bg-${cat.color}-500`"></span>
-                  </div>
-                  <div v-if="item.note || item.required" class="mt-1 flex items-center gap-2">
-                    <span v-if="item.required && !item.packed" class="px-2 py-0.5 rounded-md text-[10px] font-medium" :class="`bg-${cat.color}-100 text-${cat.color}-700`">
-                      Wajib
-                    </span>
-                    <p v-if="item.note" class="text-xs text-slate-400 font-medium truncate">{{ item.note }}</p>
-                  </div>
-                </div>
-
-                <!-- Quantity Badge -->
-                <div class="shrink-0 rounded-full px-2 py-0.5 text-xs font-medium transition-colors" :class="item.packed ? 'bg-slate-100 text-slate-400' : `bg-${cat.color}-100 text-${cat.color}-700`">
-                  {{ item.qty }}x
-                </div>
-              </div>
-            </div>
+            <h3 class="text-lg font-medium text-slate-800">Daftar Logistik Kosong</h3>
+            <p class="text-sm text-slate-505 text-slate-500 max-w-md">Daftar perlengkapan untuk ekspedisi Anda belum dibuat. Silakan klik tombol "Auto-Generate Packing List" atau "AI Gear Guide" di atas untuk membuat daftar perlengkapan otomatis berbasis AI.</p>
           </div>
+
+          <!-- Category Bento Boxes -->
+          <template v-else>
+            <div 
+              v-for="(cat) in categories" 
+              :key="cat.key"
+              class="rounded-[2.5rem] bg-white shadow-sm border border-slate-100 flex flex-col overflow-hidden relative z-0 h-fit"
+              :class="[cat.span]"
+            >
+              <!-- Big Background Icon Opacity 50% -->
+              <div class="absolute -bottom-6 -right-6 h-40 w-40 opacity-[0.15] z-[-1] pointer-events-none" :class="`text-${cat.color}-500`">
+                <span v-html="cat.iconSvg" class="block w-full h-full"></span>
+              </div>
+
+              <!-- Category Header -->
+              <div class="px-6 py-5 flex items-center justify-between" :class="`bg-${cat.color}-50/60`">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl" :class="`bg-${cat.color}-100 text-${cat.color}-600`">
+                    <span v-html="cat.iconSvg" class="h-5 w-5"></span>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-medium text-slate-800">{{ cat.label }}</h3>
+                    <p class="text-xs font-medium" :class="`text-${cat.color}-600/80`">
+                      {{ cat.items.filter(i => i.packed).length }} dari {{ cat.items.length }} Siap
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Items List -->
+              <div class="flex-1 p-3">
+                <div
+                  v-for="item in cat.items"
+                  :key="item.name"
+                  @click="toggleItem(cat.key, item.name)"
+                  class="group flex cursor-pointer items-start gap-3 px-3 py-3 transition-colors hover:bg-slate-50 rounded-xl"
+                >
+                  <!-- Checkbox -->
+                  <div
+                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-[1.5px] transition-all mt-0.5 relative overflow-hidden"
+                    :class="item.packed ? `border-${cat.color}-500 bg-${cat.color}-500 text-white` : `border-slate-300 bg-white group-hover:border-${cat.color}-400`"
+                  >
+                    <div v-if="item.autoDetected" class="absolute inset-0 bg-white/30 animate-pulse"></div>
+                    <svg v-if="item.packed" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  </div>
+
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                      <span v-html="item.icon" class="h-4 w-4 text-slate-400"></span>
+                      <p class="text-sm transition-colors truncate" :class="item.packed ? 'text-slate-400 line-through' : (item.required ? 'font-medium text-slate-800' : 'text-slate-600')">
+                        {{ item.name }}
+                      </p>
+                      <span v-if="item.autoDetected" class="flex h-1.5 w-1.5 rounded-full animate-ping" :class="`bg-${cat.color}-500`"></span>
+                    </div>
+                    <div v-if="item.note || item.required" class="mt-1 flex items-center gap-2">
+                      <span v-if="item.required && !item.packed" class="px-2 py-0.5 rounded-md text-[10px] font-medium" :class="`bg-${cat.color}-100 text-${cat.color}-700`">
+                        Wajib
+                      </span>
+                      <p v-if="item.note" class="text-xs text-slate-400 font-medium truncate">{{ item.note }}</p>
+                    </div>
+                  </div>
+
+                  <!-- Quantity Badge -->
+                  <div class="shrink-0 rounded-full px-2 py-0.5 text-xs font-medium transition-colors" :class="item.packed ? 'bg-slate-100 text-slate-400' : `bg-${cat.color}-100 text-${cat.color}-700`">
+                    {{ item.qty }}x
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
       
@@ -299,7 +437,7 @@ const toggleItem = (catKey, itemName) => {
     <div v-if="isModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="closeScanner"></div>
       
-      <div class="relative w-full max-w-sm bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="relative w-full max-w-sm bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <!-- Light Header -->
         <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-white">
           <div class="flex items-center gap-2">
@@ -408,5 +546,4 @@ const toggleItem = (catKey, itemName) => {
   20% { opacity: 1; }
   100% { transform: translateY(200px); opacity: 0; }
 }
-
 </style>
