@@ -55,11 +55,47 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
+  const fetchProfile = async () => {
+    try {
+      const data: any = await $fetch('https://api.kakidaki.my.id/api/v1/users/me', {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      user.value = data
+      const userCookie = useCookie('auth_user')
+      userCookie.value = data
+      return { success: true, data }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal mengambil data profil.' }
+    }
+  }
+
+  const updateProfile = async (profileData: any) => {
+    try {
+      const data: any = await $fetch('https://api.kakidaki.my.id/api/v1/users/me', {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+        body: profileData,
+      })
+      user.value = data
+      const userCookie = useCookie('auth_user')
+      userCookie.value = data
+      return { success: true, data }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal memperbarui profil.' }
+    }
+  }
+
   return {
     token,
     user,
     login,
     register,
     logout,
+    fetchProfile,
+    updateProfile,
   }
 })
