@@ -416,19 +416,59 @@ const tryNext = () => {
   }, 600)
 }
 
-const handleFinish = () => {
+const assessmentStore = useAssessmentStore()
+
+const handleFinish = async () => {
+  warning.value = ''
   isLoading.value = true
 
-  // Simulate final save
-  setTimeout(() => {
-    isLoading.value = false
-    showWelcome.value = true
+  // Construct descriptive medicalHistory string
+  const parts = []
 
-    // Redirect to dashboard after welcome animation
+  if (form.value.diseases.length > 0 || form.value.diseasesOther) {
+    const list = [...form.value.diseases]
+    if (form.value.diseasesOther.trim()) list.push(form.value.diseasesOther.trim())
+    parts.push(`Riwayat penyakit: ${list.join(', ')}.`)
+  } else {
+    parts.push('Tidak ada riwayat penyakit.')
+  }
+
+  if (form.value.injuries.length > 0 || form.value.injuriesOther) {
+    const list = [...form.value.injuries]
+    if (form.value.injuriesOther.trim()) list.push(form.value.injuriesOther.trim())
+    parts.push(`Riwayat cedera: ${list.join(', ')}.`)
+  } else {
+    parts.push('Tidak ada riwayat cedera.')
+  }
+
+  if (form.value.allergies.length > 0 || form.value.allergiesOther) {
+    const list = [...form.value.allergies]
+    if (form.value.allergiesOther.trim()) list.push(form.value.allergiesOther.trim())
+    parts.push(`Riwayat alergi: ${list.join(', ')}.`)
+  } else {
+    parts.push('Tidak ada riwayat alergi.')
+  }
+
+  const medicalHistory = parts.join(' ')
+
+  const payload = {
+    heightCm: parseInt(form.value.height),
+    weightKg: parseInt(form.value.weight),
+    gender: (form.value.gender || '').toUpperCase(),
+    medicalHistory: medicalHistory,
+  }
+
+  const result = await assessmentStore.submitAssessment(payload)
+
+  isLoading.value = false
+  if (result.success) {
+    showWelcome.value = true
     setTimeout(() => {
       router.push('/dashboard')
     }, 2500)
-  }, 800)
+  } else {
+    warning.value = result.message || 'Gagal menyimpan data onboarding. Silakan coba lagi.'
+  }
 }
 
 const toggleMulti = (field, value) => {

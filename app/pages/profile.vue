@@ -3,7 +3,7 @@ definePageMeta({
   layout: false,
 })
 
-const authStore = useAuthStore()
+const profileStore = useProfileStore()
 
 const profile = ref({
   name: '',
@@ -23,7 +23,7 @@ const fetchProfileData = async () => {
   isLoading.value = true
   errorMessage.value = ''
 
-  const result = await authStore.fetchProfile()
+  const result = await profileStore.fetchProfile()
   if (result.success && result.data) {
     profile.value = {
       name: result.data.name || '',
@@ -69,7 +69,7 @@ const saveProfile = async () => {
   }
 
   isSaving.value = true
-  const result = await authStore.updateProfile({
+  const result = await profileStore.updateProfile({
     name: profile.value.name.trim(),
     age: parseInt(profile.value.age),
     phone: profile.value.phone,
