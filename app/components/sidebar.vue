@@ -65,17 +65,13 @@
         </NuxtLink>
 
         <!-- Upgrade Button -->
-<<<<<<< HEAD
         <NuxtLink
           to="/payment"
           class="w-full block text-center bg-[#023C23] hover:bg-emerald-800 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
         >
           Top Up Credit / Pro
         </NuxtLink>
-=======
-        <button class="w-full bg-[#118c13] hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all hover:shadow-md active:scale-[0.98]">
-          Upgrade to Pro
-        </button>
+
 
         <!-- Logout Button -->
         <button @click="handleLogout" class="flex w-full items-center gap-3 px-4 py-2.5 text-danger hover:text-danger-700 hover:bg-red-50/50 rounded-xl font-medium text-sm transition-colors mt-2">
@@ -86,7 +82,6 @@
           </svg>
           LOG OUT
         </button>
->>>>>>> feat/fetch-api-auth
       </div>
     </aside>
 </template>
