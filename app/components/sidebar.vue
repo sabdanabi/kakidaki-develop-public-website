@@ -5,14 +5,14 @@
         <svg class="w-7 h-7 text-[#118c13]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l7-12 5 8 2-3 4 7H3z" />
         </svg>
-        <span class="text-xl font-bold tracking-tight text-[#118c13]">KakiDaki</span>
+        <span class="text-xl font-medium tracking-tight text-[#118c13]">KakiDaki</span>
       </div>
 
       <!-- Navigation Menu -->
       <nav class="flex-1 px-4 py-4 space-y-1.5">
-        <!-- Dashboard (Active) -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-3 text-[#118c13] bg-green-50/60 rounded-xl font-semibold text-sm transition-colors border border-green-100/50">
-          <svg class="w-5 h-5 text-[#118c13]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- Dashboard -->
+        <NuxtLink to="/dashboard" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1.5" />
             <rect x="14" y="3" width="7" height="7" rx="1.5" />
             <rect x="14" y="14" width="7" height="7" rx="1.5" />
@@ -22,32 +22,32 @@
         </NuxtLink>
 
         <!-- Training -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <NuxtLink to="/trainingDasboard" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           TRAINING
         </NuxtLink>
 
         <!-- Gear -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <NuxtLink to="/packing-assistant" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v3.5m-3.35 0h14.2v9.75a1.5 1.5 0 01-1.5 1.5H5.4a1.5 1.5 0 01-1.5-1.5V10.5z" />
           </svg>
           GEAR
         </NuxtLink>
 
         <!-- Weather -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <NuxtLink to="/weatherDasboard" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
           </svg>
           WEATHER
         </NuxtLink>
 
         <!-- Safety -->
-        <NuxtLink to="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <NuxtLink to="/health" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100/65 rounded-xl font-medium text-sm transition-colors border border-transparent" active-class="!text-[#118c13] !bg-green-50/60 !font-medium !border-green-100/50">
+          <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
           </svg>
           SAFETY
@@ -65,7 +65,7 @@
         </NuxtLink>
 
         <!-- Upgrade Button -->
-        <button class="w-full bg-[#118c13] hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-semibold text-xs tracking-wider transition-all hover:shadow-md active:scale-[0.98]">
+        <button class="w-full bg-[#118c13] hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-medium text-xs tracking-wider transition-all hover:shadow-md active:scale-[0.98]">
           Upgrade to Pro
         </button>
       </div>

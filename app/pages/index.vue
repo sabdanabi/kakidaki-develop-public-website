@@ -6,37 +6,32 @@
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-2">
           <img src="~/assets/images/logo_.svg" alt="" class="w-10 h-10">
-          <span class="font-headline-md text-headline-md font-bold text-[#023C23] tracking-tight">KakiDaki</span>
+          <span class="font-headline-md text-headline-md font-medium text-[#023C23] tracking-tight">KakiDaki</span>
         </NuxtLink>
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center gap-8">
-          <NuxtLink class="font-body-md text-[#023C23] font-bold border-b-2 border-[#023C23] pb-1 transition-colors" to="#">Explore</NuxtLink>
+          <NuxtLink class="font-body-md text-[#023C23] font-medium border-b-2 border-[#023C23] pb-1 transition-colors" to="#">Explore</NuxtLink>
           <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="/health">Routes</NuxtLink>
           <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="#">Community</NuxtLink>
         </div>
 
         <!-- Right Controls -->
-        <div class="flex items-center gap-4">
         <div class="flex items-center gap-3">
           <NuxtLink
-            to="/trainingDasboard"
-            class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
+            to="/login"
+            class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs md:text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 active:scale-[0.98]"
           >
             Masuk
           </NuxtLink>
           <NuxtLink
-            to="/packing-assistant"
-            class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
+            to="/register"
+            class="rounded-lg bg-primary px-4 py-2 text-xs md:text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-600 active:scale-[0.98]"
           >
             Daftar
           </NuxtLink>
         </div>
-          <NuxtLink to="/trainingDasboard" class="bg-[#023C23] hover:bg-emerald-700 text-white py-2 px-6 rounded-full font-label-bold hover:shadow-lg hover:brightness-110 transition-all text-sm font-semibold tracking-wide">
-            Start Assessment
-          </NuxtLink>
-        </div>
       </div>
-      </nav>
+    </nav>
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 px-gutter overflow-hidden hero-gradient">
@@ -47,7 +42,7 @@
             <svg class="w-4 h-4 text-[#023C23]" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
             </svg>
-            <span class="font-label-bold text-xs uppercase tracking-wider font-bold">PREMIUM ALPINE INTELLIGENCE</span>
+            <span class="font-label-bold text-xs uppercase tracking-wider font-medium">PREMIUM ALPINE INTELLIGENCE</span>
           </div>
           <h1 class="font-display-hero text-display-hero-mobile md:text-display-hero mb-6 text-slate-900 tracking-tight leading-tight">
             Prepared for the <span class="text-[#023C23]">Peak</span>,<br />Protected by <span class="text-[#023C23]">Data</span>.
@@ -56,13 +51,16 @@
             High-performance preparation for outdoor enthusiasts. KakiDaki combines real-time weather analytics with personalized biomechanical training to ensure every summit is reached safely.
           </p>
           <div class="flex flex-wrap gap-4">
-            <button class="px-8 py-4 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full font-headline-sm flex items-center gap-3 shadow-xl hover:scale-105 transition-all font-semibold">
-            Start Assessment
+            <NuxtLink
+              to="/trainingDasboard"
+              class="px-8 py-4 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full font-headline-sm flex items-center gap-3 shadow-xl hover:scale-105 transition-all font-medium"
+            >
+              Start Assessment
               <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </button>
-            <button class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-full font-headline-sm flex items-center gap-3 transition-all font-semibold">
+            </NuxtLink>
+            <button class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-full font-headline-sm flex items-center gap-3 transition-all font-medium">
               Watch Journey
               <svg class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -90,20 +88,20 @@
             <div class="bg-white/95 backdrop-blur border border-slate-100 p-6 rounded-2xl shadow-lg mt-5">
               <div class="flex justify-between items-center mb-4">
                 <span class="font-label-bold text-slate-800 text-xs tracking-wider">MONT BLANC SOUTH RIDGE</span>
-                <span class="px-2.5 py-1 bg-green-50 border border-green-100 text-[#023C23] text-[10px] rounded-full font-bold">LIVE STATUS</span>
+                <span class="px-2.5 py-1 bg-green-50 border border-green-100 text-[#023C23] text-[10px] rounded-full font-medium">LIVE STATUS</span>
               </div>
               <div class="grid grid-cols-3 gap-4">
                 <div>
                   <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Elevation</p>
-                  <p class="font-headline-sm text-[#023C23] font-bold">4,810m</p>
+                  <p class="font-headline-sm text-[#023C23] font-medium">4,810m</p>
                 </div>
                 <div>
                   <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Weather</p>
-                  <p class="font-headline-sm text-[#005c7b] font-bold">-12°C</p>
+                  <p class="font-headline-sm text-[#005c7b] font-medium">-12°C</p>
                 </div>
                 <div>
                   <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Safety</p>
-                  <p class="font-headline-sm text-[#006e1c] font-bold">Optimal</p>
+                  <p class="font-headline-sm text-[#006e1c] font-medium">Optimal</p>
                 </div>
               </div>
             </div>
@@ -120,7 +118,7 @@
       </div>
 
       <!-- Bento Grid Asimetris -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[240px]">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:auto-rows-[240px] auto-rows-auto">
         <!-- Dashboard Card (Kiri Besar) -->
         <div class="md:col-span-8 md:row-span-2 bg-white rounded-[2rem] p-8 border border-slate-100 bento-card shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
           <div>
@@ -141,11 +139,11 @@
         <!-- Training Card (Kanan Atas) -->
         <div class="md:col-span-4 md:row-span-1 bg-[#0f4a5c] text-white rounded-[2rem] p-8 bento-card flex flex-col justify-between shadow-lg overflow-hidden relative group hover:scale-[1.01] transition-transform duration-300">
           <div class="relative z-10">
-            <h3 class="font-headline-sm text-headline-sm mb-2 font-bold">Adaptive Training</h3>
+            <h3 class="font-headline-sm text-headline-sm mb-2 font-medium">Adaptive Training</h3>
             <p class="font-label-md opacity-80 text-xs leading-relaxed max-w-[250px]">Personalized endurance programs designed for alpine environments.</p>
           </div>
           <div class="relative z-10 flex justify-between items-center">
-            <span class="text-3xl font-extrabold tracking-tight">14.2k <span class="text-xs font-normal opacity-70 block md:inline">Active Users</span></span>
+            <span class="text-3xl font-medium tracking-tight">14.2k <span class="text-xs font-normal opacity-70 block md:inline">Active Users</span></span>
             <span class="p-2 bg-white/10 rounded-full">
               <!-- Expand / Arrow Icon -->
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -162,9 +160,9 @@
               <svg class="w-5 h-5 text-[#005c7b]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
               </svg>
-              <span class="font-label-bold text-[10px] tracking-widest uppercase font-bold text-[#005c7b]">WEATHER INTELLIGENCE</span>
+              <span class="font-label-bold text-[10px] tracking-widest uppercase font-medium text-[#005c7b]">WEATHER INTELLIGENCE</span>
             </div>
-            <h3 class="font-headline-sm text-headline-sm font-bold text-slate-900">Hyper-Local Forecasts</h3>
+            <h3 class="font-headline-sm text-headline-sm font-medium text-slate-900">Hyper-Local Forecasts</h3>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex -space-x-2">
@@ -172,7 +170,7 @@
               <div class="w-8 h-8 rounded-full border-2 border-white bg-[#98f994]"></div>
               <div class="w-8 h-8 rounded-full border-2 border-white bg-[#75d1ff]"></div>
             </div>
-            <span class="font-label-bold text-slate-500 text-xs font-semibold">+800 Peaks tracked</span>
+            <span class="font-label-bold text-slate-500 text-xs font-medium">+800 Peaks tracked</span>
           </div>
         </div>
 
@@ -184,7 +182,7 @@
             </svg>
           </div>
           <div>
-            <h3 class="font-headline-sm text-headline-sm font-bold text-slate-900">Smart Gear Guide</h3>
+            <h3 class="font-headline-sm text-headline-sm font-medium text-slate-900">Smart Gear Guide</h3>
             <p class="font-body-sm text-slate-500 text-xs leading-relaxed">Optimal kit selection for every weather scenario.</p>
           </div>
         </div>
@@ -196,16 +194,16 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
-              <span class="font-label-bold text-[9px] tracking-widest font-bold">SAFETY FIRST PROTOCOL</span>
+              <span class="font-label-bold text-[9px] tracking-widest font-medium">SAFETY FIRST PROTOCOL</span>
             </div>
-            <h3 class="font-headline-sm text-headline-sm font-bold text-slate-900 mb-2">AI-Powered SOS</h3>
+            <h3 class="font-headline-sm text-headline-sm font-medium text-slate-900 mb-2">AI-Powered SOS</h3>
             <p class="font-body-sm text-slate-500 text-xs leading-relaxed">Real-time hazard detection and automated emergency outreach even in low-signal areas.</p>
           </div>
           <!-- Biometric details container -->
           <div class="md:w-1/2 flex justify-center w-full">
             <div class="w-full h-24 bg-white border border-slate-100 rounded-2xl flex items-center justify-around px-4 shadow-sm">
               <div class="text-center flex flex-col items-center">
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-2">SIGNAL</p>
+                <p class="text-[9px] text-slate-400 font-medium uppercase tracking-wider mb-2">SIGNAL</p>
                 <div class="flex gap-1 items-end h-5">
                   <div class="w-1 h-2 bg-[#023C23] rounded-full"></div>
                   <div class="w-1 h-3.5 bg-[#023C23] rounded-full"></div>
@@ -215,8 +213,8 @@
               </div>
               <div class="h-12 w-[1px] bg-slate-100"></div>
               <div class="text-center">
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-2">HEART RATE</p>
-                <p class="text-lg font-extrabold text-[#023C23]">72 <span class="text-xs font-semibold text-slate-500">bpm</span></p>
+                <p class="text-[9px] text-slate-400 font-medium uppercase tracking-wider mb-2">HEART RATE</p>
+                <p class="text-lg font-medium text-[#023C23]">72 <span class="text-xs font-medium text-slate-500">bpm</span></p>
               </div>
             </div>
           </div>
@@ -229,7 +227,7 @@
       <div class="max-w-container-max mx-auto bg-white rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden shadow-xl border-l-[8px] border-[#023C23] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Text Left -->
         <div>
-          <h2 class="font-headline-lg text-headline-lg mb-6 leading-tight text-slate-900 font-extrabold text-3xl">
+          <h2 class="font-headline-lg text-headline-lg mb-6 leading-tight text-slate-900 font-medium text-3xl">
             Your Next Peak is Waiting.<br />
             <span class="text-[#023C23]">Are You Prepared?</span>
           </h2>
@@ -238,7 +236,7 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
             <input class="flex-1 bg-slate-50 border-0 rounded-full px-6 py-4 outline-none focus:ring-2 focus:ring-[#023C23] text-slate-800 text-sm" placeholder="Enter trail name..." type="text"/>
-            <button class="bg-[#023C23] hover:bg-emerald-700 text-white px-8 py-4 rounded-full font-label-bold hover:brightness-110 transition-all shadow-md text-sm font-semibold tracking-wide">
+            <button class="bg-[#023C23] hover:bg-emerald-700 text-white px-8 py-4 rounded-full font-label-bold hover:brightness-110 transition-all shadow-md text-sm font-medium tracking-wide">
               Check Trail Status
             </button>
           </div>
@@ -250,15 +248,16 @@
         </div>
       </div>
     </section>
-
     <footer class="bg-white border-t border-slate-100 pt-20 pb-10 px-gutter relative">
       <div class="max-w-container-max mx-auto">
-         <div class="lg:col-span-2">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-16">
+          <div class="lg:col-span-2">
             <div class="flex items-center gap-2 mb-6">
               <svg class="w-7 h-7 text-[#023C23]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l7-12 5 8 2-3 4 7H3z" />
               </svg>
-              <span class="font-headline-md text-headline-md font-extrabold text-[#023C23] tracking-tight">KakiDaki</span>
+              <span class="font-headline-md text-headline-md font-medium text-[#023C23] tracking-tight">KakiDaki</span>
             </div>
             <p class="font-body-md text-slate-500 max-w-xs mb-8 leading-relaxed text-sm">
               AI-powered hiking preparation for safer adventures. Our mission is to democratize elite mountain expertise for everyone.
@@ -281,40 +280,41 @@
               </button>
             </div>
           </div>
-        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16 mt-10">
+          <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div>
+              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Explore</h4>
+              <ul class="space-y-4">
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Mountains</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="/health">Routes</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="/trainingDasboard">Training</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="/packing-assistant">Gear</NuxtLink></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-bold">Explore</h4>
-            <ul class="space-y-4">
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Mountains</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Routes</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Training</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Gear</NuxtLink></li>
-            </ul>
-          </div>
+            <div>
+              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Company</h4>
+              <ul class="space-y-4">
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">About Us</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Safety First</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Careers</NuxtLink></li>
+                <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Blog</NuxtLink></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-bold">Company</h4>
-            <ul class="space-y-4">
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">About Us</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Safety First</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Careers</NuxtLink></li>
-              <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Blog</NuxtLink></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-bold">Join the summit</h4>
-            <p class="text-slate-500 mb-4 text-xs leading-relaxed">Get the latest trail alerts and alpine insights weekly.</p>
-            <div class="space-y-3">
-              <input class="w-full bg-slate-50 border border-slate-200/60 rounded-xl px-4 py-3 text-xs focus:ring-2 focus:ring-[#023C23] outline-none text-slate-800" placeholder="Email address" type="email"/>
-              <button class="w-full bg-[#023C23] hover:bg-emerald-700 text-white py-3 rounded-xl font-label-bold text-xs transition-all shadow-sm font-semibold tracking-wide">
-                Subscribe
-              </button>
+            <div class="col-span-2 md:col-span-1">
+              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Join the summit</h4>
+              <p class="text-slate-500 mb-4 text-xs leading-relaxed">Get the latest trail alerts and alpine insights weekly.</p>
+              <div class="space-y-3">
+                <input class="w-full bg-slate-50 border border-slate-200/60 rounded-xl px-4 py-3 text-xs focus:ring-2 focus:ring-[#023C23] outline-none text-slate-800" placeholder="Email address" type="email"/>
+                <button class="w-full bg-[#023C23] hover:bg-emerald-700 text-white py-3 rounded-xl font-label-bold text-xs transition-all shadow-sm font-medium tracking-wide">
+                  Subscribe
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Copyright -->
         <div class="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
           <p class="text-xs text-slate-400 font-medium">© 2024 KakiDaki. All rights reserved. Prepared for the peak.</p>
           <div class="flex gap-8 text-xs text-slate-400">
@@ -324,7 +324,7 @@
           </div>
         </div>
       </div>
-      </footer>
+    </footer>
 
     <!-- Back to Top FAB -->
     <button class="fixed bottom-8 right-8 w-14 h-14 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group" @click="scrollToTop">

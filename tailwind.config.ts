@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 export default <Partial<Config>>{
+  content: [],
   darkMode: 'class',
   theme: {
     extend: {
@@ -129,12 +130,12 @@ export default <Partial<Config>>{
         "body-sm": ["Inter", "sans-serif"]
       },
       fontSize: {
-        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
-        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
-        "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
-        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-        "display-hero-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
-        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+        "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+        "display-hero-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
         "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
         "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
         "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
@@ -144,5 +145,6 @@ export default <Partial<Config>>{
         'tight-body': '-0.01em',
       },
     }
-  }
+  },
+  plugins: [],
 }

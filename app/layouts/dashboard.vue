@@ -121,9 +121,9 @@ const IconSafety = (_, { attrs }) => h('svg', { xmlns: 'http://www.w3.org/2000/s
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: IconDashboard },
-  { to: '/dashboard/packing-assistant', label: 'Packing Assistant', icon: IconPacking },
-  { to: '/dashboard/training', label: 'Training', icon: IconTraining },
-  { to: '/dashboard/weather', label: 'Weather', icon: IconWeather },
-  { to: '/dashboard/safety', label: 'Safety', icon: IconSafety },
+  { to: '/packing-assistant', label: 'Packing Assistant', icon: IconPacking },
+  { to: '/trainingDasboard', label: 'Training', icon: IconTraining },
+  { to: '/weatherDasboard', label: 'Weather', icon: IconWeather },
+  { to: '/health', label: 'Safety', icon: IconSafety },
 ]
 </script>
