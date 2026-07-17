@@ -57,7 +57,7 @@
             High-performance preparation for outdoor enthusiasts. KakiDaki combines real-time weather analytics with personalized biomechanical training to ensure every summit is reached safely.
           </p>
           <div class="flex flex-wrap gap-4">
-            <button class="px-8 py-4 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full font-headline-sm flex items-center gap-3 shadow-xl hover:scale-105 transition-all font-semibold">
+            <button @click="openModal" class="px-8 py-4 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full font-headline-sm flex items-center gap-3 shadow-xl hover:scale-105 transition-all font-semibold">
             Start Assessment
               <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -331,11 +331,280 @@
     <button class="fixed bottom-8 right-8 w-14 h-14 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group" @click="scrollToTop">
       <span class="material-symbols-outlined group-hover:-translate-y-1 transition-transform">north</span>
     </button>
+
+    <!-- ASSESSMENT MODAL -->
+    <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <!-- Backdrop with blur -->
+      <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity animate-[fadeIn_0.2s_ease-out]" @click="closeModal"></div>
+
+      <!-- Modal Card -->
+      <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl w-full max-w-lg overflow-hidden relative z-10 transform scale-100 transition-all duration-300 animate-[scaleUp_0.2s_ease-out]">
+        <!-- Header -->
+        <div class="p-6 md:p-8 pb-4 flex justify-between items-start border-b border-slate-100">
+          <div>
+            <h3 class="text-xl font-medium text-slate-900 font-heading">Start Expedition Assessment</h3>
+            <p class="text-xs text-slate-500 mt-1">Lengkapi parameter ekspedisi untuk validasi kesiapan fisik Anda.</p>
+          </div>
+          <button @click="closeModal" class="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
+          <!-- Auth Alert if not logged in -->
+          <div v-if="!authStore.token" class="space-y-6 text-center py-6">
+            <div class="w-16 h-16 bg-amber-50 border border-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto animate-pulse">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-slate-800">Autentikasi Diperlukan</h4>
+              <p class="text-sm text-slate-500 max-w-sm mx-auto">
+                Silakan masuk (login) terlebih dahulu untuk membuat rencana ekspedisi baru.
+              </p>
+            </div>
+            <div class="pt-2 flex flex-col gap-2.5">
+              <NuxtLink to="/login" class="w-full bg-[#023C23] hover:bg-emerald-800 text-white py-3.5 rounded-xl font-medium text-xs transition-colors text-center active:scale-[0.98] shadow-sm">
+                Masuk ke Akun
+              </NuxtLink>
+              <NuxtLink to="/register" class="w-full border border-slate-200 hover:bg-slate-50 text-slate-600 py-3.5 rounded-xl font-medium text-xs transition-colors text-center active:scale-[0.98]">
+                Daftar Akun Baru
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Success State -->
+          <div v-else-if="submitSuccess" class="space-y-6 text-center py-8">
+            <div class="w-16 h-16 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto relative">
+              <div class="absolute inset-0 rounded-full bg-emerald-500/10 animate-ping"></div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <h4 class="text-lg font-medium text-slate-900 font-heading">Ekspedisi Dibuat!</h4>
+              <p class="text-sm text-slate-500">Kesiapan fisik Anda berhasil dihitung.</p>
+            </div>
+            <div class="inline-flex gap-1.5 items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Mengalihkan ke Dashboard...
+            </div>
+          </div>
+
+          <!-- Form State -->
+          <form v-else @submit.prevent="submitExpedition" class="space-y-5">
+            
+            <!-- Submit Error Alert -->
+            <div v-if="submitError" class="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-800 text-xs font-medium flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+              <span>{{ submitError }}</span>
+            </div>
+
+            <!-- Mountain ID Dropdown -->
+            <div>
+              <label for="form-mountain" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Gunung Tujuan</label>
+              <div class="relative">
+                <select
+                  id="form-mountain"
+                  v-model="form.mountainId"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 appearance-none font-medium"
+                  required
+                >
+                  <option value="" disabled>Pilih gunung tujuan...</option>
+                  <option v-for="m in mountains" :key="m.id || m._id || m.name" :value="m.id || m._id || m.name">
+                    {{ m.name }}
+                  </option>
+                </select>
+                <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Dates Row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="form-start-date" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Tanggal Mulai</label>
+                <input
+                  id="form-start-date"
+                  v-model="form.startDate"
+                  type="date"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                  required
+                />
+              </div>
+              <div>
+                <label for="form-end-date" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Tanggal Selesai</label>
+                <input
+                  id="form-end-date"
+                  v-model="form.endDate"
+                  type="date"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Member Count -->
+            <div>
+              <label for="form-members" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Jumlah Anggota Rombongan</label>
+              <input
+                id="form-members"
+                v-model="form.memberCount"
+                type="number"
+                min="1"
+                max="50"
+                placeholder="Contoh: 4"
+                class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                required
+              />
+            </div>
+
+            <!-- Biometrics Row 1 (Age & Height) -->
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label for="form-age" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Umur</label>
+                <input
+                  id="form-age"
+                  v-model="form.age"
+                  type="number"
+                  min="1"
+                  max="120"
+                  placeholder="28"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                  required
+                />
+              </div>
+              <div>
+                <label for="form-height" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Tinggi (cm)</label>
+                <input
+                  id="form-height"
+                  v-model="form.heightCm"
+                  type="number"
+                  min="50"
+                  max="250"
+                  placeholder="170"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                  required
+                />
+              </div>
+              <div>
+                <label for="form-weight" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Berat (kg)</label>
+                <input
+                  id="form-weight"
+                  v-model="form.weightKg"
+                  type="number"
+                  min="10"
+                  max="300"
+                  placeholder="65"
+                  class="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-800 transition-all focus:border-[#023C23] focus:outline-none focus:ring-2 focus:ring-[#023C23]/10 font-medium"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Submit and Close Buttons -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+              <button
+                type="button"
+                @click="closeModal"
+                :disabled="isSubmitting"
+                class="px-5 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-600 bg-white rounded-xl text-xs font-medium transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                :disabled="isSubmitting"
+                class="px-5 py-2.5 bg-[#023C23] hover:bg-emerald-800 text-white rounded-xl text-xs font-medium transition-all shadow-sm active:scale-[0.98] disabled:opacity-50 flex items-center gap-2 font-semibold"
+              >
+                <span v-if="isSubmitting" class="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                {{ isSubmitting ? 'Mengirim...' : 'Submit Assessment' }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+import { useExpeditionStore } from '~/stores/expedition'
+
+const authStore = useAuthStore()
+const expeditionStore = useExpeditionStore()
+
+const isModalOpen = ref(false)
+const isSubmitting = ref(false)
+const submitError = ref('')
+const submitSuccess = ref(false)
+
+const form = ref({
+  mountainId: '',
+  startDate: '',
+  endDate: '',
+  memberCount: 4,
+  age: 28,
+  heightCm: 170,
+  weightKg: 65
+})
+
+const mountains = computed(() => expeditionStore.mountains)
+
+const openModal = async () => {
+  isModalOpen.value = true
+  submitError.value = ''
+  submitSuccess.value = false
+  
+  if (authStore.user) {
+    form.value.age = authStore.user.age || 28
+    form.value.heightCm = authStore.user.heightCm || 170
+    form.value.weightKg = authStore.user.weightKg || 65
+  }
+  
+  await expeditionStore.fetchMountains()
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+const submitExpedition = async () => {
+  submitError.value = ''
+  submitSuccess.value = false
+  isSubmitting.value = true
+  
+  const result = await expeditionStore.createExpedition({
+    mountainId: form.value.mountainId,
+    startDate: form.value.startDate,
+    endDate: form.value.endDate,
+    memberCount: Number(form.value.memberCount),
+    age: Number(form.value.age),
+    heightCm: Number(form.value.heightCm),
+    weightKg: Number(form.value.weightKg)
+  })
+  
+  isSubmitting.value = false
+  if (result.success) {
+    submitSuccess.value = true
+    setTimeout(() => {
+      isModalOpen.value = false
+      navigateTo('/dashboard')
+    }, 2000)
+  } else {
+    submitError.value = result.message || 'Gagal menyimpan data ekspedisi. Silakan coba lagi.'
+  }
+}
 
 useHead({
   title: 'KakiDaki | Alpine Intelligence',
@@ -406,5 +675,13 @@ onUnmounted(() => {
 .hero-gradient {
   background: radial-gradient(circle at top right, rgba(163, 246, 156, 0.12) 0%, transparent 60%),
               radial-gradient(circle at bottom left, rgba(117, 209, 255, 0.08) 0%, transparent 60%);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 </style>
