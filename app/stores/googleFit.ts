@@ -40,9 +40,15 @@ export const useGoogleFitStore = defineStore('googleFit', () => {
           Authorization: `Bearer ${authStore.token}`,
         },
       })
+      isConnected.value = true
       return { success: true, data }
     } catch (err: any) {
-      return { success: false, message: err.data?.message || 'Gagal sinkronisasi data Google Fit.' }
+      const status = err.status || err.statusCode || err.response?.status
+      const msg = err.data?.message || ''
+      if (status === 400 || status === 401 || status === 403 || status === 404 || msg.toLowerCase().includes('not connected')) {
+        isConnected.value = false
+      }
+      return { success: false, message: msg || 'Gagal sinkronisasi data Google Fit.' }
     }
   }
 
@@ -54,14 +60,20 @@ export const useGoogleFitStore = defineStore('googleFit', () => {
           Authorization: `Bearer ${authStore.token}`,
         },
       })
+      if (data && typeof data === 'object' && data.message && data.message.toLowerCase().includes('not connected')) {
+        isConnected.value = false
+        return { success: false, message: data.message }
+      }
       trainingLogs.value = Array.isArray(data) ? data : (data.logs || [])
       isConnected.value = true
       return { success: true, data: trainingLogs.value }
     } catch (err: any) {
-      if (err.status === 400 || err.status === 401 || err.status === 404) {
+      const status = err.status || err.statusCode || err.response?.status
+      const msg = err.data?.message || ''
+      if (status === 400 || status === 401 || status === 403 || status === 404 || msg.toLowerCase().includes('not connected')) {
         isConnected.value = false
       }
-      return { success: false, message: err.data?.message || 'Gagal memuat log latihan Google Fit.' }
+      return { success: false, message: msg || 'Gagal memuat log latihan Google Fit.' }
     }
   }
 

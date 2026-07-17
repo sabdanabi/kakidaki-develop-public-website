@@ -284,7 +284,7 @@
               <p class="text-sm text-slate-500 max-w-xs mb-6">Dengan menghubungkan Google Fit, kami bisa menganalisis riwayat aktivitas dan tingkat kebugaranmu secara otomatis.</p>
 
               <button
-                v-if="!form.googleFitConnected"
+                v-if="!googleFitStore.isConnected"
                 @click="handleConnectGoogleFit"
                 :disabled="isLoading"
                 class="inline-flex items-center gap-2 rounded-xl bg-[#ea4335] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#d62d20] active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
@@ -355,7 +355,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 definePageMeta({
@@ -420,6 +420,10 @@ const tryNext = () => {
 
 const assessmentStore = useAssessmentStore()
 const googleFitStore = useGoogleFitStore()
+
+onMounted(async () => {
+  await googleFitStore.fetchTrainingLogs()
+})
 
 const buildAssessmentPayload = () => {
   const parts = []

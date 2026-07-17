@@ -181,6 +181,14 @@ const handleGoogleFitAction = async () => {
             </svg>
             {{ googleFitStore.isConnected ? 'Sync Google Fit' : 'Hubungkan Google Fit' }}
           </button>
+          <div v-if="googleFitStore.isConnected" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[#118c13] text-[10px] font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#118c13]"></span>
+            Sudah Tersambung
+          </div>
+          <div v-else class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 text-[#b81212] text-[10px] font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#b81212]"></span>
+            Belum Tersambung
+          </div>
           <span v-if="googleFitSuccess" class="text-xs text-[#118c13] font-medium flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <polyline points="20 6 9 17 4 12"/>
