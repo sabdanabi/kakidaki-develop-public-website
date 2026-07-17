@@ -4,7 +4,10 @@ definePageMeta({
 })
 
 const profileStore = useProfileStore()
+const stravaStore = useStravaStore()
 const isLoading = ref(true)
+const isStravaLoading = ref(false)
+const stravaError = ref('')
 
 onMounted(async () => {
   await profileStore.fetchProfile()
@@ -12,6 +15,22 @@ onMounted(async () => {
 })
 
 const user = computed(() => profileStore.user || {})
+
+const connectStrava = async () => {
+  stravaError.value = ''
+  isStravaLoading.value = true
+  const result = await stravaStore.getConnectUrl()
+  isStravaLoading.value = false
+  if (result.success && result.url) {
+    window.location.href = result.url
+  } else {
+    stravaError.value = result.message || 'Gagal menghubungkan dengan Strava.'
+  }
+}
+
+const manageStravaConnection = async () => {
+  await connectStrava()
+}
 
 // Compute BMI status description and colors
 const bmiLabel = computed(() => {
@@ -198,11 +217,28 @@ const formatGender = (gender) => {
                 <span class="text-slate-800">{{ user.stravaAthleteId }}</span>
               </div>
 
-              <button v-if="user.stravaAthleteId" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98]">
+              <p v-if="stravaError" class="text-xs text-danger mb-2 font-medium flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {{ stravaError }}
+              </p>
+
+              <button 
+                v-if="user.stravaAthleteId" 
+                @click="manageStravaConnection"
+                :disabled="isStravaLoading"
+                class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <svg v-if="isStravaLoading" class="animate-spin h-3.5 w-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 Manage Connection
               </button>
               
-              <button v-else class="w-full bg-[#fc5200] hover:bg-[#e04900] text-white py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] shadow-sm">
+              <button 
+                v-else 
+                @click="connectStrava"
+                :disabled="isStravaLoading"
+                class="w-full bg-[#fc5200] hover:bg-[#e04900] text-white py-3 rounded-xl font-medium text-xs transition-colors active:scale-[0.98] shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <svg v-if="isStravaLoading" class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 Hubungkan Strava
               </button>
             </div>

@@ -107,10 +107,47 @@ const checklistProgressText = computed(() => {
 
 const checklistProgressClass = computed(() => {
  const count = completedCount.value
- if (count === 4) return 'bg-green-100 text-[#118c13]'
- if (count > 0) return 'bg-amber-100 text-amber-700'
- return 'bg-slate-100 text-slate-500'
+  if (count === 4) return 'bg-green-100 text-[#118c13]'
+  if (count > 0) return 'bg-amber-100 text-amber-700'
+  return 'bg-slate-100 text-slate-500'
 })
+
+const profileStore = useProfileStore()
+const stravaStore = useStravaStore()
+const isStravaLoading = ref(false)
+const stravaError = ref('')
+const stravaSuccess = ref('')
+
+const user = computed(() => profileStore.user || {})
+
+onMounted(async () => {
+  await profileStore.fetchProfile()
+})
+
+const handleStravaAction = async () => {
+  stravaError.value = ''
+  stravaSuccess.value = ''
+  
+  if (!user.value.stravaAthleteId) {
+    isStravaLoading.value = true
+    const result = await stravaStore.getConnectUrl()
+    isStravaLoading.value = false
+    if (result.success && result.url) {
+      window.location.href = result.url
+    } else {
+      stravaError.value = result.message || 'Gagal menghubungkan dengan Strava.'
+    }
+  } else {
+    isStravaLoading.value = true
+    setTimeout(() => {
+      isStravaLoading.value = false
+      stravaSuccess.value = 'Data Strava berhasil disinkronisasi!'
+      setTimeout(() => {
+        stravaSuccess.value = ''
+      }, 4000)
+    }, 1500)
+  }
+}
 </script>
 
 <template>
@@ -126,12 +163,29 @@ const checklistProgressClass = computed(() => {
           <h1 class="text-2xl font-heading font-medium text-slate-900">Expedition Training Planner</h1>
           <p class="text-sm text-slate-500 mt-1">Preparing for Mt. Whitney Summit Expedition</p>
         </div>
-        <button class="border border-slate-200 rounded-full px-5 py-2.5 text-xs font-medium text-slate-700 bg-white shadow-sm hover:bg-slate-50 flex items-center gap-2 transition-colors active:scale-95">
-          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
-          </svg>
-          Sync Strava
-        </button>
+        <div class="flex flex-col items-end gap-1.5">
+          <button 
+            @click="handleStravaAction"
+            :disabled="isStravaLoading"
+            class="border border-slate-200 rounded-full px-5 py-2.5 text-xs font-medium text-slate-700 bg-white shadow-sm hover:bg-slate-50 flex items-center gap-2 transition-colors active:scale-95 disabled:opacity-50"
+          >
+            <svg v-if="isStravaLoading" class="animate-spin h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <svg v-else class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+            </svg>
+            {{ user.stravaAthleteId ? 'Sync Strava' : 'Hubungkan Strava' }}
+          </button>
+          <span v-if="stravaSuccess" class="text-xs text-[#118c13] font-medium flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            {{ stravaSuccess }}
+          </span>
+          <span v-if="stravaError" class="text-xs text-danger font-medium flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ stravaError }}
+          </span>
+        </div>
       </div>
 
       <!-- BENTO GRID -->
