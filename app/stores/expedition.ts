@@ -91,6 +91,26 @@ export const useExpeditionStore = defineStore('expedition', () => {
     }
   }
 
+  const activeExpeditionDetails = ref<any>(null)
+
+  const fetchExpeditionById = async (id: string) => {
+    isLoading.value = true
+    try {
+      const data: any = await $fetch(`https://api.kakidaki.my.id/api/v1/expeditions/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      })
+      activeExpeditionDetails.value = data
+      return { success: true, data }
+    } catch (err: any) {
+      return { success: false, message: err.data?.message || 'Gagal memuat detail ekspedisi.' }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     expeditions,
     isLoading,
@@ -99,5 +119,7 @@ export const useExpeditionStore = defineStore('expedition', () => {
     fetchMountains,
     createExpedition,
     fetchExpeditions,
+    activeExpeditionDetails,
+    fetchExpeditionById,
   }
 })
