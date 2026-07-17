@@ -637,6 +637,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+import { useExpeditionStore } from '~/stores/expedition'
+import { useCommentsStore } from '~/stores/comments'
+
+const authStore = useAuthStore()
+const expeditionStore = useExpeditionStore()
+const commentsStore = useCommentsStore()
 
 // Click outside handling for dropdowns
 const closeDropdowns = () => {
@@ -645,8 +652,30 @@ const closeDropdowns = () => {
   editRouteDropdownOpen.value = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('click', closeDropdowns)
+  if (authStore.user) {
+    newReview.value.author = authStore.user.name
+  }
+  
+  // Fetch real mountains from API
+  const res = await expeditionStore.fetchMountains()
+  if (res.success && expeditionStore.mountains.length > 0) {
+    mountains.forEach(mockMt => {
+      const apiMt = expeditionStore.mountains.find(
+        m => m.name.toLowerCase().includes(mockMt.name.toLowerCase()) || 
+             mockMt.name.toLowerCase().includes(m.name.toLowerCase())
+      )
+      if (apiMt) {
+        mockMt.id = apiMt.id
+      }
+    })
+  }
+  
+  // Fetch comments for all mountains to populate comment counts
+  for (const m of mountains) {
+    await commentsStore.fetchComments(m.id)
+  }
 })
 
 onUnmounted(() => {
@@ -763,45 +792,73 @@ const weatherConditions = [
   { value: 'Hujan Lebat', label: '⛈️ Hujan Lebat & Angin Kencang' }
 ]
 
-const submitReview = () => {
+const submitReview = async () => {
   if (!selectedMountainId.value) return
   
-  // Calculate Initials
-  const initials = newReview.value.author
-    .split(' ')
-    .map(name => name[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-  
-  // Add to local array
-  allComments.value.unshift({
-    id: Date.now(), // Unique ID
+  const payload = {
     mountainId: selectedMountainId.value,
-    author: newReview.value.author,
-    authorInitials: initials || 'P',
-    date: 'Baru saja',
-    route: newReview.value.route,
-    condition: newReview.value.condition,
+    trailName: newReview.value.route || 'via Umum',
     text: newReview.value.text,
-    image: imagePreview.value,
-    upvotes: 0,
-    downvotes: 0,
-    userVote: null,
-    isCurrentUser: true, // Marked for edit/delete
-    isEdited: false
-  })
-
-  // Reset form
-  newReview.value = {
-    author: '',
-    route: '',
-    condition: 'Cuaca Cerah',
-    text: ''
+    imageUrl: imagePreview.value || ''
   }
-  clearImageSelect()
-  showReviewForm.value = false
+  
+  const res = await commentsStore.postComment(payload)
+  if (res.success) {
+    newReview.value = {
+      author: authStore.user?.name || '',
+      route: selectedMountain.value?.routes[0] || '',
+      condition: 'Cuaca Cerah',
+      text: ''
+    }
+    clearImageSelect()
+    showReviewForm.value = false
+  } else {
+    alert(res.message || 'Gagal mengirim ulasan.')
+  }
 }
+
+const saveEdit = () => {
+  const list = commentsStore.comments[selectedMountainId.value] || []
+  const comment = list.find(c => c.id === editForm.value.id)
+  if (comment) {
+    comment.trailName = editForm.value.route
+    comment.condition = editForm.value.condition
+    comment.text = editForm.value.text
+    comment.imageUrl = editForm.value.image
+    comment.isEdited = true
+  }
+  editingCommentId.value = null
+}
+
+const deleteComment = (id) => {
+  if (confirm('Apakah Anda yakin ingin menghapus ulasan ini?')) {
+    if (commentsStore.comments[selectedMountainId.value]) {
+      commentsStore.comments[selectedMountainId.value] = commentsStore.comments[selectedMountainId.value].filter(c => c.id !== id)
+    }
+  }
+}
+
+// Filtering & Sorting
+const sortBy = ref('terbaru') // 'terbaru' or 'terpopuler'
+
+// Mock Database of Mountains
+import gunungRinjani from '~/assets/images/gunung_rinjani.webp'
+import kumpulanGunung from '~/assets/images/kumpulan_gunung.webp'
+import heroMountain from '~/assets/images/hero_mountain.png'
+import rinjaniWebp from '~/assets/images/rinjani.webp'
+
+const mountains = [
+  {
+    id: 'merbabu',
+    name: 'Gunung Merbabu',
+    location: 'Jawa Tengah, Indonesia',
+    elevation: '3,142 mdpl',
+    image: rinjaniWebp,
+    description: 'Gunung yang populer dengan padang sabana luas dan pemandangan Gunung Merapi yang memukau dari rute Selo.',
+    keywords: ['merbabu', 'selo', 'wekas', 'jawa tengah', 'jateng'],
+    routes: ['Selo', 'Wekas', 'Thekelan']
+  }
+]
 
 // Edit & Delete Comments State
 const editingCommentId = ref(null)
@@ -824,144 +881,6 @@ const startEdit = (comment) => {
   }
 }
 
-const saveEdit = () => {
-  const comment = allComments.value.find(c => c.id === editForm.value.id)
-  if (comment) {
-    comment.route = editForm.value.route
-    comment.condition = editForm.value.condition
-    comment.text = editForm.value.text
-    comment.image = editForm.value.image
-    comment.isEdited = true
-  }
-  editingCommentId.value = null
-}
-
-const deleteComment = (id) => {
-  if (confirm('Apakah Anda yakin ingin menghapus ulasan ini?')) {
-    allComments.value = allComments.value.filter(c => c.id !== id)
-  }
-}
-
-// Filtering & Sorting
-const sortBy = ref('terbaru') // 'terbaru' or 'terpopuler'
-
-// Mock Database of Mountains
-import gunungRinjani from '~/assets/images/gunung_rinjani.webp'
-import kumpulanGunung from '~/assets/images/kumpulan_gunung.webp'
-import heroMountain from '~/assets/images/hero_mountain.png'
-import rinjaniWebp from '~/assets/images/rinjani.webp'
-
-const mountains = [
-  {
-    id: 'rinjani',
-    name: 'Gunung Rinjani',
-    location: 'Nusa Tenggara Barat, Indonesia',
-    elevation: '3,726 mdpl',
-    image: gunungRinjani,
-    description: 'Gunung berapi tertinggi kedua di Indonesia. Terkenal dengan Danau Segara Anak dan rute trek yang menantang namun sangat indah.',
-    keywords: ['rinjani', 'lombok', 'ntb'],
-    routes: ['Sembalun', 'Senaru', 'Torean']
-  },
-  {
-    id: 'semeru',
-    name: 'Gunung Semeru',
-    location: 'Jawa Timur, Indonesia',
-    elevation: '3,676 mdpl',
-    image: kumpulanGunung,
-    description: 'Gunung tertinggi di Pulau Jawa dengan puncaknya Mahameru. Sering mengeluarkan abu vulkanik setiap beberapa menit.',
-    keywords: ['semeru', 'mahameru', 'jawa timur', 'jatim'],
-    routes: ['Ranupani']
-  },
-  {
-    id: 'gede',
-    name: 'Gunung Gede',
-    location: 'Jawa Barat, Indonesia',
-    elevation: '2,958 mdpl',
-    image: heroMountain,
-    description: 'Terletak di Taman Nasional Gunung Gede Pangrango. Rute favorit pendaki karena aksesnya yang dekat dari Jakarta.',
-    keywords: ['gede', 'pangrango', 'cibodas', 'jawa barat', 'jabar'],
-    routes: ['Cibodas', 'Gunung Putri', 'Selabintana']
-  },
-  {
-    id: 'merbabu',
-    name: 'Gunung Merbabu',
-    location: 'Jawa Tengah, Indonesia',
-    elevation: '3,142 mdpl',
-    image: rinjaniWebp,
-    description: 'Gunung yang populer dengan padang sabana luas dan pemandangan Gunung Merapi yang memukau dari rute Selo.',
-    keywords: ['merbabu', 'selo', 'wekas', 'jawa tengah', 'jateng'],
-    routes: ['Selo', 'Wekas', 'Thekelan']
-  }
-]
-
-// Mock Comments Data
-const allComments = ref([
-  {
-    id: 1,
-    mountainId: 'rinjani',
-    author: 'Budi Santoso',
-    authorInitials: 'BS',
-    date: '2 hari yang lalu',
-    route: 'Sembalun',
-    condition: 'Cuaca Cerah',
-    text: 'Trek dari Pelawangan ke Puncak sangat berdebu dan angin cukup kencang. Pastikan bawa gaiter dan kacamata debu. Sumber air di Pelawangan Sembalun masih melimpah.',
-    image: null,
-    upvotes: 124,
-    downvotes: 3,
-    userVote: null,
-    isCurrentUser: false,
-    isEdited: false
-  },
-  {
-    id: 2,
-    mountainId: 'rinjani',
-    author: 'Rina Amelia',
-    authorInitials: 'RA',
-    date: '1 minggu yang lalu',
-    route: 'Senaru',
-    condition: 'Hujan Ringan',
-    text: 'Hati-hati turun dari Danau Segara Anak ke Senaru, banyak batu licin karena kemarin sore gerimis. Tapi pemandangan edelweiss sedang bagus-bagusnya.',
-    image: null,
-    upvotes: 89,
-    downvotes: 1,
-    userVote: null,
-    isCurrentUser: false,
-    isEdited: false
-  },
-  {
-    id: 3,
-    mountainId: 'semeru',
-    author: 'Andi Kusuma',
-    authorInitials: 'AK',
-    date: '3 hari yang lalu',
-    route: 'Ranupani',
-    condition: 'Berkabut',
-    text: 'Cuaca di Ranu Kumbolo sangat dingin saat malam (bisa mencapai 2 derajat celcius). Jangan lupa bawa sleeping bag polar. Pasir menuju puncak cukup dalam.',
-    image: null,
-    upvotes: 210,
-    downvotes: 5,
-    userVote: null,
-    isCurrentUser: false,
-    isEdited: false
-  },
-  {
-    id: 4,
-    mountainId: 'merbabu',
-    author: 'Tio Pratama',
-    authorInitials: 'TP',
-    date: 'Kemarin',
-    route: 'Selo',
-    condition: 'Cerah',
-    text: 'Sabana 1 dan 2 hijau banget sekarang! Angin di puncak Kenteng Songo lumayan kencang. Air di pos 3 masih ada tapi debitnya kecil.',
-    image: null,
-    upvotes: 56,
-    downvotes: 0,
-    userVote: null,
-    isCurrentUser: false,
-    isEdited: false
-  }
-])
-
 const filteredMountains = computed(() => {
   const query = mountainSearchQuery.value.toLowerCase().trim()
   if (!query) return mountains
@@ -980,32 +899,62 @@ const selectedMountainRoutes = computed(() => {
 })
 
 const getMountainCommentCount = (mountainId) => {
-  return allComments.value.filter(c => c.mountainId === mountainId).length
+  const list = commentsStore.comments[mountainId] || []
+  return list.length
 }
 
 const filteredAndSortedComments = computed(() => {
   if (!selectedMountainId.value) return []
   
-  // Filter by mountain ID
-  let comments = allComments.value.filter(c => c.mountainId === selectedMountainId.value)
+  const mountainComments = commentsStore.comments[selectedMountainId.value] || []
+  let comments = mountainComments.map(c => {
+    const authorName = c.user?.name || 'Pendaki KakiDaki'
+    const initials = authorName
+      .split(' ')
+      .map(name => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+      
+    let formattedDate = 'Baru saja'
+    if (c.createdAt) {
+      const date = new Date(c.createdAt)
+      formattedDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+    }
+
+    return {
+      id: c.id,
+      mountainId: c.mountainId,
+      author: authorName,
+      authorInitials: initials,
+      date: formattedDate,
+      route: c.trailName || 'via Umum',
+      condition: c.condition || 'Cuaca Cerah',
+      text: c.text,
+      image: c.imageUrl,
+      upvotes: c.upvotes || 0,
+      downvotes: c.downvotes || 0,
+      userVote: c.userVote || null,
+      isCurrentUser: c.userId === authStore.user?.id || c.user?.id === authStore.user?.id,
+      isReported: c.isReported || false,
+      isEdited: c.isEdited || false,
+      createdAt: c.createdAt
+    }
+  })
   
-  // Filter by current user
-  if (sortBy.value === 'ulasan_saya') {
-    comments = comments.filter(c => c.isCurrentUser)
-  }
-  
-  // Sort
   if (sortBy.value === 'terpopuler') {
     return [...comments].sort((a, b) => b.upvotes - a.upvotes)
+  } else if (sortBy.value === 'ulasan_saya') {
+    return comments.filter(c => c.isCurrentUser)
   } else {
-    // terbaru & ulasan_saya
-    return [...comments].sort((a, b) => b.id - a.id)
+    return [...comments].sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime())
   }
 })
 
-const selectMountain = (id) => {
+const selectMountain = async (id) => {
   selectedMountainId.value = id
   showReviewForm.value = false
+  await commentsStore.fetchComments(id)
 }
 
 const getConditionBadge = (cond) => {
