@@ -268,35 +268,37 @@
  </p>
  </div>
 
- <!-- Step 6: Connect Strava -->
- <div v-else-if="currentStep === 6"key="s6">
- <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Hubungkan Strava</h1>
- <p class="text-sm text-slate-500 mb-6">Sinkronkan data aktivitas fisikmu untuk analisis kebugaran yang lebih akurat.</p>
+  <!-- Step 6: Connect Google Fit -->
+  <div v-else-if="currentStep === 6"key="s6">
+  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Hubungkan Google Fit</h1>
+  <p class="text-sm text-slate-500 mb-6">Sinkronkan data aktivitas fisikmu untuk analisis kebugaran yang lebih akurat.</p>
 
- <div class="flex flex-col items-center text-center py-8">
- <div class="h-20 w-20 rounded-2xl bg-[#FC4C02]/10 flex items-center justify-center mb-6">
- <svg class="h-10 w-10 text-[#FC4C02]"viewBox="0 0 24 24"fill="currentColor">
- <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/>
- </svg>
- </div>
+  <div class="flex flex-col items-center text-center py-8">
+  <div class="h-20 w-20 rounded-2xl bg-[#ea4335]/10 flex items-center justify-center mb-6">
+  <svg class="h-10 w-10 text-[#ea4335]" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+  </div>
 
- <h3 class="text-lg font-medium text-slate-800 mb-2">Strava</h3>
- <p class="text-sm text-slate-500 max-w-xs mb-6">Dengan menghubungkan Strava, kami bisa menganalisis riwayat aktivitas dan tingkat kebugaranmu secara otomatis.</p>
+  <h3 class="text-lg font-medium text-slate-800 mb-2">Google Fit</h3>
+  <p class="text-sm text-slate-500 max-w-xs mb-6">Dengan menghubungkan Google Fit, kami bisa menganalisis riwayat aktivitas dan tingkat kebugaranmu secara otomatis.</p>
 
- <button
- v-if="!form.stravaConnected"
- @click="form.stravaConnected = true; clearWarn()"
- class="inline-flex items-center gap-2 rounded-xl bg-[#FC4C02] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#e04400] active:scale-[0.98]"
- >
- <svg class="h-4 w-4"viewBox="0 0 24 24"fill="currentColor"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
- Hubungkan Strava
- </button>
- <div v-else class="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-6 py-3 text-sm font-medium text-[#023C23]">
- <svg class="h-4 w-4"fill="none"viewBox="0 0 24 24"stroke="currentColor"stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
- Terhubung
- </div>
- </div>
- </div>
+  <button
+  v-if="!googleFitStore.isConnected"
+  @click="handleConnectGoogleFit"
+  :disabled="isLoading"
+  class="inline-flex items-center gap-2 rounded-xl bg-[#ea4335] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#d62d20] active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
+  >
+  <svg v-if="isLoading" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+  <svg v-else class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  Hubungkan Google Fit
+  </button>
+  <div v-else class="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-6 py-3 text-sm font-medium text-[#023C23]">
+  <svg class="h-4 w-4"fill="none"viewBox="0 0 24 24"stroke="currentColor"stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  Terhubung
+  </div>
+  </div>
+  </div>
  </div>
 
  <!-- Bottom Navigation -->
@@ -314,7 +316,7 @@
 
  <div class="flex items-center gap-3">
  <NuxtLink
- to="/dashboard/packing-assistant"
+ to="/"
  class="text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors"
  >
  Lewati semua

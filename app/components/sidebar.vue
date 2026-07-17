@@ -2,9 +2,7 @@
     <aside class="w-64 h-full flex flex-col border-r border-slate-200/60 bg-[#FAFAFA] hidden md:flex shrink-0">
       <!-- Sidebar Header -->
       <div class="p-6 flex items-center gap-2">
-        <svg class="w-7 h-7 text-[#118c13]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l7-12 5 8 2-3 4 7H3z" />
-        </svg>
+        <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
         <span class="text-xl font-medium tracking-tight text-[#118c13]">KakiDaki</span>
       </div>
 
