@@ -65,7 +65,6 @@ const score = computed(() => {
 })
 
 const dashoffset = computed(() => {
-  // circumference is 2 * Math.PI * 38 = 238.76
   return 238.76 * (1 - score.value / 100)
 })
 
@@ -174,12 +173,12 @@ const handleGoogleFitAction = async () => {
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans text-slate-800">
-    <!-- Sidebar -->
+    
     <Sidebar active="training"/>
 
-    <!-- Main Content Area -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 flex flex-col justify-between">
-      <!-- Loading State -->
+      
       <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center">
         <svg class="animate-spin h-8 w-8 text-[#023C23] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -188,7 +187,7 @@ const handleGoogleFitAction = async () => {
         <p class="text-sm text-slate-500 font-medium">Memuat rencana pelatihan...</p>
       </div>
 
-      <!-- No Active Expedition State -->
+      
       <div v-else-if="!activeExpedition" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
         <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#023C23] flex items-center justify-center mb-6">
           <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -205,7 +204,7 @@ const handleGoogleFitAction = async () => {
         </NuxtLink>
       </div>
 
-      <!-- Error State -->
+      
       <div v-else-if="errorMessage" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
         <div class="h-16 w-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -214,9 +213,9 @@ const handleGoogleFitAction = async () => {
         <p class="text-sm text-slate-500 mb-6">{{ errorMessage }}</p>
       </div>
 
-      <!-- Main Training Dashboard Content -->
+      
       <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
-        <!-- Header Section -->
+        
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Expedition Training Planner</h1>
@@ -255,15 +254,15 @@ const handleGoogleFitAction = async () => {
           </div>
         </div>
 
-        <!-- BENTO GRID -->
+        
         <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
           
-          <!-- 1. HERO CARD / AI COACH (Spans 2 cols, 2 rows in XL) -->
+          
           <div class="md:col-span-2 xl:col-span-2 xl:row-span-2 bg-[#023C23] rounded-[2.5rem] p-8 shadow-md relative overflow-hidden flex flex-col justify-between text-white border border-slate-200/40">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
             
             <div class="relative z-10 flex-1 flex flex-col justify-between space-y-8">
-              <!-- Narrative -->
+              
               <div>
                 <div class="flex items-center gap-3 mb-4">
                   <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -282,10 +281,10 @@ const handleGoogleFitAction = async () => {
                 </div>
               </div>
 
-              <!-- Readiness Progress Bars -->
+              
               <div class="space-y-4 bg-black/20 backdrop-blur-md rounded-3xl p-5 border border-white/10">
                 <h4 class="font-heading font-medium text-white text-sm mb-3">Expedition Readiness</h4>
-                <!-- Vertical Stamina -->
+                
                 <div>
                   <div class="flex justify-between items-center text-xs font-medium text-slate-300 mb-1.5">
                     <span>Vertical Stamina</span>
@@ -295,7 +294,7 @@ const handleGoogleFitAction = async () => {
                     <div class="bg-emerald-400 h-full rounded-full transition-all duration-500" :style="{ width: verticalStaminaPercent + '%' }"></div>
                   </div>
                 </div>
-                <!-- Endurance Volume -->
+                
                 <div>
                   <div class="flex justify-between items-center text-xs font-medium text-slate-300 mb-1.5">
                     <span>Endurance Volume</span>
@@ -305,7 +304,7 @@ const handleGoogleFitAction = async () => {
                     <div class="bg-sky-400 h-full rounded-full transition-all duration-500" :style="{ width: enduranceVolumePercent + '%' }"></div>
                   </div>
                 </div>
-                <!-- Consistency -->
+                
                 <div>
                   <div class="flex justify-between items-center text-xs font-medium text-slate-300 mb-1.5">
                     <span>Training Plan Progress</span>
@@ -319,7 +318,7 @@ const handleGoogleFitAction = async () => {
             </div>
           </div>
 
-          <!-- 2. PHYSICAL VALIDATION SCORE (Spans 1 col, 2 rows in XL) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-200/40 relative overflow-hidden flex flex-col">
             <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"></div>
             
@@ -327,7 +326,7 @@ const handleGoogleFitAction = async () => {
               <h3 class="font-heading font-medium text-slate-800 text-lg">Validation Score</h3>
               <p class="text-xs text-slate-400 mt-0.5">Physical altitude readiness</p>
 
-              <!-- Radial Progress -->
+              
               <div class="flex items-center justify-center my-6 flex-1">
                 <div class="relative w-48 h-48 flex items-center justify-center">
                   <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -341,7 +340,7 @@ const handleGoogleFitAction = async () => {
                 </div>
               </div>
 
-              <!-- Status Text -->
+              
               <div class="mt-auto bg-slate-50 rounded-2xl p-4 border border-slate-100">
                 <h4 class="text-sm font-medium text-slate-900 flex justify-between items-center">
                   Status 
@@ -352,7 +351,7 @@ const handleGoogleFitAction = async () => {
             </div>
           </div>
 
-          <!-- 3. DISTANCE & FREQUENCY (Spans 1 col, 1 row) -->
+          
           <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
               <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-[#118c13]">
@@ -371,7 +370,7 @@ const handleGoogleFitAction = async () => {
             </div>
           </div>
 
-          <!-- 4. ELEVATION GAIN (Spans 1 col, 1 row) -->
+          
           <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
               <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-600">
@@ -390,7 +389,7 @@ const handleGoogleFitAction = async () => {
             </div>
           </div>
 
-          <!-- 5. WEEKLY PREPARATION CHECKLIST (Spans full width, 4 cols) -->
+          
           <div class="xl:col-span-4 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-200/40">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div class="flex flex-wrap items-center gap-3">
@@ -401,7 +400,7 @@ const handleGoogleFitAction = async () => {
               </div>
             </div>
 
-            <!-- Grid Items -->
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div 
                 v-for="task in tasks" 
@@ -412,7 +411,7 @@ const handleGoogleFitAction = async () => {
               >
                 <div class="flex items-center gap-4">
                   <div class="w-10 h-10 rounded-lg bg-white border border-slate-100 flex items-center justify-center shadow-sm shrink-0">
-                    <!-- Dynamic Activity Icon -->
+                    
                     <svg v-if="task.activityType === 'RUN'" class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M13 5a2 2 0 11-4 0 2 2 0 014 0zM9 20h2l1-4h3m-5-4v4m3-10l-1.5 3L13 14"/>
                     </svg>
@@ -445,7 +444,7 @@ const handleGoogleFitAction = async () => {
         </section>
       </div>
       
-      <!-- Footer Component -->
+      
       <Footer class="mt-8"/>
     </main>
   </div>

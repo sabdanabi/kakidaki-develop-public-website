@@ -45,7 +45,18 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    if (token.value) {
+      try {
+        await $fetch('https://api.kakidaki.my.id/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token.value}`
+          }
+        })
+      } catch (err) {
+      }
+    }
     const tokenCookie = useCookie('auth_token')
     const userCookie = useCookie('auth_user')
     tokenCookie.value = null

@@ -21,7 +21,6 @@ const closeScanner = () => {
   isModalOpen.value = false
 }
 
-// Stores and States
 const logisticsStore = useLogisticsStore()
 const profileStore = useProfileStore()
 const isLoadingLogistics = ref(true)
@@ -72,7 +71,6 @@ const itemIcon = {
   alert: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
 }
 
-// Categories list schema (Empty by default, populated dynamically)
 const categories = ref([
   {
     key: 'clothing', label: 'Sistem Pakaian', color: 'blue', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.clothing,
@@ -96,7 +94,6 @@ const categories = ref([
   },
 ])
 
-// Mapping categories from API to UI
 const mapCategoryKey = (backendCategory) => {
   if (!backendCategory) return 'gear'
   const cat = backendCategory.toUpperCase()
@@ -108,7 +105,6 @@ const mapCategoryKey = (backendCategory) => {
   return 'gear'
 }
 
-// Getting dynamic icon based on name and category
 const getItemIcon = (categoryKey, itemName) => {
   const name = (itemName || '').toLowerCase()
   if (categoryKey === 'clothing') {
@@ -158,7 +154,6 @@ const toggleItem = async (catKey, itemName) => {
   if (item && item.id) {
     const newPackedState = !item.packed
     
-    // Optimistic UI update
     item.packed = newPackedState
     
     const payload = {
@@ -172,7 +167,6 @@ const toggleItem = async (catKey, itemName) => {
     
     const result = await logisticsStore.updateItemPackedStatus(item.id, payload)
     if (!result.success) {
-      // Revert state
       item.packed = !newPackedState
       errorMessage.value = result.message || 'Gagal memperbarui status barang.'
     } else {
@@ -185,7 +179,6 @@ const handleGeneratePackingList = async () => {
   errorMessage.value = ''
   isGenerating.value = true
   
-  // Ensure we have active expedition
   await logisticsStore.fetchExpeditions()
   
   const result = await logisticsStore.generatePackingList()
@@ -228,12 +221,12 @@ onMounted(async () => {
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
-    <!-- Sidebar -->
+    
     <Sidebar active="packing" />
 
-    <!-- Main Content Area -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
-      <!-- Loading State -->
+      
       <div v-if="isLoadingLogistics" class="flex-1 flex flex-col items-center justify-center space-y-4">
         <div class="h-8 w-8 rounded-full border-4 border-slate-200 border-t-[#118c13] animate-spin"></div>
         <p class="text-sm text-slate-500 font-medium">Memuat data logistik...</p>
@@ -241,7 +234,7 @@ onMounted(async () => {
 
       <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         
-        <!-- Header -->
+        
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Asisten Packing</h1>
@@ -266,7 +259,7 @@ onMounted(async () => {
           </div>
         </header>
 
-        <!-- Error Alert -->
+        
         <div v-if="errorMessage" class="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-xl text-red-800 text-sm font-medium transition-all">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
@@ -276,10 +269,10 @@ onMounted(async () => {
           <span>{{ errorMessage }}</span>
         </div>
 
-        <!-- Bento Grid -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
         
-          <!-- Readiness Hero (2x2) -->
+          
           <div class="xl:col-span-2 xl:row-span-2 bg-[#023C23] text-white rounded-[2.5rem] p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group">
             <div class="relative z-10 flex flex-col h-full justify-between">
               <div>
@@ -306,17 +299,17 @@ onMounted(async () => {
                     <span class="text-xs text-white/50 font-medium">Barang Siap</span>
                   </div>
                 </div>
-                <!-- Progress Bar -->
+                
                 <div class="h-3 w-full bg-black/20 rounded-full overflow-hidden border border-white/5">
                   <div class="h-full bg-green-400 transition-all duration-700 ease-out" :style="{ width: readinessPercent + '%' }"></div>
                 </div>
               </div>
             </div>
-            <!-- Decorative blur element -->
+            
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-500/20 blur-3xl rounded-full pointer-events-none"></div>
           </div>
 
-          <!-- Destination (1x2) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 rounded-[2.5rem] bg-white shadow-sm relative overflow-hidden group min-h-[300px] flex flex-col justify-end p-6 border border-slate-100">
             <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
@@ -331,7 +324,7 @@ onMounted(async () => {
             </div>
           </div>
 
-          <!-- Weather (1x1) -->
+          
           <div class="xl:col-span-1 xl:row-span-1 rounded-[2.5rem] bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-sm relative overflow-hidden flex flex-col justify-center text-white border border-slate-700">
             <div class="flex items-center gap-2 relative z-20 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></svg>
@@ -341,7 +334,7 @@ onMounted(async () => {
               <span class="text-3xl font-medium text-white font-heading">{{ conditions.split('/')[0].trim() }}</span>
               <span class="text-sm font-medium text-sky-200 block mt-1">{{ conditions.split('/')[1].trim() }}</span>
             </div>
-            <!-- Rain Animation Background -->
+            
             <div class="absolute inset-0 z-10 opacity-60 overflow-hidden pointer-events-none">
               <div class="rain-container">
                 <div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div>
@@ -350,7 +343,7 @@ onMounted(async () => {
             </div>
           </div>
 
-          <!-- AI Scanner Button (1x1) -->
+          
           <div class="xl:col-span-1 xl:row-span-1 rounded-[2.5rem] bg-white p-6 shadow-sm border border-slate-100 flex flex-col justify-center gap-4 cursor-pointer group" @click="openScanner">
             <div class="flex items-center gap-4">
               <div class="h-12 w-12 rounded-2xl bg-green-50 text-[#118c13] flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -366,7 +359,7 @@ onMounted(async () => {
             </button>
           </div>
 
-          <!-- Empty State (Shows when no items have been generated) -->
+          
           <div v-if="allItems.length === 0" class="col-span-1 md:col-span-2 xl:col-span-4 bg-white rounded-[2.5rem] p-12 text-center border border-slate-100 shadow-sm flex flex-col items-center justify-center space-y-4 my-4">
             <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#118c13] flex items-center justify-center">
               <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -377,7 +370,7 @@ onMounted(async () => {
             <p class="text-sm text-slate-505 text-slate-500 max-w-md">Daftar perlengkapan untuk ekspedisi Anda belum dibuat. Silakan klik tombol "Auto-Generate Packing List" atau "AI Gear Guide" di atas untuk membuat daftar perlengkapan otomatis berbasis AI.</p>
           </div>
 
-          <!-- Category Bento Boxes -->
+          
           <template v-else>
             <div 
               v-for="(cat) in categories" 
@@ -385,12 +378,12 @@ onMounted(async () => {
               class="rounded-[2.5rem] bg-white shadow-sm border border-slate-100 flex flex-col overflow-hidden relative z-0 h-fit"
               :class="[cat.span]"
             >
-              <!-- Big Background Icon Opacity 50% -->
+              
               <div class="absolute -bottom-6 -right-6 h-40 w-40 opacity-[0.15] z-[-1] pointer-events-none" :class="`text-${cat.color}-500`">
                 <span v-html="cat.iconSvg" class="block w-full h-full"></span>
               </div>
 
-              <!-- Category Header -->
+              
               <div class="px-6 py-5 flex items-center justify-between" :class="`bg-${cat.color}-50/60`">
                 <div class="flex items-center gap-3">
                   <div class="flex h-10 w-10 items-center justify-center rounded-xl" :class="`bg-${cat.color}-100 text-${cat.color}-600`">
@@ -405,7 +398,7 @@ onMounted(async () => {
                 </div>
               </div>
 
-              <!-- Items List -->
+              
               <div class="flex-1 p-3">
                 <div
                   v-for="item in cat.items"
@@ -413,7 +406,7 @@ onMounted(async () => {
                   @click="toggleItem(cat.key, item.name)"
                   class="group flex cursor-pointer items-start gap-3 px-3 py-3 transition-colors hover:bg-slate-50 rounded-xl"
                 >
-                  <!-- Checkbox -->
+                  
                   <div
                     class="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-[1.5px] transition-all mt-0.5 relative overflow-hidden"
                     :class="item.packed ? `border-${cat.color}-500 bg-${cat.color}-500 text-white` : `border-slate-300 bg-white group-hover:border-${cat.color}-400`"
@@ -438,7 +431,7 @@ onMounted(async () => {
                     </div>
                   </div>
 
-                  <!-- Quantity Badge -->
+                  
                   <div class="shrink-0 rounded-full px-2 py-0.5 text-xs font-medium transition-colors" :class="item.packed ? 'bg-slate-100 text-slate-400' : `bg-${cat.color}-100 text-${cat.color}-700`">
                     {{ item.qty }}x
                   </div>
@@ -449,16 +442,16 @@ onMounted(async () => {
         </div>
       </div>
       
-      <!-- Footer -->
+      
       <Footer class="mt-8"/>
     </main>
 
-    <!-- AI Scanner Modal -->
+    
     <div v-if="isModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="closeScanner"></div>
       
       <div class="relative w-full max-w-sm bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        <!-- Light Header -->
+        
         <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-white">
           <div class="flex items-center gap-2">
             <span class="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
@@ -469,7 +462,7 @@ onMounted(async () => {
           </button>
         </div>
         
-        <!-- Camera Area -->
+        
         <div class="relative h-72 w-full bg-slate-100 overflow-hidden flex flex-col items-center justify-center">
           <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1596706798150-590fb69c4f74?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-all duration-700" :class="{'opacity-100': scanStatus === 'scanning' || scanStatus === 'success', 'opacity-50 grayscale': scanStatus === 'idle'}"></div>
           
@@ -490,7 +483,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Controls -->
+        
         <div class="p-6 bg-white border-t border-slate-100">
           <button 
             v-if="scanStatus === 'idle'" 
@@ -521,12 +514,6 @@ onMounted(async () => {
 </template>
 
 <style>
-/* Safe colors map for dynamic Tailwind classes */
-/* bg-blue-50 bg-blue-100 bg-blue-500 text-blue-600 text-blue-900 border-blue-100 border-blue-200 border-blue-400 border-blue-500 text-blue-600/80 text-blue-50 bg-blue-50/60 */
-/* bg-indigo-50 bg-indigo-100 bg-indigo-500 text-indigo-600 text-indigo-900 border-indigo-100 border-indigo-200 border-indigo-400 border-indigo-500 text-indigo-600/80 text-indigo-50 bg-indigo-50/60 */
-/* bg-amber-50 bg-amber-100 bg-amber-500 text-amber-600 text-amber-900 border-amber-100 border-amber-200 border-amber-400 border-amber-500 text-amber-600/80 text-amber-50 bg-amber-50/60 */
-/* bg-teal-50 bg-teal-100 bg-teal-500 text-teal-600 text-teal-900 border-teal-100 border-teal-200 border-teal-400 border-teal-500 text-teal-600/80 text-teal-50 bg-teal-50/60 */
-/* bg-rose-50 bg-rose-100 bg-rose-500 text-rose-600 text-rose-900 border-rose-100 border-rose-200 border-rose-400 border-rose-500 text-rose-600/80 text-rose-50 bg-rose-50/60 */
 
 @keyframes scan {
   0%, 100% { top: 0%; }
@@ -536,7 +523,6 @@ onMounted(async () => {
   animation: scan 2s ease-in-out infinite;
 }
 
-/* Rain Animation CSS */
 .rain-container {
   width: 100%;
   height: 100%;

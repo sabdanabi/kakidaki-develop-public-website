@@ -1,12 +1,12 @@
 <template>
   <nav :class="[isScrolled ? 'shadow-[0_2px_10px_rgb(0,0,0,0.02)] bg-white/95 backdrop-blur-md' : 'bg-transparent', 'fixed top-0 w-full z-50 h-20 transition-all duration-300 border-b border-transparent', isScrolled ? 'border-slate-100' : '']">
     <div class="flex justify-between items-center px-6 lg:px-8 max-w-7xl mx-auto h-full">
-      <!-- Logo -->
+      
       <NuxtLink to="/" class="flex items-center gap-3">
         <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="w-9 h-9">
         <span class="font-heading text-xl md:text-2xl font-medium text-slate-900">KakiDaki</span>
       </NuxtLink>
-      <!-- Navigation Links -->
+      
       <div class="hidden md:flex items-center gap-8">
         <NuxtLink 
           to="/" 
@@ -28,7 +28,7 @@
         </NuxtLink>
       </div>
 
-      <!-- Right Controls -->
+      
       <div class="flex items-center gap-4">
         <NuxtLink
           to="/login"

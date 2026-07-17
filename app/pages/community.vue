@@ -1,12 +1,12 @@
 <template>
   <div class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#023C23]/20 selection:text-[#023C23] overflow-x-hidden pb-20">
-    <!-- Top Navigation Bar -->
+    
     <Navbar />
 
-    <!-- Main Content Area -->
+    
     <div class="pt-32 px-6 lg:px-8 max-w-5xl mx-auto space-y-6">
       
-      <!-- SCREEN 1: Mountain Selection list-view -->
+      
       <div v-if="!selectedMountainId" class="space-y-8">
         <div class="text-center max-w-4xl mx-auto">
           <h1 class="font-heading text-4xl sm:text-5xl mb-6 text-slate-900 leading-[1.1] font-medium tracking-tight">Komunitas Pegunungan Indonesia</h1>
@@ -15,7 +15,7 @@
           </p>
         </div>
 
-        <!-- Search input on Selection Screen -->
+        
         <div class="relative max-w-xl mx-auto">
           <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
           />
         </div>
 
-        <!-- Mountains Grid -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div 
             v-for="mountain in filteredMountains" 
@@ -38,7 +38,7 @@
             @click="selectMountain(mountain.id)"
             class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col h-[280px] relative"
           >
-            <!-- Background Image -->
+            
             <div class="absolute inset-0 z-0">
               <img 
                 :src="mountain.image" 
@@ -48,7 +48,7 @@
               <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent"></div>
             </div>
 
-            <!-- Content overlay -->
+            
             <div class="relative z-10 p-6 mt-auto flex flex-col text-white">
               <div class="flex justify-between items-start mb-2">
                 <h3 class="font-heading text-2xl font-medium tracking-tight">{{ mountain.name }}</h3>
@@ -80,10 +80,9 @@
         </div>
       </div>
 
-
-      <!-- SCREEN 2: Mountain Community (Comments & Reviews list) -->
+      
       <div v-else class="space-y-6">
-        <!-- Back Button -->
+        
         <button 
           @click="selectedMountainId = null" 
           class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
@@ -94,7 +93,7 @@
           Kembali ke Daftar Gunung
         </button>
 
-        <!-- Selected Mountain Header Card -->
+        
         <div class="rounded-[2.5rem] bg-[#023C23] p-8 md:p-10 text-white relative overflow-hidden shadow-lg">
           <div class="absolute inset-0 z-0">
             <img :src="selectedMountain.image" :alt="selectedMountain.name" class="w-full h-full object-cover opacity-20 mix-blend-overlay" />
@@ -125,7 +124,7 @@
           </div>
         </div>
 
-        <!-- Write Review Form Container (Toggles locally) -->
+        
         <Transition
           enter-active-class="transition duration-300 ease-out"
           enter-from-class="transform scale-95 opacity-0 -translate-y-4"
@@ -157,7 +156,7 @@
                   />
                 </div>
                 
-                <!-- Custom Premium Dropdown for Jalur Pendakian -->
+                
                 <div class="relative">
                   <label class="block text-xs font-semibold text-slate-500 mb-1.5 font-sans">Jalur Pendakian</label>
                   <button 
@@ -180,7 +179,7 @@
                     </svg>
                   </button>
                   
-                  <!-- Dropdown List Options -->
+                  
                   <div 
                     v-if="routeDropdownOpen" 
                     class="absolute z-30 w-full mt-1.5 bg-white border border-slate-100 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] overflow-hidden"
@@ -200,7 +199,7 @@
                 </div>
               </div>
               
-              <!-- Custom Premium Dropdown for Kondisi Cuaca -->
+              
               <div class="relative">
                 <label class="block text-xs font-semibold text-slate-500 mb-1.5 font-sans">Kondisi Cuaca & Jalur</label>
                 <button 
@@ -223,7 +222,7 @@
                   </svg>
                 </button>
                 
-                <!-- Dropdown List Options -->
+                
                 <div 
                   v-if="conditionDropdownOpen" 
                   class="absolute z-30 w-full mt-1.5 bg-white border border-slate-100 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] overflow-hidden"
@@ -242,7 +241,7 @@
                 </div>
               </div>
 
-              <!-- Premium Image Upload Section -->
+              
               <div>
                 <label class="block text-xs font-semibold text-slate-500 mb-1.5 font-sans">Foto Kondisi Rute (Opsional)</label>
                 <div 
@@ -265,7 +264,7 @@
                     <p class="text-[10px] text-slate-400">Hanya format gambar (PNG, JPG, WEBP)</p>
                   </div>
                   
-                  <!-- Preview container -->
+                  
                   <div v-else class="w-full flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                       <img :src="imagePreview" class="w-16 h-16 object-cover rounded-lg border border-slate-100" />
@@ -315,7 +314,7 @@
           </div>
         </Transition>
 
-        <!-- Sorting Selector & Title -->
+        
         <div class="mt-10 border-t border-slate-200/60 pt-8">
           <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
@@ -358,17 +357,17 @@
           <p class="text-slate-500 font-sans">Belum ada ulasan untuk gunung ini. Jadilah yang pertama memberikan ulasan!</p>
         </div>
 
-        <!-- Comments ListView -->
+        
         <div v-else class="grid grid-cols-1 gap-5">
           <div 
             v-for="comment in filteredAndSortedComments" 
             :key="comment.id"
             class="bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all"
           >
-            <!-- Normal Comment View -->
+            
             <div v-if="editingCommentId !== comment.id" class="space-y-4">
               <div class="flex items-start justify-between gap-4">
-                <!-- Info (No Avatar) -->
+                
                 <div>
                   <h4 class="font-sans text-sm font-semibold text-slate-900 mb-0.5 flex items-center gap-1.5">
                     {{ comment.author }}
@@ -378,14 +377,14 @@
                 </div>
                 
                 <div class="flex items-center gap-3">
-                  <!-- Edit & Delete buttons if current user comment -->
+                  
                   <div v-if="comment.isCurrentUser" class="flex gap-2 text-xs mr-2">
                     <button @click="startEdit(comment)" class="text-slate-400 hover:text-[#023C23] font-semibold transition-colors">Edit</button>
                     <span class="text-slate-200">|</span>
                     <button @click="deleteComment(comment.id)" class="text-slate-400 hover:text-red-600 font-semibold transition-colors">Hapus</button>
                   </div>
 
-                  <!-- Badge condition -->
+                  
                   <div class="hidden sm:block">
                     <span class="px-3 py-1.5 text-[10px] font-medium rounded-lg" :class="getConditionBadge(comment.condition)">
                       {{ comment.condition }}
@@ -394,17 +393,17 @@
                 </div>
               </div>
 
-              <!-- Comment Body -->
+              
               <div class="space-y-4">
                 <p class="font-sans text-slate-600 text-sm leading-relaxed">{{ comment.text }}</p>
                 
-                <!-- Uploaded Image Display -->
+                
                 <div v-if="comment.image" class="relative mt-3 rounded-2xl overflow-hidden border border-slate-100 max-w-md shadow-sm">
                   <img :src="comment.image" alt="Lampiran ulasan" class="w-full h-auto max-h-80 object-cover" />
                 </div>
               </div>
 
-              <!-- Voting Action -->
+              
               <div class="flex items-center gap-4 pt-2">
                 <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 overflow-hidden shadow-sm">
                   <button 
@@ -426,7 +425,7 @@
                   </button>
                 </div>
 
-                <!-- Laporkan Button -->
+                
                 <button
                   @click="openReportModal(comment)"
                   class="flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-all text-xs font-medium"
@@ -442,14 +441,14 @@
               </div>
             </div>
 
-            <!-- Inline Edit Comment Form -->
+            
             <div v-else class="space-y-4">
               <h4 class="font-heading text-lg font-medium text-[#023C23]">Edit Ulasan Anda</h4>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Rute</label>
-                  <!-- Premium inline route select -->
+                  
                   <div class="relative">
                     <button 
                       type="button"
@@ -495,7 +494,7 @@
                 ></textarea>
               </div>
 
-              <!-- Edit Image Area -->
+              
               <div class="flex items-center gap-3">
                 <div v-if="editForm.image" class="relative">
                   <img :src="editForm.image" class="w-16 h-16 object-cover rounded-lg border" />
@@ -545,7 +544,7 @@
         </div>
       </div>
 
-      <!-- Modal Laporkan Komentar -->
+      
       <Transition
         enter-active-class="transition duration-200 ease-out"
         enter-from-class="opacity-0 scale-95"
@@ -566,7 +565,7 @@
               </button>
             </div>
 
-            <!-- Preview Komentar -->
+            
             <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 mb-5">
               <p class="text-xs text-slate-400 mb-1">Komentar dari <span class="font-semibold text-slate-700">{{ activeReportingComment.author }}</span>:</p>
               <p class="text-xs text-slate-800 italic leading-relaxed">"{{ activeReportingComment.text }}"</p>
@@ -645,7 +644,6 @@ const authStore = useAuthStore()
 const expeditionStore = useExpeditionStore()
 const commentsStore = useCommentsStore()
 
-// Click outside handling for dropdowns
 const closeDropdowns = () => {
   routeDropdownOpen.value = false
   conditionDropdownOpen.value = false
@@ -658,7 +656,6 @@ onMounted(async () => {
     newReview.value.author = authStore.user.name
   }
   
-  // Fetch real mountains from API
   const res = await expeditionStore.fetchMountains()
   if (res.success && expeditionStore.mountains.length > 0) {
     mountains.forEach(mockMt => {
@@ -672,7 +669,6 @@ onMounted(async () => {
     })
   }
   
-  // Fetch comments for all mountains to populate comment counts
   for (const m of mountains) {
     await commentsStore.fetchComments(m.id)
   }
@@ -682,11 +678,9 @@ onUnmounted(() => {
   window.removeEventListener('click', closeDropdowns)
 })
 
-// Search states
 const mountainSearchQuery = ref('')
 const selectedMountainId = ref(null)
 
-// Custom Dropdown states
 const routeDropdownOpen = ref(false)
 const conditionDropdownOpen = ref(false)
 const editRouteDropdownOpen = ref(false)
@@ -720,7 +714,6 @@ const selectCondition = (condValue) => {
   conditionDropdownOpen.value = false
 }
 
-// Image upload helpers
 const imageInput = ref(null)
 const imagePreview = ref(null)
 
@@ -748,7 +741,6 @@ const clearImageSelect = () => {
   if (imageInput.value) imageInput.value.value = ''
 }
 
-// Edit image helpers
 const editImageInput = ref(null)
 const triggerEditImageSelect = () => {
   editImageInput.value.click()
@@ -768,7 +760,6 @@ const handleEditImageUpload = (event) => {
   }
 }
 
-// Form & Review Submit State
 const showReviewForm = ref(false)
 const newReview = ref({
   author: '',
@@ -838,10 +829,8 @@ const deleteComment = (id) => {
   }
 }
 
-// Filtering & Sorting
-const sortBy = ref('terbaru') // 'terbaru' or 'terpopuler'
+const sortBy = ref('terbaru')
 
-// Mock Database of Mountains
 import gunungRinjani from '~/assets/images/gunung_rinjani.webp'
 import kumpulanGunung from '~/assets/images/kumpulan_gunung.webp'
 import heroMountain from '~/assets/images/hero_mountain.png'
@@ -860,7 +849,6 @@ const mountains = [
   }
 ]
 
-// Edit & Delete Comments State
 const editingCommentId = ref(null)
 const editForm = ref({
   id: null,
@@ -966,12 +954,10 @@ const getConditionBadge = (cond) => {
 
 const vote = (comment, type) => {
   if (comment.userVote === type) {
-    // Undo vote
     comment.userVote = null
     if (type === 'up') comment.upvotes--
     if (type === 'down') comment.downvotes--
   } else {
-    // Change or new vote
     if (comment.userVote === 'up') comment.upvotes--
     if (comment.userVote === 'down') comment.downvotes--
     
@@ -981,7 +967,6 @@ const vote = (comment, type) => {
   }
 }
 
-// Report Comment Modal logic
 const showReportModal = ref(false)
 const activeReportingComment = ref(null)
 const reportReason = ref('Informasi Palsu / Misleading (Tidak Sesuai Lapangan)')

@@ -22,7 +22,6 @@ onMounted(async () => {
   isLoading.value = true
   errorMessage.value = ''
   
-  // 1. Fetch expeditions
   const expRes = await expeditionStore.fetchExpeditions()
   if (!expRes.success) {
     errorMessage.value = expRes.message || 'Gagal memuat data ekspedisi.'
@@ -36,11 +35,9 @@ onMounted(async () => {
     return
   }
   
-  // Get active expedition (e.g. the first one)
   const exp = expeditionStore.expeditions[0]
   activeExpedition.value = exp
   
-  // 2. Fetch weather for active expedition
   const weatherRes = await weatherStore.fetchWeather(exp.id || exp._id)
   if (!weatherRes.success) {
     errorMessage.value = weatherRes.message || 'Gagal memuat data cuaca.'
@@ -56,15 +53,14 @@ const formatDayName = (dateStr) => {
 }
 
 const getWeatherIcon = (code) => {
-  // WMO Weather interpretation codes mapping
-  if (code === 0) return '☀️' // Clear sky
-  if (code >= 1 && code <= 3) return '⛅' // Mainly clear, partly cloudy, and overcast
-  if (code >= 45 && code <= 48) return '🌫️' // Fog
-  if (code >= 51 && code <= 57) return '🌦️' // Drizzle
-  if (code >= 61 && code <= 67) return '🌧️' // Rain
-  if (code >= 71 && code <= 77) return '❄️' // Snow fall
-  if (code >= 80 && code <= 82) return '🌦️' // Rain showers
-  if (code >= 95 && code <= 99) return '⛈️' // Thunderstorm
+  if (code === 0) return '☀️'
+  if (code >= 1 && code <= 3) return '⛅'
+  if (code >= 45 && code <= 48) return '🌫️'
+  if (code >= 51 && code <= 57) return '🌦️'
+  if (code >= 61 && code <= 67) return '🌧️'
+  if (code >= 71 && code <= 77) return '❄️'
+  if (code >= 80 && code <= 82) return '🌦️'
+  if (code >= 95 && code <= 99) return '⛈️'
   return '☀️'
 }
 
@@ -82,7 +78,6 @@ const getRiskClass = (precip, wind) => {
 
 const bestDay = computed(() => {
   if (weekOutlook.value.length === 0) return null
-  // Sort by safest conditions: low precipitation, low wind speed
   return [...weekOutlook.value].sort((a, b) => {
     const scoreA = a.precipitationMm * 2.5 + a.windSpeedMax
     const scoreB = b.precipitationMm * 2.5 + b.windSpeedMax
@@ -196,12 +191,12 @@ const microClimateDescription = computed(() => {
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
-    <!-- Sidebar Component -->
+    
     <Sidebar active="weather"/>
 
-    <!-- Main Content Area -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 flex flex-col justify-between">
-      <!-- Loading State -->
+      
       <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center">
         <svg class="animate-spin h-8 w-8 text-[#023C23] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -210,7 +205,7 @@ const microClimateDescription = computed(() => {
         <p class="text-sm text-slate-500 font-medium">Memuat data cuaca...</p>
       </div>
 
-      <!-- No Active Expedition State -->
+      
       <div v-else-if="!activeExpedition" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
         <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#023C23] flex items-center justify-center mb-6">
           <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -226,7 +221,7 @@ const microClimateDescription = computed(() => {
         </NuxtLink>
       </div>
 
-      <!-- Error State -->
+      
       <div v-else-if="errorMessage" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
         <div class="h-16 w-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -235,9 +230,9 @@ const microClimateDescription = computed(() => {
         <p class="text-sm text-slate-500 mb-6">{{ errorMessage }}</p>
       </div>
 
-      <!-- Main Weather Dashboard Content -->
+      
       <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
-        <!-- Header -->
+        
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Weather Forecast</h1>
@@ -245,13 +240,13 @@ const microClimateDescription = computed(() => {
           </div>
         </header>
 
-        <!-- Bento Grid Container -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
           
-          <!-- Hero Card: AI Recommendation (2x2) -->
+          
           <div class="xl:col-span-2 xl:row-span-2 bg-[#023C23] text-white rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between relative overflow-hidden group">
             <div class="relative z-10">
-              <!-- Badge -->
+              
               <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-xs font-medium text-green-100 border border-white/5 w-fit">
                 <svg class="w-3.5 h-3.5 fill-current text-green-200" viewBox="0 0 24 24">
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
@@ -259,18 +254,18 @@ const microClimateDescription = computed(() => {
                 AI Recommendation
               </div>
               
-              <!-- Title -->
+              
               <h2 class="text-4xl lg:text-5xl font-medium mt-6 leading-tight font-heading">
                 Summit Golden Window
               </h2>
               
-              <!-- Description -->
+              
               <p class="text-white/80 text-base leading-relaxed mt-4 max-w-[400px]">
                 Our AI identifies the optimal window starting <strong class="font-medium text-green-200 underline decoration-green-200/50 decoration-2 underline-offset-4">{{ bestDayFormatted }}</strong>. High visibility, low wind shear, and zero precipitation forecast.
               </p>
             </div>
 
-            <!-- Lower Metrics inside Hero -->
+            
             <div class="flex flex-wrap gap-8 mt-8 border-t border-white/10 pt-6 relative z-10">
               <div>
                 <div class="text-xs text-white/50 font-medium">Visibility</div>
@@ -286,11 +281,11 @@ const microClimateDescription = computed(() => {
               </div>
             </div>
 
-            <!-- Decorative blur element -->
+            
             <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-green-500/20 blur-3xl rounded-full pointer-events-none"></div>
           </div>
 
-          <!-- Go Status Card (1x2) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
             <div>
               <div class="flex items-center gap-3">
@@ -310,7 +305,7 @@ const microClimateDescription = computed(() => {
               </p>
             </div>
 
-            <!-- Progress Bars -->
+            
             <div class="mt-8 space-y-5 bg-slate-50 rounded-2xl p-5 border border-slate-100">
               <div>
                 <div class="flex justify-between text-xs font-medium text-slate-500 mb-2.5">
@@ -334,7 +329,7 @@ const microClimateDescription = computed(() => {
             </div>
           </div>
 
-          <!-- Current Temperature Card (1x1) -->
+          
           <div class="xl:col-span-1 xl:row-span-1 bg-white border border-slate-100 rounded-[2.5rem] p-6 shadow-sm flex flex-col items-center justify-center text-center">
             <svg class="w-12 h-12 text-amber-400 fill-current animate-spin-slow" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="5"/>
@@ -347,7 +342,7 @@ const microClimateDescription = computed(() => {
             </div>
           </div>
 
-          <!-- Micro-climate Warning Card (1x1) -->
+          
           <div class="xl:col-span-1 xl:row-span-1 bg-[#FDF9F3] border border-orange-100 rounded-[2.5rem] p-6 shadow-sm flex flex-col justify-center">
             <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -358,7 +353,7 @@ const microClimateDescription = computed(() => {
             <p class="text-xs text-slate-500 mt-1 leading-relaxed">{{ microClimateDescription }}</p>
           </div>
 
-          <!-- 7-Day Forecast (4x1) -->
+          
           <div class="xl:col-span-4 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-lg font-medium text-slate-800">7-Day Mountain Forecast</h2>
@@ -373,7 +368,7 @@ const microClimateDescription = computed(() => {
               >
                 <span class="text-xs font-medium text-slate-400">{{ formatDayName(day.date) }}</span>
                 
-                <!-- Weather Icon -->
+                
                 <span class="mt-4 text-3xl">{{ getWeatherIcon(day.weatherCode) }}</span>
                 
                 <div class="flex items-baseline gap-1 mt-4">
@@ -410,7 +405,7 @@ const microClimateDescription = computed(() => {
         </div>
       </div>
       
-      <!-- Footer Component -->
+      
       <Footer class="mt-8"/>
     </main>
   </div>

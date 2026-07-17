@@ -2,10 +2,10 @@
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <AdminSidebar />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
       
-      <!-- Top Header -->
+      
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
@@ -29,9 +29,9 @@
         </div>
       </div>
 
-      <!-- Quick Metrics Grid -->
+      
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <!-- Metric 1 -->
+        
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">TOTAL GUNUNG</p>
@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <!-- Metric 2 -->
+        
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">PENDAKI TERDAFTAR</p>
@@ -59,7 +59,7 @@
           </div>
         </div>
 
-        <!-- Metric 3 -->
+        
         <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-400 font-medium mb-1">ULASAN / KOMENTAR</p>
@@ -74,9 +74,9 @@
         </div>
       </div>
 
-      <!-- Bento Grid Overview -->
+      
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left: Quick Navigation & Management Cards -->
+        
         <div class="lg:col-span-2 space-y-6">
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm">
             <div class="flex items-center justify-between mb-6">
@@ -126,7 +126,7 @@
             </div>
           </div>
 
-          <!-- Recent Mountain Additions -->
+          
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-base font-heading font-medium text-slate-900">Gunung Terakhir Ditambahkan</h3>
@@ -150,7 +150,7 @@
           </div>
         </div>
 
-        <!-- Right: Moderation Queue Summary -->
+        
         <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm flex flex-col justify-between">
           <div>
             <h3 class="text-base font-heading font-medium text-slate-900 mb-1">Antrean Moderasi Laporan</h3>

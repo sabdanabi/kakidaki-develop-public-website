@@ -104,14 +104,14 @@ onMounted(() => {
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
-    <!-- Sidebar Component -->
+    
     <Sidebar active="profile" />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-8 flex flex-col">
       <div class="w-full max-w-4xl mx-auto space-y-6">
 
-        <!-- HEADER -->
+        
         <header class="flex justify-between items-center">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Profile Saya</h1>
@@ -119,7 +119,7 @@ onMounted(() => {
           </div>
         </header>
 
-        <!-- ALERTS -->
+        
         <div v-if="successMessage" class="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-sm font-medium transition-all">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#118c13]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -137,18 +137,18 @@ onMounted(() => {
           <span>{{ errorMessage }}</span>
         </div>
 
-        <!-- MAIN CARD -->
+        
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-          <!-- Loading State -->
+          
           <div v-if="isLoading" class="p-12 flex flex-col items-center justify-center space-y-4">
             <div class="h-8 w-8 rounded-full border-4 border-slate-200 border-t-[#118c13] animate-spin"></div>
             <p class="text-sm text-slate-500 font-medium">Memuat data profil...</p>
           </div>
 
-          <!-- Content State -->
+          
           <div v-else class="p-6 md:p-8">
             <div class="flex flex-col md:flex-row items-start md:items-center gap-6 pb-8 border-b border-slate-100">
-              <!-- Avatar placeholder -->
+              
               <div class="h-20 w-20 rounded-2xl bg-[#023C23]/5 flex items-center justify-center text-2xl font-medium text-[#023C23] shrink-0">
                 {{ profile.name ? profile.name.substring(0, 2).toUpperCase() : 'KD' }}
               </div>
@@ -173,7 +173,7 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- View Mode -->
+            
             <div v-if="!isEditing" class="py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-1">
                 <span class="text-xs font-medium text-slate-400 uppercase tracking-wider block">Nama Lengkap</span>
@@ -199,10 +199,10 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Edit Mode -->
+            
             <form v-else @submit.prevent="saveProfile" class="py-6 space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Name -->
+                
                 <div>
                   <label for="prof-name" class="mb-1.5 block text-sm font-medium text-slate-700">Nama Lengkap</label>
                   <input
@@ -215,7 +215,7 @@ onMounted(() => {
                   />
                 </div>
 
-                <!-- Age -->
+                
                 <div>
                   <label for="prof-age" class="mb-1.5 block text-sm font-medium text-slate-700">Umur</label>
                   <input
@@ -230,7 +230,7 @@ onMounted(() => {
                   />
                 </div>
 
-                <!-- Phone -->
+                
                 <div>
                   <label for="prof-phone" class="mb-1.5 block text-sm font-medium text-slate-700">Nomor HP</label>
                   <input
@@ -244,7 +244,7 @@ onMounted(() => {
                   />
                 </div>
 
-                <!-- Gender -->
+                
                 <div>
                   <label for="prof-gender" class="mb-1.5 block text-sm font-medium text-slate-700">Jenis Kelamin</label>
                   <div class="relative">
@@ -267,7 +267,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Form Buttons -->
+              
               <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
                 <button
                   type="button"

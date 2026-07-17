@@ -5,10 +5,8 @@ definePageMeta({
   layout: false
 })
 
-// Demo state: starts with 2 credits for new users
 const credits = ref(2)
 
-// Sandbox Modal state
 const isSandboxOpen = ref(false)
 const selectedPackage = ref('')
 const selectedCredits = ref(0)
@@ -73,10 +71,10 @@ const formatRupiah = (number) => {
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <Sidebar active="payment" />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 sm:p-6 space-y-6">
       
-      <!-- Header -->
+      
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-[#023C23] text-xs font-medium mb-2">
@@ -101,7 +99,7 @@ const formatRupiah = (number) => {
         </div>
       </div>
 
-      <!-- CURRENT CREDIT DISPLAY CARD -->
+      
       <div class="bg-gradient-to-r from-[#023C23] via-emerald-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-emerald-800/40">
         <div class="absolute right-0 top-0 w-64 h-64 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
         
@@ -127,17 +125,17 @@ const formatRupiah = (number) => {
         </div>
       </div>
 
-      <!-- PILIHAN PAKET TOP UP CREDIT -->
+      
       <div class="space-y-4 pt-2">
         <div>
           <h2 class="text-xl font-heading font-medium text-slate-900">Pilihan Paket Credit Tambahan</h2>
           <p class="text-xs text-slate-500 mt-0.5">Pilih paket yang sesuai untuk menambah kuota rencana pendakian Anda. Transaksi diproses instan via Sandbox.</p>
         </div>
 
-        <!-- Bento Grid Packages -->
+        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <!-- Package 1: Explorer -->
+          
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative group">
             <div class="space-y-4">
               <div class="flex items-center justify-between">
@@ -163,7 +161,7 @@ const formatRupiah = (number) => {
             </button>
           </div>
 
-          <!-- Package 2: Summit Master (Popular) -->
+          
           <div class="bg-white rounded-3xl p-6 border-2 border-[#023C23] shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative transform md:-translate-y-1">
             <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#023C23] text-white px-4 py-1 rounded-full text-[10px] font-medium uppercase shadow-sm">
               ✨ Paling Populer
@@ -192,7 +190,7 @@ const formatRupiah = (number) => {
             </button>
           </div>
 
-          <!-- Package 3: Expedition (Best Value) -->
+          
           <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative group">
             <div class="space-y-4">
               <div class="flex items-center justify-between">
@@ -222,7 +220,7 @@ const formatRupiah = (number) => {
       </div>
     </main>
 
-    <!-- SANDBOX PAYMENT MODAL -->
+    
     <div
       v-if="isSandboxOpen"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
@@ -230,7 +228,7 @@ const formatRupiah = (number) => {
       <div
         class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6 relative overflow-hidden animate-in zoom-in-95 duration-200"
       >
-        <!-- Modal Header -->
+        
         <div class="flex items-center justify-between border-b border-slate-100 pb-4">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-2xl bg-emerald-100 text-[#023C23] flex items-center justify-center font-heading font-medium text-sm">
@@ -249,7 +247,7 @@ const formatRupiah = (number) => {
           </button>
         </div>
 
-        <!-- Success State -->
+        
         <div v-if="isSuccess" class="py-6 text-center space-y-4 animate-in zoom-in duration-300">
           <div class="w-16 h-16 bg-emerald-100 text-[#023C23] rounded-full flex items-center justify-center mx-auto shadow-sm">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
@@ -272,9 +270,9 @@ const formatRupiah = (number) => {
           </button>
         </div>
 
-        <!-- Checkout / Processing State -->
+        
         <div v-else class="space-y-5">
-          <!-- Order Summary -->
+          
           <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2.5 text-xs">
             <div class="flex justify-between text-slate-600">
               <span>Paket Terpilih:</span>
@@ -290,7 +288,7 @@ const formatRupiah = (number) => {
             </div>
           </div>
 
-          <!-- Payment Method Selection -->
+          
           <div class="space-y-2">
             <label class="block text-xs font-medium text-slate-700">Pilih Metode Pembayaran (Simulasi)</label>
             <div class="grid grid-cols-3 gap-2.5">
@@ -321,7 +319,7 @@ const formatRupiah = (number) => {
             </div>
           </div>
 
-          <!-- Sandbox Instruction Box -->
+          
           <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200/70 flex items-start gap-2.5 text-xs text-amber-800">
             <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
             <div>
@@ -329,7 +327,7 @@ const formatRupiah = (number) => {
             </div>
           </div>
 
-          <!-- Action Buttons -->
+          
           <div class="pt-2 flex items-center gap-3">
             <button
               @click="closeSandboxModal"

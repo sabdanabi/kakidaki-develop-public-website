@@ -1,7 +1,7 @@
 <template>
  <NuxtLayout name="auth">
 
- <!-- Welcome Animation Overlay -->
+ 
  <div v-if="showWelcome"class="fixed inset-0 z-50 flex items-center justify-center bg-white">
  <div class="flex flex-col items-center text-center welcome-fade-in">
  <div class="h-16 w-16 rounded-2xl bg-[#023C23]/10 flex items-center justify-center mb-6 welcome-bounce">
@@ -20,13 +20,13 @@
  <div v-if="!showWelcome"class="flex min-h-screen items-center justify-center px-6 py-8">
 
  <div class="w-full max-w-lg">
- <!-- Logo -->
+ 
  <NuxtLink to="/"class="mb-6 flex items-center gap-3">
- <img src="/images/logo.svg"alt="Kaki Daki"class="h-9 w-9"/>
+ <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="h-9 w-9"/>
  <span class="text-xl font-medium text-slate-800">Kaki Daki</span>
  </NuxtLink>
 
- <!-- Step Indicator -->
+ 
  <div class="flex items-center gap-2 mb-6">
  <div
  v-for="s in totalSteps"
@@ -37,10 +37,10 @@
  <span class="ml-auto text-xs text-slate-400">{{ currentStep }} / {{ totalSteps }}</span>
  </div>
 
- <!-- Step Content -->
+ 
  <div>
 
- <!-- Step 1: Jenis Kelamin -->
+ 
  <div v-if="currentStep === 1"key="s1">
  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Apa jenis kelamin kamu?</h1>
  <p class="text-sm text-slate-500 mb-6">Informasi ini membantu kami merekomendasikan perlengkapan yang lebih sesuai.</p>
@@ -72,14 +72,14 @@
  </button>
  </div>
 
- <!-- Warning inline -->
+ 
  <p v-if="warning"class="mt-3 flex items-center gap-1.5 text-xs text-red-500">
  <svg xmlns="http://www.w3.org/2000/svg"class="h-3.5 w-3.5 shrink-0"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="2.5"stroke-linecap="round"stroke-linejoin="round"><circle cx="12"cy="12"r="10"/><line x1="12"y1="8"x2="12"y2="12"/><line x1="12"y1="16"x2="12.01"y2="16"/></svg>
  {{ warning }}
  </p>
  </div>
 
- <!-- Step 2: Tinggi & Berat Badan -->
+ 
  <div v-else-if="currentStep === 2"key="s2">
  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Data fisik kamu</h1>
  <p class="text-sm text-slate-500 mb-6">Kami gunakan untuk menghitung kebutuhan kalori dan beban ideal carrier.</p>
@@ -130,7 +130,7 @@
  </p>
  </div>
 
- <!-- Step 3: Riwayat Penyakit -->
+ 
  <div v-else-if="currentStep === 3"key="s3">
  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Riwayat penyakit</h1>
  <p class="text-sm text-slate-500 mb-6">Pilih kondisi yang pernah atau sedang kamu alami. Bisa pilih lebih dari satu.</p>
@@ -176,7 +176,7 @@
  </p>
  </div>
 
- <!-- Step 4: Riwayat Cedera Fisik -->
+ 
  <div v-else-if="currentStep === 4"key="s4">
  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Riwayat cedera fisik</h1>
  <p class="text-sm text-slate-500 mb-6">Cedera sebelumnya bisa mempengaruhi rute dan durasi pendakian yang kami rekomendasikan.</p>
@@ -222,7 +222,7 @@
  </p>
  </div>
 
- <!-- Step 5: Alergi Cuaca/Obat -->
+ 
  <div v-else-if="currentStep === 5"key="s5">
  <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Alergi cuaca & obat</h1>
  <p class="text-sm text-slate-500 mb-6">Agar kami bisa menyesuaikan rekomendasi obat P3K dan peringatan cuaca untukmu.</p>
@@ -268,7 +268,7 @@
  </p>
  </div>
 
-  <!-- Step 6: Connect Google Fit -->
+  
   <div v-else-if="currentStep === 6"key="s6">
   <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Hubungkan Google Fit</h1>
   <p class="text-sm text-slate-500 mb-6">Sinkronkan data aktivitas fisikmu untuk analisis kebugaran yang lebih akurat.</p>
@@ -301,7 +301,7 @@
   </div>
  </div>
 
- <!-- Bottom Navigation -->
+ 
  <div class="mt-6 flex items-center justify-between">
  <div>
  <button
@@ -322,7 +322,7 @@
  Lewati semua
  </NuxtLink>
 
- <!-- Next / Finish button with loading -->
+ 
  <button
  v-if="currentStep < totalSteps"
  @click="tryNext()"
@@ -344,7 +344,7 @@
  </div>
  </div>
 
- <!-- Footer -->
+ 
  <div class="mt-6 text-center text-xs text-slate-400">
  &copy; {{ new Date().getFullYear() }} Kaki Daki. All rights reserved.
  </div>
@@ -415,13 +415,11 @@ const tryNext = () => {
  warning.value = ''
  isLoading.value = true
 
- // Simulate saving data
  setTimeout(() => {
  isLoading.value = false
  currentStep.value++
  }, 600)
 }
-
 
 const assessmentStore = useAssessmentStore()
 const googleFitStore = useGoogleFitStore()
@@ -590,7 +588,7 @@ const allergyOptions = [
 </script>
 
 <style>
-/* Welcome animation keyframes */
+
 @keyframes welcomeFadeIn {
  from { opacity: 0; }
  to { opacity: 1; }

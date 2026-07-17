@@ -2,10 +2,10 @@
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <AdminSidebar />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
       
-      <!-- Header -->
+      
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <!-- Quick Metrics -->
+      
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
           <p class="text-xs text-slate-400 font-medium">TOTAL KOMENTAR / ULASAN</p>
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <!-- Search & Filter -->
+      
       <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="relative flex-1 max-w-md">
           <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -60,14 +60,14 @@
         </div>
       </div>
 
-      <!-- Comments List -->
+      
       <div class="space-y-4">
         <div
           v-for="c in filteredComments"
           :key="c.id"
           class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-start justify-between gap-6"
         >
-          <!-- Left: Comment Content -->
+          
           <div class="flex-1 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-3">
@@ -82,7 +82,7 @@
                 </div>
               </div>
 
-              <!-- Flag Status Badge -->
+              
               <span
                 v-if="c.isFlagged"
                 class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-medium text-[11px] border border-amber-200 flex items-center gap-1.5 animate-pulse"
@@ -100,13 +100,13 @@
               </span>
             </div>
 
-            <!-- Comment Box -->
+            
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-800 text-xs leading-relaxed font-sans">
               "{{ c.text }}"
             </div>
           </div>
 
-          <!-- Right: Simplistic Actions (Hapus & Tandai Lapor Basecamp) -->
+          
           <div class="flex flex-wrap md:flex-col justify-end gap-2 shrink-0 md:w-56 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-6">
             <button
               @click="toggleFlag(c)"

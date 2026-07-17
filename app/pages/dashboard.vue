@@ -2,9 +2,9 @@
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <Sidebar active="dashboard" />
     
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 flex flex-col justify-between">
-      <!-- Loading State -->
+      
       <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center">
         <svg class="animate-spin h-8 w-8 text-[#023C23] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -13,7 +13,7 @@
         <p class="text-sm text-slate-500 font-medium">Memuat dashboard ekspedisi...</p>
       </div>
 
-      <!-- No Active Expedition State -->
+      
       <div v-else-if="dashboardMountains.length === 0" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4 py-12">
         <div class="h-16 w-16 rounded-2xl bg-emerald-50 text-[#023C23] flex items-center justify-center mb-6">
           <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
         </NuxtLink>
       </div>
 
-      <!-- Error State -->
+      
       <div v-else-if="errorMessage" class="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center px-4 py-12">
         <div class="h-16 w-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -39,17 +39,17 @@
         <p class="text-sm text-slate-500 mb-6">{{ errorMessage }}</p>
       </div>
 
-      <!-- Active Dashboard Content -->
+      
       <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         
-        <!-- Top Section (Selector) -->
+        
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Dashboard</h1>
             <p class="text-sm text-slate-500 mt-1">Your expedition overview and readiness metrics</p>
           </div>
           
-          <!-- Mountain Tabs Selector -->
+          
           <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-lg border border-slate-200/50 shadow-sm w-full sm:w-auto overflow-x-auto">
             <button
               v-for="(mt, idx) in dashboardMountains"
@@ -67,10 +67,10 @@
           </div>
         </div>
 
-        <!-- BENTO GRID -->
+        
         <section v-if="selectedMountain" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
           
-          <!-- 1. HERO CARD (Spans 2 cols, 2 rows in XL) -->
+          
           <div class="md:col-span-2 xl:col-span-2 xl:row-span-2 h-[380px] xl:h-full rounded-[2.5rem] overflow-hidden relative shadow-md group border border-slate-200/40">
             <img
               :src="selectedMountain.image"
@@ -79,7 +79,7 @@
             />
             <div class="absolute inset-0 bg-gradient-to-t from-[#023C23]/95 via-[#023C23]/40 to-transparent"></div>
 
-            <!-- Hero Content -->
+            
             <div class="absolute inset-0 p-6 flex flex-col justify-end">
               <div class="space-y-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium">
@@ -128,7 +128,7 @@
             </div>
           </div>
 
-          <!-- 2. PHYSICAL READINESS (Spans 1 col, 2 rows in XL) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 hover:shadow-md transition-shadow relative overflow-hidden flex flex-col">
             <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"></div>
             
@@ -136,7 +136,7 @@
               <h3 class="font-heading font-medium text-slate-800 text-lg">Physical Readiness</h3>
               <p class="text-xs text-slate-400 mt-0.5">Overall fitness and adaptability</p>
 
-              <!-- Radial Progress -->
+              
               <div class="flex items-center justify-center my-6 flex-1">
                 <div class="relative w-48 h-48 flex items-center justify-center">
                   <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
@@ -150,7 +150,7 @@
                 </div>
               </div>
 
-              <!-- Stats -->
+              
               <div class="space-y-4">
                 <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
                   <div class="flex items-center gap-3">
@@ -178,14 +178,14 @@
             </div>
           </div>
 
-          <!-- 3. WEATHER WIDGET (Spans 1 col, 1 row) -->
+          
           <div class="bg-[#023C23] rounded-3xl p-6 shadow-md relative overflow-hidden flex flex-col justify-between group min-h-[180px]">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
             
             <div class="relative z-10" v-if="activeWeather">
               <div class="flex items-center justify-between">
                 <h3 class="font-heading font-medium text-white text-lg">Forecast</h3>
-                <!-- Date Picker Mini -->
+                
                 <select v-model="selectedDate" class="bg-white/10 text-white text-xs border border-white/20 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-emerald-500">
                   <option v-for="item in weekOutlook" :key="item.date" :value="item.date" class="text-slate-900">
                     {{ formatDate(item.date) }}
@@ -195,7 +195,7 @@
 
               <div class="flex items-center gap-4 mt-6">
                 <div class="text-white">
-                  <!-- Dynamic Weather Icon -->
+                  
                   <svg v-if="getWeatherIcon(activeWeather.weatherCode) === 'snowflake'" class="w-12 h-12 text-sky-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3m14.5-6.5l-11 11m11 0l-11-11" />
                   </svg>
@@ -242,7 +242,7 @@
             </div>
           </div>
 
-          <!-- 4. LOGISTICAL PROGRESS (Spans 1 col, 1 row) -->
+          
           <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between group hover:shadow-md transition-shadow min-h-[180px]">
             <div>
               <h3 class="font-heading font-medium text-slate-800 text-lg">Logistics</h3>
@@ -270,7 +270,7 @@
           </div>
         </section>
 
-        <!-- 5. EXPEDITION SCHEDULE TIMELINE (Spans full width) -->
+        
         <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40" v-if="selectedMountain">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
@@ -281,7 +281,7 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5" v-if="weekOutlook && weekOutlook.length > 0">
-            <!-- Dynamic Days in Forecast -->
+            
             <div 
               v-for="(day, index) in weekOutlook.slice(0, 3)" 
               :key="day.date"
@@ -324,7 +324,7 @@
         </section>
       </div>
       
-      <!-- Footer Component -->
+      
       <Footer class="mt-8"/>
     </main>
   </div>

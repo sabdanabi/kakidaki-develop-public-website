@@ -38,13 +38,13 @@ onMounted(async () => {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans relative overflow-hidden">
-    <!-- Decorative background blobs -->
+    
     <div class="absolute -top-40 -right-40 w-96 h-96 bg-green-500/10 blur-[100px] rounded-full pointer-events-none"></div>
     <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
 
     <div class="w-full max-w-md bg-white rounded-3xl border border-slate-100 shadow-xl p-8 text-center relative z-10">
       
-      <!-- Brand Logo -->
+      
       <div class="flex justify-center mb-8">
         <div class="flex items-center gap-3">
           <img
@@ -56,10 +56,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- LOADING STATE -->
+      
       <div v-if="status === 'loading'" class="space-y-6">
         <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-          <!-- Double spin loaders -->
+          
           <div class="absolute inset-0 rounded-full border-4 border-slate-100 border-t-[#118c13] animate-spin"></div>
           <div class="absolute inset-2 rounded-full border-4 border-slate-100 border-b-[#023C23] animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
           
@@ -76,7 +76,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- SUCCESS STATE -->
+      
       <div v-else-if="status === 'success'" class="space-y-6">
         <div class="w-20 h-20 mx-auto rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#118c13] relative">
           <div class="absolute inset-0 rounded-full bg-emerald-500/10 animate-ping"></div>
@@ -100,7 +100,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- ERROR STATE -->
+      
       <div v-else-if="status === 'error'" class="space-y-6">
         <div class="w-20 h-20 mx-auto rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

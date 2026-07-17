@@ -90,7 +90,6 @@ export const useGoogleFitStore = defineStore('googleFit', () => {
         },
       })
       
-      // Update status and fetch fresh logs after connection
       await fetchTrainingLogs()
       
       return { success: true, data }

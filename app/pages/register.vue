@@ -5,8 +5,8 @@
  <div class="flex w-full flex-col px-6 py-8 md:px-8 lg:w-1/2 lg:px-8 xl:px-8">
  <NuxtLink to="/"class="mb-6 flex items-center gap-3 lg:mb-6">
  <img
- src="/images/logo.svg"
- alt="Kaki Daki"
+ src="~/assets/images/logo_.svg"
+ alt="KakiDaki"
  class="h-9 w-9"
  />
  <span class="text-xl font-medium text-slate-800">Kaki Daki</span>

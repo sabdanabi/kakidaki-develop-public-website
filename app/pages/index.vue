@@ -1,15 +1,15 @@
 <template>
   <div class="min-h-screen bg-white text-slate-900 font-sans selection:bg-[#023C23]/20 selection:text-[#023C23] overflow-x-hidden">
-    <!-- Top Navigation Bar -->
+    
     <Navbar />
 
-    <!-- Hero Section -->
+    
     <section class="relative pt-36 pb-20 lg:pt-44 lg:pb-32 px-6 lg:px-8 overflow-hidden">
-      <!-- Minimalist background -->
+      
       <div class="absolute inset-0 bg-slate-50/50 -z-10"></div>
       
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-        <!-- Hero Column Left -->
+        
         <div class="z-10 text-center lg:text-left">
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[#023C23] mb-6 mx-auto lg:mx-0">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -34,15 +34,15 @@
           </div>
         </div>
 
-        <!-- Hero Column Right (Card Image Placeholder) -->
+        
         <div class="relative lg:pl-12">
           <div class="bg-white rounded-[2.5rem] p-4 sm:p-5 shadow-[0_20px_60px_rgb(0,0,0,0.06)] relative border border-slate-100">
-            <!-- Mountain Image Placeholder -->
+            
             <div class="w-full bg-slate-100 rounded-[2rem] aspect-[4/3] flex flex-col justify-center items-center relative overflow-hidden">
               <img src="~/assets/images/gunung_rinjani.webp" alt="Puncak Gunung" class="w-full h-full object-cover">
             </div>
 
-            <!-- Stats Overlay Container -->
+            
             <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:bottom-8 sm:-left-12 bg-white/95 backdrop-blur-md border border-slate-100 p-5 rounded-2xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] z-20 w-[90%] sm:w-72">
               <div class="flex justify-between items-center mb-4">
                 <span class="font-sans text-slate-900 text-xs font-medium">Gunung Rinjani (Lombok)</span>
@@ -68,21 +68,21 @@
       </div>
     </section>
 
-    <!-- Bento Grid Services -->
+    
     <section id="about" class="py-24 lg:py-32 px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       <div class="text-center mb-16">
         <h2 class="font-heading text-3xl md:text-4xl mb-4 text-slate-900 font-medium tracking-tight">Rekayasa Presisi di Setiap Langkah</h2>
         <p class="font-sans text-slate-500 max-w-2xl mx-auto text-base leading-relaxed">Pendekatan empat pilar kami memastikan Anda siap secara fisik, mental, dan dilengkapi secara teknologi untuk menghadapi medan apapun.</p>
       </div>
 
-      <!-- Bento Grid -->
+      
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:auto-rows-[280px]">
         
-        <!-- Dashboard Card (Kiri Besar) -->
+        
         <div class="md:col-span-8 md:row-span-2 bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm flex flex-col justify-between group hover:shadow-md transition-all duration-300">
           <div>
             <div class="w-12 h-12 bg-emerald-50 text-[#023C23] rounded-xl flex items-center justify-center mb-6 group-hover:scale-105 transition-transform border border-emerald-100">
-              <!-- Mountain Telemetry Icon -->
+              
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 20h18L14 8l-4 6-3-4-4 10zM12 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
               </svg>
@@ -90,13 +90,13 @@
             <h3 class="font-heading text-2xl mb-3 text-slate-900 font-medium">Pusat Kendali Terpadu</h3>
             <p class="font-sans text-slate-500 max-w-sm text-sm leading-relaxed">Dasbor KakiDaki mengumpulkan data metrik kesehatan, tingkat kesulitan jalur, dan pencitraan satelit secara langsung dalam satu tampilan elegan.</p>
           </div>
-          <!-- UI Placeholder -->
+          
           <div class="relative w-full h-48 sm:h-56 bg-slate-50 rounded-2xl overflow-hidden mt-8 border border-slate-100 flex items-center justify-center">
             <img src="~/assets/images/ui.png" alt="UI Dashboard" class="w-full h-full object-cover">
           </div>
         </div>
 
-        <!-- Training Card (Kanan Atas) -->
+        
         <div class="md:col-span-4 md:row-span-1 bg-[#023C23] text-white rounded-[2rem] p-7 flex flex-col justify-between shadow-lg overflow-hidden relative group">
           <div class="absolute inset-0 bg-[url('~/assets/images/gunung_rinjani.webp')] bg-cover opacity-10 mix-blend-overlay"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-[#023C23] via-transparent to-transparent z-0"></div>
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <!-- Weather Card (Kanan Tengah) -->
+        
         <div class="md:col-span-4 md:row-span-1 bg-white rounded-[2rem] p-7 border border-slate-100 flex flex-col justify-between shadow-sm group hover:shadow-md transition-shadow">
           <div>
             <div class="flex items-center gap-2 mb-4">
@@ -140,10 +140,10 @@
           </div>
         </div>
 
-        <!-- Gear Card (Kiri Bawah) -->
+        
         <NuxtLink to="/packing-assistant" class="md:col-span-6 lg:col-span-4 bg-slate-50 rounded-[2rem] p-7 flex items-center gap-6 shadow-sm border border-slate-100 group hover:bg-white hover:shadow-md transition-all">
           <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-emerald-200 group-hover:text-[#023C23] transition-all text-slate-600">
-            <!-- Trekking Backpack Equipment Icon -->
+            
             <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6V4.5a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 012.25 2.25V6m-9.75 0h12a2.25 2.25 0 012.25 2.25v11.25A2.25 2.25 0 0115.75 21H8.25A2.25 2.25 0 016 18.75V8.25A2.25 2.25 0 018.25 6zm2.25 6.75h3m-3 3h3"/>
             </svg>
@@ -154,7 +154,7 @@
           </div>
         </NuxtLink>
         
-        <!-- Community Card (Kanan Bawah) -->
+        
         <NuxtLink to="/community" class="md:col-span-6 lg:col-span-8 bg-emerald-50 rounded-[2rem] p-7 border border-emerald-100 flex flex-col sm:flex-row items-center gap-6 shadow-sm justify-between group hover:shadow-md hover:border-emerald-200 transition-all">
           <div class="sm:w-3/5">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-emerald-100 text-[#023C23] mb-4">
@@ -166,7 +166,7 @@
             <h3 class="font-heading text-xl md:text-2xl font-medium text-slate-900 mb-2 group-hover:text-[#023C23] transition-colors">Ulasan & Kondisi Jalur Terkini</h3>
             <p class="font-sans text-slate-600 text-xs sm:text-sm leading-relaxed max-w-sm">Akses ribuan ulasan terbaru langsung dari lapangan. Bagikan kondisi cuaca mikro, ketersediaan air di pos, dan rute kepada sesama pendaki.</p>
           </div>
-          <!-- Community Stats Graphic -->
+          
           <div class="sm:w-2/5 w-full">
             <div class="w-full h-28 bg-white/70 backdrop-blur rounded-2xl border border-emerald-100/60 p-4 flex flex-col justify-center gap-2 relative overflow-hidden group-hover:bg-white transition-colors shadow-sm">
               <div class="flex items-center justify-between">
@@ -183,7 +183,7 @@
       </div>
     </section>
 
-    <!-- Community Callout (CTA) -->
+    
     <section class="py-24 bg-slate-50 px-6 lg:px-8 border-y border-slate-100">
       <div class="max-w-5xl mx-auto text-center">
         <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl mb-6 leading-tight text-slate-900 font-medium">
@@ -207,7 +207,7 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    
     <footer class="bg-white pt-20 pb-8 px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
@@ -250,7 +250,7 @@
           </div>
         </div>
 
-        <!-- Copyright -->
+        
         <div class="pt-6 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
           <p class="text-[11px] text-slate-400 font-medium">© 2024 KakiDaki. Hak Cipta Dilindungi.</p>
           <div class="flex gap-4 text-[11px] text-slate-400">
@@ -261,19 +261,19 @@
         </div>
       </div>
     </footer>
-        <!-- Back to Top FAB -->
+        
     <button class="fixed bottom-8 right-8 w-14 h-14 bg-[#023C23] hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group" @click="scrollToTop">
       <span class="material-symbols-outlined group-hover:-translate-y-1 transition-transform">north</span>
     </button>
 
-    <!-- ASSESSMENT MODAL -->
+    
     <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <!-- Backdrop with blur -->
+      
       <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity animate-[fadeIn_0.2s_ease-out]" @click="closeModal"></div>
 
-      <!-- Modal Card -->
+      
       <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl w-full max-w-lg overflow-hidden relative z-10 transform scale-100 transition-all duration-300 animate-[scaleUp_0.2s_ease-out]">
-        <!-- Header -->
+        
         <div class="p-6 md:p-8 pb-4 flex justify-between items-start border-b border-slate-100">
           <div>
             <h3 class="text-xl font-medium text-slate-900 font-heading">Start Expedition Assessment</h3>
@@ -284,9 +284,9 @@
           </button>
         </div>
 
-        <!-- Body -->
+        
         <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
-          <!-- Auth Alert if not logged in -->
+          
           <div v-if="!authStore.token" class="space-y-6 text-center py-6">
             <div class="w-16 h-16 bg-amber-50 border border-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto animate-pulse">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -311,7 +311,7 @@
             </div>
           </div>
 
-          <!-- Success State -->
+          
           <div v-else-if="submitSuccess" class="space-y-6 text-center py-8">
             <div class="w-16 h-16 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto relative">
               <div class="absolute inset-0 rounded-full bg-emerald-500/10 animate-ping"></div>
@@ -329,16 +329,16 @@
             </div>
           </div>
 
-          <!-- Form State -->
+          
           <form v-else @submit.prevent="submitExpedition" class="space-y-5">
             
-            <!-- Submit Error Alert -->
+            
             <div v-if="submitError" class="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-800 text-xs font-medium flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
               <span>{{ submitError }}</span>
             </div>
 
-            <!-- Mountain ID Dropdown -->
+            
             <div>
               <label for="form-mountain" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Gunung Tujuan</label>
               <div class="relative">
@@ -361,7 +361,7 @@
               </div>
             </div>
 
-            <!-- Dates Row -->
+            
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label for="form-start-date" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Tanggal Mulai</label>
@@ -385,7 +385,7 @@
               </div>
             </div>
 
-            <!-- Member Count -->
+            
             <div>
               <label for="form-members" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Jumlah Anggota Rombongan</label>
               <input
@@ -400,7 +400,7 @@
               />
             </div>
 
-            <!-- Biometrics Row 1 (Age & Height) -->
+            
             <div class="grid grid-cols-3 gap-4">
               <div>
                 <label for="form-age" class="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">Umur</label>
@@ -443,7 +443,7 @@
               </div>
             </div>
 
-            <!-- Submit and Close Buttons -->
+            
             <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
               <button
                 type="button"

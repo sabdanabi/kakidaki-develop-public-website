@@ -21,7 +21,6 @@ export const useLogisticsStore = defineStore('logistics', () => {
       }
       return { success: true, data }
     } catch (err: any) {
-      // Fallback: Check if user profile has an active expedition ID
       if (authStore.user && authStore.user.activeExpeditionId) {
         activeExpeditionId.value = authStore.user.activeExpeditionId
       }
@@ -71,7 +70,6 @@ export const useLogisticsStore = defineStore('logistics', () => {
         body: payload,
       })
       
-      // Update local state
       const index = items.value.findIndex(item => item.id === itemId)
       if (index !== -1) {
         items.value[index] = { ...items.value[index], ...data }

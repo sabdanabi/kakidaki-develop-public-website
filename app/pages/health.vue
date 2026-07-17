@@ -33,7 +33,6 @@ const manageGoogleFitConnection = async () => {
   await connectGoogleFit()
 }
 
-// Compute BMI status description and colors
 const bmiLabel = computed(() => {
   const v = parseFloat(user.value.bmi)
   if (!v) return 'No Data'
@@ -59,7 +58,6 @@ const bmiDescription = computed(() => {
   return 'Biometrik Anda menunjukkan berat badan berlebih. Direkomendasikan latihan kardiovaskular teratur sebelum melakukan pendakian tinggi.'
 })
 
-// Dynamically split medicalHistory into insights sentences
 const medicalInsights = computed(() => {
   if (!user.value.medicalHistory) return []
   return user.value.medicalHistory
@@ -78,12 +76,12 @@ const formatGender = (gender) => {
 
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
-    <!-- Sidebar Component -->
+    
     <Sidebar active="health" />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
-      <!-- Loading State -->
+      
       <div v-if="isLoading" class="flex-1 flex flex-col items-center justify-center space-y-4">
         <div class="h-8 w-8 rounded-full border-4 border-slate-200 border-t-[#118c13] animate-spin"></div>
         <p class="text-sm text-slate-500 font-medium">Memuat data biometrik & kesehatan...</p>
@@ -91,7 +89,7 @@ const formatGender = (gender) => {
 
       <div v-else class="w-full max-w-[1600px] mx-auto space-y-6">
         
-        <!-- HEADER -->
+        
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 class="text-2xl font-heading font-medium text-slate-900">Health & Readiness</h1>
@@ -106,10 +104,10 @@ const formatGender = (gender) => {
           </NuxtLink>
         </header>
 
-        <!-- BENTO GRID -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
 
-          <!-- Hero Card: High Altitude Readiness (2x2) -->
+          
           <div class="xl:col-span-2 xl:row-span-2 bg-[#023C23] rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between relative overflow-hidden group">
             <div class="relative z-10 flex flex-col h-full justify-between">
               <div>
@@ -125,7 +123,7 @@ const formatGender = (gender) => {
                 </p>
               </div>
 
-              <!-- Metrics row inside Hero -->
+              
               <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 mt-8">
                 <div>
                   <p class="text-xs text-white/50 font-medium mb-1">BMI Index</p>
@@ -146,17 +144,17 @@ const formatGender = (gender) => {
               </div>
             </div>
             
-            <!-- Decorative blur element -->
+            
             <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-green-500/20 blur-3xl rounded-full pointer-events-none"></div>
           </div>
 
-          <!-- Skorfisik Radial Dial (1x2) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col items-center justify-center relative overflow-hidden group">
             <h3 class="font-medium text-slate-800 text-lg absolute top-6 left-6">Validation Score</h3>
             
             <div class="relative w-48 h-48 flex items-center justify-center mt-8">
               <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                <!-- Background circle -->
+                
                 <path
                   class="text-slate-100"
                   stroke="currentColor"
@@ -164,7 +162,7 @@ const formatGender = (gender) => {
                   fill="none"
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
-                <!-- Progress circle (85%) -->
+                
                 <path
                   class="text-[#118c13]"
                   stroke="currentColor"
@@ -183,7 +181,7 @@ const formatGender = (gender) => {
             <p class="text-xs text-slate-400 text-center mt-6">Berdasarkan data biometrik Anda</p>
           </div>
 
-          <!-- Google Fit Sync Card (1x2) -->
+          
           <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[300px]">
             <div class="flex items-start justify-between">
               <div class="w-12 h-12 bg-[#FEECEC] rounded-2xl flex items-center justify-center text-[#ea4335]">
@@ -192,13 +190,13 @@ const formatGender = (gender) => {
                 </svg>
               </div>
 
-              <!-- Connected Status -->
+              
               <span v-if="googleFitStore.isConnected" class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
                 <div class="w-1.5 h-1.5 rounded-full bg-[#118c13]"></div>
                 Connected
               </span>
 
-              <!-- Not Connected Status -->
+              
               <span v-else class="bg-red-50 text-[#b81212] border border-red-100 rounded-full px-2.5 py-1 text-xs font-medium flex items-center gap-1.5">
                 <div class="w-1.5 h-1.5 rounded-full bg-[#b81212]"></div>
                 Not Connected
@@ -245,15 +243,15 @@ const formatGender = (gender) => {
             </div>
           </div>
 
-          <!-- Biometrics & Medical Insights (4x1) -->
+          
           <div class="xl:col-span-4 bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              <!-- Left: Biometrics -->
+              
               <div>
                 <h3 class="font-medium text-slate-800 text-lg mb-4">Biometrics & Personal Data</h3>
                 <div class="grid grid-cols-2 gap-4">
-                  <!-- Tinggi Badan -->
+                  
                   <div class="bg-slate-50 rounded-xl p-4 flex items-center gap-3.5 border border-slate-100">
                     <div class="w-10 h-10 bg-green-100/50 rounded-xl flex items-center justify-center text-[#118c13]">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -266,7 +264,7 @@ const formatGender = (gender) => {
                     </div>
                   </div>
 
-                  <!-- Berat Badan -->
+                  
                   <div class="bg-slate-50 rounded-xl p-4 flex items-center gap-3.5 border border-slate-100">
                     <div class="w-10 h-10 bg-green-100/50 rounded-xl flex items-center justify-center text-[#118c13]">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -279,7 +277,7 @@ const formatGender = (gender) => {
                     </div>
                   </div>
 
-                  <!-- Umur -->
+                  
                   <div class="bg-slate-50 rounded-xl p-4 flex items-center gap-3.5 border border-slate-100">
                     <div class="w-10 h-10 bg-green-100/50 rounded-xl flex items-center justify-center text-[#118c13]">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -295,7 +293,7 @@ const formatGender = (gender) => {
                     </div>
                   </div>
 
-                  <!-- Jenis Kelamin -->
+                  
                   <div class="bg-slate-50 rounded-xl p-4 flex items-center gap-3.5 border border-slate-100">
                     <div class="w-10 h-10 bg-green-100/50 rounded-xl flex items-center justify-center text-[#118c13]">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -310,7 +308,7 @@ const formatGender = (gender) => {
                 </div>
               </div>
 
-              <!-- Right: Medical Insights -->
+              
               <div>
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="font-medium text-slate-800 text-lg">Medical Insights</h3>
@@ -324,7 +322,7 @@ const formatGender = (gender) => {
                 </div>
 
                 <div class="space-y-3">
-                  <!-- Dynamic Insights -->
+                  
                   <div v-for="(insight, idx) in medicalInsights" :key="idx" class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
                     <div class="flex items-center gap-3 text-slate-700 font-medium text-sm">
                       <div class="w-8 h-8 rounded-lg bg-emerald-100/50 flex items-center justify-center text-emerald-600">
@@ -337,7 +335,7 @@ const formatGender = (gender) => {
                     <span class="bg-emerald-50 text-[#118c13] border border-emerald-100 rounded-md px-2 py-0.5 text-xs font-medium">Recorded</span>
                   </div>
 
-                  <!-- Fallback if empty -->
+                  
                   <div v-if="medicalInsights.length === 0" class="text-sm text-slate-400 text-center py-6">
                     Tidak ada riwayat medis yang tersimpan.
                   </div>
@@ -350,7 +348,7 @@ const formatGender = (gender) => {
         </div>
       </div>
 
-      <!-- Footer Component -->
+      
       <Footer class="mt-8"/>
     </main>
   </div>

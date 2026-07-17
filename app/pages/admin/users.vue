@@ -2,10 +2,10 @@
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <AdminSidebar />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
       
-      <!-- Header -->
+      
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <!-- Quick Metrics -->
+      
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm">
           <p class="text-xs text-slate-400 font-medium">TOTAL PENDAKI TERDAFTAR</p>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <!-- Search Input -->
+      
       <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between gap-4">
         <div class="relative flex-1 max-w-md">
           <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <!-- Users Table Container -->
+      
       <div class="bg-white rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
@@ -68,7 +68,7 @@
                 :key="user.id"
                 class="hover:bg-slate-50/60 transition-colors"
               >
-                <!-- User Info -->
+                
                 <td class="py-4 px-6">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-heading font-medium text-xs border border-slate-200">
@@ -81,12 +81,12 @@
                   </div>
                 </td>
 
-                <!-- Email -->
+                
                 <td class="py-4 px-6 text-slate-600 font-medium">
                   {{ user.email }}
                 </td>
 
-                <!-- Status -->
+                
                 <td class="py-4 px-6">
                   <span
                     :class="[
@@ -99,7 +99,7 @@
                   </span>
                 </td>
 
-                <!-- Actions: Cuman hapus doang -->
+                
                 <td class="py-4 px-6 text-right">
                   <button
                     @click="deleteUser(user.id, user.name)"

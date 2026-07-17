@@ -2,9 +2,9 @@
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <AdminSidebar />
 
-    <!-- MAIN CONTENT AREA -->
+    
     <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
-      <!-- Top Header -->
+      
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 text-[#023C23] text-xs font-medium mb-1.5">
@@ -26,7 +26,7 @@
         </button>
       </div>
 
-      <!-- Search Bar -->
+      
       <div class="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between gap-4">
         <div class="relative flex-1 max-w-md">
           <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <!-- Mountains Grid -->
+      
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div
           v-for="mt in filteredMountains"
@@ -54,7 +54,7 @@
           class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
         >
           <div>
-            <!-- Header with Image & Name -->
+            
             <div class="flex items-start gap-4 mb-4">
               <img
                 :src="mt.image || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80'"
@@ -76,7 +76,7 @@
               </div>
             </div>
 
-            <!-- Details Box -->
+            
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100/80 mb-5 space-y-2 text-xs">
               <div class="flex items-center justify-between text-slate-600">
                 <span class="font-medium text-slate-400">Jarak dari Basecamp ke Puncak:</span>
@@ -93,7 +93,7 @@
             </div>
           </div>
 
-          <!-- Actions Footer -->
+          
           <div class="flex items-center justify-end gap-2 pt-4 border-t border-slate-100">
             <button
               @click="deleteMountain(mt.id)"
@@ -117,7 +117,7 @@
         </div>
       </div>
 
-      <!-- MODAL TAMBAH / EDIT GUNUNG -->
+      
       <Transition
         enter-active-class="transition duration-200 ease-out"
         enter-from-class="opacity-0 scale-95"
@@ -143,7 +143,7 @@
             </div>
 
             <form @submit.prevent="saveMountain" class="space-y-4 text-xs">
-              <!-- Nama Gunung & Ketinggian -->
+              
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="sm:col-span-2">
                   <label class="block font-medium text-slate-700 mb-1">Nama Gunung</label>
@@ -167,7 +167,7 @@
                 </div>
               </div>
 
-              <!-- URL Image & Jarak ke Puncak -->
+              
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label class="block font-medium text-slate-700 mb-1">URL Image (Foto Gunung)</label>
@@ -190,7 +190,7 @@
                 </div>
               </div>
 
-              <!-- Latitude & Longitude -->
+              
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label class="block font-medium text-slate-700 mb-1">Latitude</label>
@@ -214,7 +214,7 @@
                 </div>
               </div>
 
-              <!-- Suhu Normal Puncak -->
+              
               <div>
                 <label class="block font-medium text-slate-700 mb-1">Suhu Normal Puncak (°C - Integer)</label>
                 <input
@@ -226,7 +226,7 @@
                 />
               </div>
 
-              <!-- Deskripsi -->
+              
               <div>
                 <label class="block font-medium text-slate-700 mb-1">Deskripsi Gunung</label>
                 <textarea
@@ -238,7 +238,7 @@
                 ></textarea>
               </div>
 
-              <!-- Submit Footer -->
+              
               <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
                 <button
                   type="button"

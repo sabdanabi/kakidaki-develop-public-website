@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="auth">
     <div class="flex min-h-screen flex-col lg:flex-row font-sans">
-      <!-- Left Column: Form -->
+      
       <div class="flex w-full flex-col justify-between px-6 py-8 md:px-8 lg:w-1/2 lg:px-12 xl:px-16 bg-white">
         <NuxtLink to="/" class="flex items-center gap-3">
           <img src="~/assets/images/logo_.svg" alt="KakiDaki" class="h-9 w-9" />
@@ -101,7 +101,7 @@
             </button>
           </form>
 
-          <!-- Quick Demo Helper -->
+          
          
 
           <p class="mt-6 text-center text-xs text-slate-500">
@@ -117,7 +117,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Hero Image / Testimonial -->
+      
       <div class="hidden p-5 lg:block lg:w-1/2">
         <div class="relative h-full overflow-hidden rounded-3xl">
           <div class="absolute inset-0 bg-gradient-to-b from-[#023C23] via-slate-900/95 to-slate-950"></div>
