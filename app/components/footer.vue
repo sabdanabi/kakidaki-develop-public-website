@@ -1,7 +1,7 @@
 <template>  
-  <footer class="bg-slate-200/30 rounded-3xl p-8 text-center space-y-4 border border-slate-200/50 mt-8">
+  <footer class="bg-slate-200/30 rounded-3xl p-6 text-center space-y-4 border border-slate-200/50 mt-6">
     <!-- Logo -->
-    <div class="text-[#118c13] font-extrabold text-base tracking-wider uppercase">
+    <div class="text-[#118c13] font-extrabold text-base tracking-wider ">
       KakiDaki
     </div>
 
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Copyright -->
-    <div class="text-[10px] font-semibold text-slate-400">
+    <div class="text-xs font-semibold text-slate-400">
       &copy; 2024 KakiDaki AI. Lead the Way.
     </div>
   </footer>

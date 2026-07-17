@@ -1,13 +1,19 @@
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
     <Sidebar />
+    
     <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-10 space-y-6">
+    <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 space-y-6">
       
-      <!-- MOUNTAIN SELECTOR & HERO CARD -->
-      <section class="space-y-4">
+      <!-- Top Section (Selector) -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-heading font-medium text-slate-900">Dashboard</h1>
+          <p class="text-sm text-slate-500 mt-1">Your expedition overview and readiness metrics</p>
+        </div>
+        
         <!-- Mountain Tabs Selector -->
-        <div class="flex items-center gap-3 bg-white p-1.5 rounded-2xl border border-slate-200/50 w-fit shadow-sm">
+        <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-lg border border-slate-200/50 shadow-sm w-full sm:w-auto overflow-x-auto">
           <button
             v-for="(mt, idx) in mountains"
             :key="idx"
@@ -15,346 +21,252 @@
             :class="[
               selectedMountainIndex === idx
                 ? 'bg-[#118c13] text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100/50',
-              'px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/50',
+              'px-4 py-2 rounded-md text-xs font-medium transition-all whitespace-nowrap'
             ]"
           >
             {{ mt.name }}
           </button>
         </div>
+      </div>
 
-        <!-- HERO CARD -->
-        <div class="h-80 rounded-[2.5rem] overflow-hidden relative shadow-lg flex flex-col justify-end p-8 bg-slate-800 transition-all duration-550">
+      <!-- BENTO GRID -->
+      <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
+        
+        <!-- 1. HERO CARD (Spans 2 cols, 2 rows in XL) -->
+        <div class="md:col-span-2 xl:col-span-2 xl:row-span-2 h-[380px] xl:h-full rounded-[2.5rem] overflow-hidden relative shadow-md group border border-slate-200/40">
           <img
             :src="selectedMountain.image"
             :alt="selectedMountain.name"
-            class="absolute inset-0 w-full h-full object-cover opacity-85 transition-opacity duration-550"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#023C23]/95 via-[#023C23]/40 to-transparent"></div>
 
-          <!-- Hero Content (Front of overlay) -->
-          <div class="relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div class="space-y-3">
-              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 backdrop-blur-sm border border-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                PEAK PROFILE • Category 5 Expedition
+          <!-- Hero Content -->
+          <div class="absolute inset-0 p-6 flex flex-col justify-end">
+            <div class="space-y-4">
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Target Expedition
               </div>
-              <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+              
+              <h2 class="text-3xl md:text-4xl font-heading font-medium text-white tracking-tight">
                 {{ selectedMountain.name }}
-              </h1>
-              <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-white/90 text-sm">
-                <div class="flex items-center gap-1.5">
+              </h2>
+              
+              <div class="flex flex-wrap items-center gap-4 text-white/90 text-sm">
+                <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10">
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
                   </svg>
-                  <span class="font-semibold">{{ selectedMountain.elevation }}</span>
+                  <span class="font-medium">{{ selectedMountain.elevation }}</span>
                 </div>
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10">
                   <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                   </svg>
-                  <span class="font-semibold">{{ selectedMountain.difficulty }}</span>
+                  <span class="font-medium">{{ selectedMountain.difficulty }}</span>
                 </div>
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/10 truncate max-w-[200px]">
+                  <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
                   </svg>
-                  <span class="font-semibold">{{ selectedMountain.location }}</span>
+                  <span class="font-medium truncate">{{ selectedMountain.location }}</span>
                 </div>
               </div>
             </div>
-
-            <!-- CTA Button -->
-            <button class="bg-[#118c13] hover:bg-emerald-700 text-white px-6 py-3.5 rounded-2xl font-bold text-sm tracking-wide shadow-xl flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              Start Planning
-            </button>
           </div>
         </div>
-      </section>
 
-      <!-- ROW 1 (Physical Readiness & Logistical Progress) -->
-      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Physical Readiness & Training Progress -->
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 relative overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-[#118c13] lg:col-span-2">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <!-- Readiness Score (Donut dial) -->
-            <div class="flex items-center gap-6">
-              <div class="relative w-28 h-28 flex items-center justify-center">
+        <!-- 2. PHYSICAL READINESS (Spans 1 col, 2 rows in XL) -->
+        <div class="xl:col-span-1 xl:row-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 hover:shadow-md transition-shadow relative overflow-hidden flex flex-col">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"></div>
+          
+          <div class="relative z-10 flex-1 flex flex-col">
+            <h3 class="font-heading font-medium text-slate-800 text-lg">Physical Readiness</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Overall fitness and adaptability</p>
+
+            <!-- Radial Progress -->
+            <div class="flex items-center justify-center my-6 flex-1">
+              <div class="relative w-48 h-48 flex items-center justify-center">
                 <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                  <path class="text-slate-100" stroke="currentColor" stroke-width="3.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                  <path class="text-[#118c13]" stroke="currentColor" stroke-width="3.5" stroke-dasharray="88, 100" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="text-slate-100" stroke="currentColor" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="text-[#118c13]" stroke="currentColor" stroke-width="3" stroke-dasharray="88, 100" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                 </svg>
-                <div class="absolute text-center">
-                  <span class="text-2xl font-black text-slate-800 block leading-none">{{ physicalReadinessScore }}</span>
-                  <span class="text-[8px] font-bold text-slate-400 tracking-wider">READINESS</span>
-                </div>
-              </div>
-              <div>
-                <h2 class="font-bold text-slate-800 text-lg">Physical Fitness Status</h2>
-                <p class="text-xs text-slate-400 mt-0.5">Physical training metrics & adaptabilities</p>
-                <div class="flex items-center gap-2 mt-2">
-                  <span class="px-2.5 py-0.5 bg-emerald-50 text-[#118c13] text-[10px] font-bold rounded border border-emerald-100">VO2 MAX: {{ trainingProgress.vo2max }}</span>
-                  <span class="px-2.5 py-0.5 bg-sky-50 text-sky-600 text-[10px] font-bold rounded border border-sky-100">ALTITUDE: STABLE</span>
+                <div class="absolute text-center flex flex-col items-center">
+                  <span class="text-5xl font-heading font-medium text-slate-800 leading-none">{{ physicalReadinessScore }}</span>
+                  <span class="text-xs font-medium text-slate-400 mt-1">SCORE</span>
                 </div>
               </div>
             </div>
 
-            <!-- Training Metrics progress details -->
-            <div class="flex-1 max-w-md space-y-3.5">
-              <!-- Cardio Target -->
+            <!-- Stats -->
+            <div class="space-y-4">
+              <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-[#118c13] flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 font-medium">VO2 Max</p>
+                    <p class="text-sm font-medium text-slate-900">{{ trainingProgress.vo2max }} mL/kg</p>
+                  </div>
+                </div>
+                <span class="text-xs font-medium text-[#118c13] bg-emerald-50 px-2 py-1 rounded-lg">Excellent</span>
+              </div>
+              
               <div>
-                <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
-                  <span>Weekly Cardio Target</span>
+                <div class="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
+                  <span>Weekly Cardio</span>
                   <span>{{ trainingProgress.cardioTarget }}%</span>
                 </div>
-                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div class="h-full bg-[#118c13]" :style="`width: ${trainingProgress.cardioTarget}%`"></div>
-                </div>
-              </div>
-
-              <!-- Elevation Target -->
-              <div>
-                <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
-                  <span>Elevation Gain Goal</span>
-                  <span>{{ trainingProgress.elevationProgress }} / {{ trainingProgress.elevationTarget }} ft</span>
-                </div>
-                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div class="h-full bg-emerald-500" :style="`width: ${(trainingProgress.elevationProgress/trainingProgress.elevationTarget)*100}%`"></div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-[#118c13] rounded-full" :style="`width: ${trainingProgress.cardioTarget}%`"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Logistical Preparation Progress -->
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between min-h-[220px]">
-          <div>
-            <h2 class="font-bold text-slate-800 text-lg">Logistical Progress</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Expedition readiness and packing status</p>
-          </div>
-
-          <!-- Overall Logistics Bar -->
-          <div class="my-3">
-            <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1">
-              <span>Overall Progress</span>
-              <span class="text-[#118c13]">{{ logisticalProgress.overall }}%</span>
-            </div>
-            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full bg-[#118c13]" :style="`width: ${logisticalProgress.overall}%`"></div>
-            </div>
-          </div>
-
-          <!-- Mini steps checklists -->
-          <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-500 font-semibold">
-            <div class="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl border border-slate-100">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[7px] font-black">✓</span>
-              Permit Secured
-            </div>
-            <div class="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl border border-slate-100">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[7px] font-black">✓</span>
-              Insurance Set
-            </div>
-            <div class="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl border border-slate-100 col-span-2 justify-between">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                <span>Gear packed</span>
-              </div>
-              <span class="text-[#118c13] font-bold">{{ logisticalProgress.logisticsStep }}%</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ROW 2 (Interactive Weather & Trail Profile) -->
-      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Interactive Weather Forecast Card (Tanggal Tertentu) -->
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between min-h-[220px]">
-          <div>
+        <!-- 3. WEATHER WIDGET (Spans 1 col, 1 row) -->
+        <div class="bg-[#023C23] rounded-3xl p-6 shadow-md relative overflow-hidden flex flex-col justify-between group">
+          <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+          
+          <div class="relative z-10">
             <div class="flex items-center justify-between">
-              <h2 class="font-bold text-slate-800 text-lg">Weather Forecast</h2>
-              <!-- Risk Warning Tag -->
-              <span :class="[
-                activeWeather.risk === 'CRITICAL' ? 'bg-red-100 text-red-600 border border-red-200' :
-                activeWeather.risk === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                'bg-green-50 text-[#118c13] border border-green-100',
-                'rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase'
-              ]">{{ activeWeather.risk }}</span>
+              <h3 class="font-heading font-medium text-white text-lg">Forecast</h3>
+              <!-- Date Picker Mini -->
+              <select v-model="selectedDate" class="bg-white/10 text-white text-xs border border-white/20 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-emerald-500">
+                <option v-for="(val, date) in weatherForecasts" :key="date" :value="date" class="text-slate-900">
+                  {{ date.split('-')[2] }} Jul
+                </option>
+              </select>
             </div>
-            
-            <!-- Date Tabs Picker (July 14-17) -->
-            <div class="flex gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200/50 mt-3">
-              <button
-                v-for="(val, date) in weatherForecasts"
-                :key="date"
-                @click="selectedDate = date"
-                :class="[
-                  selectedDate === date ? 'bg-[#118c13] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800',
-                  'flex-1 text-center py-1.5 rounded-lg text-[10px] font-bold transition-all'
-                ]"
-              >
-                {{ date.split('-')[2] }} Jul
-              </button>
+
+            <div class="flex items-center gap-4 mt-6">
+              <div class="text-white">
+                <svg v-if="activeWeather.icon === 'snowflake'" class="w-12 h-12 text-sky-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3m14.5-6.5l-11 11m11 0l-11-11" />
+                </svg>
+                <svg v-else-if="activeWeather.icon === 'sun'" class="w-12 h-12 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+                <svg v-else class="w-12 h-12 text-red-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-4xl font-heading font-medium text-white">{{ activeWeather.temp }}</span>
+                </div>
+                <p class="text-xs text-emerald-200/80 mt-1">Feels like {{ activeWeather.realFeel }}</p>
+              </div>
             </div>
           </div>
-
-          <!-- Dynamic Temp Details based on Date Selection -->
-          <div class="flex items-center gap-4 my-4">
-            <div class="p-3 bg-green-50 rounded-2xl border border-green-100/50 text-[#118c13]">
-              <!-- Conditional SVG Icons for weather status -->
-              <svg v-if="activeWeather.icon === 'snowflake'" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3m14.5-6.5l-11 11m11 0l-11-11" />
-              </svg>
-              <svg v-else-if="activeWeather.icon === 'sun'" class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
-              <svg v-else class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div>
-              <span class="text-3xl font-black text-slate-900 leading-none">{{ activeWeather.temp }}</span>
-              <p class="text-[10px] text-slate-400 mt-1 font-medium">RealFeel: {{ activeWeather.realFeel }} • Forecast</p>
-            </div>
-          </div>
-
-          <!-- Dynamic sub stats -->
-          <div class="space-y-2">
-            <div class="bg-slate-50 border border-slate-200/50 rounded-xl px-4 py-2 flex items-center justify-between text-xs">
-              <span class="text-slate-500 font-semibold">Wind Speed</span>
-              <span class="font-bold text-slate-800">{{ activeWeather.wind }}</span>
-            </div>
-            <div class="bg-slate-50 border border-slate-200/50 rounded-xl px-4 py-2 flex items-center justify-between text-xs">
-              <span class="text-slate-500 font-semibold">Visibility</span>
-              <span class="font-bold text-slate-800">{{ activeWeather.visibility }}</span>
-            </div>
+          
+          <div class="relative z-10 mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs text-emerald-100">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path></svg>
+              {{ activeWeather.wind }}
+            </span>
+            <span :class="[
+                activeWeather.risk === 'CRITICAL' ? 'bg-red-500/20 text-red-300' :
+                activeWeather.risk === 'WARNING' ? 'bg-amber-500/20 text-amber-300' :
+                'bg-white/10 text-emerald-200',
+                'px-2 py-1 rounded border border-white/10 font-medium'
+              ]">
+              {{ activeWeather.risk }}
+            </span>
           </div>
         </div>
 
-        <!-- Trail Profile -->
-        <div class="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between">
-          <div class="flex items-start justify-between">
-            <div>
-              <h2 class="font-bold text-slate-800 text-lg md:text-4xl">Trail Profile</h2>
-              <p class="text-xs md:text-2xl text-slate-400 mt-0.5">Elevation tracking profile & metrics</p>
+        <!-- 4. LOGISTICAL PROGRESS (Spans 1 col, 1 row) -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 flex flex-col justify-between group hover:shadow-md transition-shadow">
+          <div>
+            <h3 class="font-heading font-medium text-slate-800 text-lg">Logistics</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Preparation checklist</p>
+          </div>
+
+          <div class="my-5">
+            <div class="flex justify-between items-end mb-2">
+              <span class="text-2xl font-heading font-medium text-slate-800 leading-none">{{ logisticalProgress.overall }}<span class="text-sm text-slate-400">%</span></span>
+              <span class="text-[10px] font-medium text-slate-400">COMPLETED</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-slate-800 rounded-full" :style="`width: ${logisticalProgress.overall}%`"></div>
             </div>
           </div>
 
-          <!-- Dynamic Grid Stats of Trail based on selected mountain -->
-          <div class="grid grid-cols-4 gap-4 mt-6">
-            <div>
-              <p class="text-[20px] text-slate-400 font-bold uppercase tracking-wider mb-1">ELEVATION</p>
-              <p class="text-sm md:text-lg font-extrabold text-slate-800 leading-none">{{ selectedMountain.elevation }}</p>
+          <div class="space-y-2 text-xs font-medium text-slate-600">
+            <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl">
+              <div class="w-4 h-4 rounded-full bg-[#118c13] flex items-center justify-center text-white shrink-0"><svg class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div>
+              Permits Secured
             </div>
-            <div>
-              <p class="text-[20px text-slate-400 font-bold uppercase tracking-wider mb-1">DIFFICULTY</p>
-              <p class="text-sm md:text-lg font-extrabold text-slate-800 leading-none">{{ selectedMountain.difficulty }}</p>
-            </div>
-            <div>
-              <p class="text-[20px] text-slate-400 font-bold uppercase tracking-wider mb-1">ROUTE TYPE</p>
-              <p class="text-sm md:text-lg font-extrabold text-slate-800 leading-none">Roundtrip</p>
-            </div>
-            <div>
-              <p class="text-[20px] text-slate-400 font-bold uppercase tracking-wider mb-1">LOCATION</p>
-              <p class="text-xs md:text-lg font-extrabold text-[#118c13] leading-none truncate" :title="selectedMountain.location">
-                {{ selectedMountain.location.split(',')[0] }}
-              </p>
+            <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl">
+              <div class="w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center shrink-0"></div>
+              Pack Gear ({{ logisticalProgress.logisticsStep }}%)
             </div>
           </div>
-
-          <!-- Elevation chart path -->
-          <!-- <div class="mt-6 w-full h-24 bg-slate-50/50 rounded-xl relative overflow-hidden border border-slate-100">
-            <svg class="absolute bottom-0 left-0 right-0 w-full h-full text-emerald-50/50" fill="currentColor" viewBox="0 0 100 30" preserveAspectRatio="none">
-              <path d="M0,30 L0,24 Q15,22 30,17 T60,11 T90,6 L100,2 L100,30 Z" />
-              <path d="M0,24 Q15,22 30,17 T60,11 T90,6 L100,2" class="stroke-[#118c13] fill-none" stroke-width="1.5" />
-            </svg>
-            <div class="absolute bottom-2 left-4 text-[9px] font-semibold text-slate-400">Base Camp</div>
-            <div class="absolute top-2 right-4 text-[9px] font-semibold text-[#118c13]">Peak ({{ selectedMountain.elevation }})</div>
-          </div> -->
         </div>
       </section>
 
-      <!-- ROW 3 (Expedition Schedule) -->
-      <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40 relative overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-[#0f4a5c]">
-        <!-- Header -->
-        <div class="flex items-start justify-between">
+      <!-- 5. EXPEDITION SCHEDULE TIMELINE (Spans full width) -->
+      <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/40">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h2 class="font-bold text-slate-800 text-lg">Expedition Schedule</h2>
-            <p class="text-xs text-slate-400 mt-0.5">July 14 - July 16 • 3-Day Summit Window</p>
+            <h3 class="font-heading font-medium text-slate-800 text-lg">Expedition Plan</h3>
+            <p class="text-xs text-slate-400 mt-0.5">July 14 - July 16 • 3-Day Window</p>
           </div>
-          <span class="bg-sky-50 border border-sky-100 text-sky-600 rounded-full px-3 py-1 text-[9px] font-bold tracking-wider uppercase">CONFIRMED</span>
+          <span class="bg-emerald-50 border border-emerald-100 text-[#118c13] rounded-full px-3 py-1.5 text-xs font-medium w-fit">Status: Confirmed</span>
         </div>
 
-        <!-- 3 Days Schedule Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
           <!-- Day 1 -->
-          <div class="bg-slate-50 border border-slate-200/50 rounded-2xl p-5 flex flex-col justify-between min-h-[140px]">
-            <div>
-              <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase mb-2">
-                <span>DAY 1</span>
-                <!-- Sun icon -->
-                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.5 12h2.25m13.5 0H21m-2.803-5.697l-1.591 1.591M6.897 17.103l-1.591 1.591m0-10.206l1.591 1.591m10.206 10.206l1.591-1.591M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z" />
-                </svg>
-              </div>
-              <h3 class="font-bold text-slate-850 text-sm">Approach</h3>
-              <p class="text-xs text-slate-400 mt-1">Whitney Portal to Trail Camp</p>
+          <div class="relative p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all group">
+            <div class="absolute -top-3 left-5 bg-white border border-slate-200 px-3 py-1 rounded-full text-xs font-medium text-slate-600 shadow-sm group-hover:border-[#118c13] group-hover:text-[#118c13] transition-colors">
+              Day 1
             </div>
-            <div class="flex items-center gap-1.5 text-xs text-[#118c13] font-semibold mt-4">
-              <!-- Location/Arrow icon -->
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-              </svg>
-              18°F Clear
+            <div class="mt-2">
+              <h4 class="font-heading font-medium text-slate-900">Base Approach</h4>
+              <p class="text-xs text-slate-500 mt-1.5">Ascent to high camp for acclimatization. Steady pace required.</p>
+              
+              <div class="flex items-center gap-3 mt-4 text-xs font-medium text-slate-600">
+                <span class="flex items-center gap-1 bg-white px-2 py-1 rounded border border-slate-100 shadow-sm"><svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.5 12h2.25m13.5 0H21m-2.803-5.697l-1.591 1.591M6.897 17.103l-1.591 1.591m0-10.206l1.591 1.591m10.206 10.206l1.591-1.591M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z" /></svg> Clear</span>
+                <span class="flex items-center gap-1 bg-white px-2 py-1 rounded border border-slate-100 shadow-sm">8 mi</span>
+              </div>
             </div>
           </div>
 
-          <!-- Day 2 (Highlighted Summit Push) -->
-          <div class="bg-green-50/50 border-2 border-[#118c13]/30 rounded-2xl p-5 flex flex-col justify-between min-h-[140px]">
-            <div>
-              <div class="flex justify-between items-center text-[10px] font-bold text-[#118c13] uppercase mb-2">
-                <span>DAY 2</span>
-                <!-- Mountain icon -->
-                <svg class="w-4 h-4 text-[#118c13]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l7-12 5 8 2-3 4 7H3z" />
-                </svg>
-              </div>
-              <h3 class="font-bold text-slate-850 text-sm">Summit Push</h3>
-              <p class="text-xs text-slate-400 mt-1">Trail Camp to Summit & Back</p>
+          <!-- Day 2 (Target) -->
+          <div class="relative p-5 rounded-2xl border-2 border-[#118c13]/30 bg-emerald-50/30 hover:bg-emerald-50/70 hover:shadow-md transition-all group">
+            <div class="absolute -top-3 left-5 bg-[#118c13] border-2 border-white px-3 py-1 rounded-full text-xs font-medium text-white shadow-sm">
+              Day 2 • Summit
             </div>
-            <div class="flex items-center gap-1.5 text-xs text-[#118c13] font-semibold mt-4">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-              </svg>
-              12°F Peak Wind
+            <div class="mt-2">
+              <h4 class="font-heading font-medium text-slate-900">Alpine Push</h4>
+              <p class="text-xs text-slate-500 mt-1.5">Pre-dawn start. Steep technical climbing towards the peak.</p>
+              
+              <div class="flex items-center gap-3 mt-4 text-xs font-medium text-slate-600">
+                <span class="flex items-center gap-1 bg-white px-2 py-1 rounded border border-emerald-100 shadow-sm"><svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3m14.5-6.5l-11 11m11 0l-11-11" /></svg> Cold</span>
+                <span class="flex items-center gap-1 bg-white px-2 py-1 rounded border border-emerald-100 shadow-sm">12°F</span>
+              </div>
             </div>
           </div>
 
           <!-- Day 3 -->
-          <div class="bg-slate-50 border border-slate-200/50 rounded-2xl p-5 flex flex-col justify-between min-h-[140px]">
-            <div>
-              <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase mb-2">
-                <span>DAY 3</span>
-                <!-- Down arrow icon -->
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-                </svg>
-              </div>
-              <h3 class="font-bold text-slate-850 text-sm">Descent</h3>
-              <p class="text-xs text-slate-400 mt-1">Trail Camp to Portal</p>
+          <div class="relative p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all group">
+            <div class="absolute -top-3 left-5 bg-white border border-slate-200 px-3 py-1 rounded-full text-xs font-medium text-slate-600 shadow-sm group-hover:border-[#118c13] group-hover:text-[#118c13] transition-colors">
+              Day 3
             </div>
-            <div class="flex items-center gap-1.5 text-xs text-[#118c13] font-semibold mt-4">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-              </svg>
-              20°F Warming
+            <div class="mt-2">
+              <h4 class="font-heading font-medium text-slate-900">Rapid Descent</h4>
+              <p class="text-xs text-slate-500 mt-1.5">Return to trailhead. Focus on joint preservation and pace.</p>
+              
+              <div class="flex items-center gap-3 mt-4 text-xs font-medium text-slate-600">
+                <span class="flex items-center gap-1 bg-white px-2 py-1 rounded border border-slate-100 shadow-sm"><svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg> Downhill</span>
+              </div>
             </div>
           </div>
         </div>
@@ -364,7 +276,6 @@
       <Footer />
     </main>
   </div>
- 
 </template>
 
 <script setup>
@@ -430,7 +341,3 @@ const logisticalProgress = ref({
   logisticsStep: 84
 })
 </script>
-
-<style scoped>
-/* Specific styling rules if needed */
-</style>

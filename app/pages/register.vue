@@ -2,8 +2,8 @@
   <NuxtLayout name="auth">
     <div class="flex min-h-screen flex-col lg:flex-row">
 
-      <div class="flex w-full flex-col px-6 py-8 md:px-12 lg:w-1/2 lg:px-16 xl:px-24">
-        <NuxtLink to="/" class="mb-8 flex items-center gap-3 lg:mb-10">
+      <div class="flex w-full flex-col px-6 py-8 md:px-8 lg:w-1/2 lg:px-8 xl:px-8">
+        <NuxtLink to="/" class="mb-6 flex items-center gap-3 lg:mb-6">
           <img
             src="/images/logo.svg"
             alt="Kaki Daki"
@@ -13,8 +13,8 @@
         </NuxtLink>
 
         <div class="mx-auto w-full max-w-md flex-1">
-          <h1 class="mb-2 font-heading text-3xl font-bold text-slate-900">Buat Akun</h1>
-          <p class="mb-8 text-slate-500">
+          <h1 class="mb-2 font-heading text-3xl font-medium text-slate-900">Buat Akun</h1>
+          <p class="mb-6 text-slate-500">
             Daftar untuk mulai menggunakan Kaki Daki dalam keputusan penerbangan Anda.
           </p>
 
@@ -222,7 +222,7 @@
           </p>
         </div>
 
-        <div class="mt-8 text-center text-xs text-slate-400">
+        <div class="mt-6 text-center text-xs text-slate-400">
           &copy; {{ new Date().getFullYear() }} Kaki Daki. All rights reserved.
         </div>
       </div>
@@ -236,15 +236,15 @@
           />
           <div class="absolute inset-0 bg-gradient-to-b from-danger-800/90 via-slate-900/85 to-primary-800/90"></div>
 
-          <div class="relative z-10 flex h-full flex-col justify-between p-12 xl:p-16">
+          <div class="relative z-10 flex h-full flex-col justify-between p-6 xl:p-6">
             <div></div>
 
             <div>
-              <h2 class="mb-6 font-heading text-4xl font-bold leading-tight text-white xl:text-5xl">
+              <h2 class="mb-6 font-heading text-2xl font-medium leading-tight text-white xl:text-3xl">
                 Bergabung dengan<br/>Platform Keputusan<br/>Penerbangan
               </h2>
 
-              <div class="mb-8">
+              <div class="mb-6">
                 <svg class="mb-3 h-8 w-10 text-white/30" viewBox="0 0 40 32" fill="currentColor">
                   <path d="M0 24.615V0h15.385v15.385H7.692c0 4.254 3.438 7.693 7.693 7.693v7.692C6.894 30.77 0 23.874 0 24.615zM24.615 24.615V0H40v15.385h-7.692c0 4.254 3.438 7.693 7.692 7.693v7.692c-8.49 0-15.385-6.896-15.385-15.385v8.23z" />
                 </svg>
@@ -255,7 +255,7 @@
 
               <div class="flex items-center gap-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-lg font-bold text-white">
-                  KD
+                  Kd
                 </div>
                 <div>
                   <p class="font-semibold text-white">Kaki Daki Admin</p>
@@ -265,7 +265,7 @@
             </div>
 
             <div>
-              <p class="mb-4 text-xs font-medium uppercase tracking-widest text-white/40">Dipercaya oleh</p>
+              <p class="mb-4 text-xs font-medium tracking-widest text-white/40">Dipercaya oleh</p>
               <div class="flex flex-wrap items-center gap-3">
                 <span class="rounded-md bg-white/10 px-4 py-2 text-xs font-semibold text-white/70 backdrop-blur-sm">Partner A</span>
                 <span class="rounded-md bg-white/10 px-4 py-2 text-xs font-semibold text-white/70 backdrop-blur-sm">Partner B</span>

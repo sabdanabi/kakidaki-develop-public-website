@@ -116,7 +116,7 @@ export default <Partial<Config>>{
       fontFamily: {
         // JS config custom families
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Plus Jakarta Sans', 'Syne', 'Inter', 'system-ui', 'sans-serif'],
+        heading: ['Syne', 'Inter', 'system-ui', 'sans-serif'],
         // Custom key labels
         "label-bold": ["Inter", "sans-serif"],
         "headline-md": ["Plus Jakarta Sans", "sans-serif"],

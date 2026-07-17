@@ -1,244 +1,3 @@
-<template>
-  <div class="flex h-screen overflow-hidden bg-slate-50 text-slate-900 font-sans">
-    <!-- Sidebar -->
-    <Sidebar />
-
-    <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col h-screen overflow-hidden">
-      <!-- Scrollable content area -->
-      <div class="flex-1 overflow-y-auto px-6 py-6 md:px-8 max-w-[1600px] w-full mx-auto flex flex-col justify-between">
-        <div>
-          <!-- Header -->
-          <div class="flex items-center justify-between mb-8">
-            <div>
-              <h1 class="font-heading text-2xl font-medium tracking-tight">Asisten Packing</h1>
-              <p class="text-sm text-slate-500 mt-1 font-normal tracking-tight">Ceklis perlengkapan pintar untuk ekspedisimu.</p>
-            </div>
-          </div>
-
-          <!-- Bento Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-min items-start pb-10">
-        
-        <!-- Readiness (Kesiapan Ekspedisi) -->
-        <div class="col-span-1 md:col-span-5 md:row-span-2 rounded-xl bg-white p-6 flex flex-col justify-between shadow-sm transition-shadow hover:shadow-md h-full">
-          <div class="flex items-center gap-2">
-            <!-- Readiness Activity Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-10 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C1.118 12.87 5.477 9.246 10 8c2.656-.73 5.289-.529 7.551.454"/><path d="M15 15c-1.673 0-3-.385-3-1"/></svg>
-            <span class="text-sm font-medium text-slate-500 tracking-tight">Kesiapan Ekspedisi</span>
-          </div>
-          <div class="mt-8">
-            <div class="flex items-end justify-between mb-4">
-              <div class="flex items-baseline gap-1">
-                <span class="text-6xl font-medium tracking-tighter">{{ readinessPercent }}</span>
-                <span class="text-lg font-normal text-slate-400">%</span>
-              </div>
-              <div class="text-right">
-                <span class="text-lg font-medium text-slate-900 block">{{ packedCount }} / {{ totalCount }}</span>
-                <span class="text-sm text-slate-500 font-normal">Barang Siap</span>
-              </div>
-            </div>
-            <!-- Progress Bar -->
-            <div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full bg-primary transition-all duration-700 ease-out" :style="{ width: readinessPercent + '%' }"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Destination (Destinasi) -->
-        <div class="col-span-1 md:col-span-4 rounded-xl bg-white shadow-sm relative overflow-hidden group min-h-[160px] h-full flex flex-col justify-end p-6">
-          <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
-          
-          <div class="relative z-10">
-            <div class="flex items-center gap-2 mb-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 22 10-10M16 8l-8 8M22 2 12 12" /><path d="m22 2-5.5 1.5L18 5l1.5 1.5Z" /></svg>
-              <span class="text-sm font-medium text-white/80 tracking-tight">Destinasi</span>
-            </div>
-            <h2 class="text-2xl font-medium tracking-tight text-white leading-none">{{ destination }}</h2>
-            <span class="text-sm text-white/80 mt-1.5 block font-normal tracking-tight">Estimasi Pendakian: 3 Hari</span>
-          </div>
-        </div>
-
-        <!-- Weather (Cuaca & Kondisi) -->
-        <div class="col-span-1 md:col-span-3 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 p-6 shadow-sm relative overflow-hidden flex flex-col justify-between text-white min-h-[160px] h-full">
-          <div class="flex items-center gap-2 relative z-20">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></svg>
-            <span class="text-sm font-medium text-blue-200 tracking-tight">Cuaca & Kondisi</span>
-          </div>
-          
-          <div class="mt-4 relative z-20">
-            <span class="text-4xl font-medium tracking-tighter text-white">{{ conditions.split('/')[0].trim() }}</span>
-            <span class="text-sm font-normal text-blue-200 block mt-1">{{ conditions.split('/')[1].trim() }}</span>
-          </div>
-
-          <!-- Rain Animation Background -->
-          <div class="absolute inset-0 z-10 opacity-60 overflow-hidden pointer-events-none">
-            <div class="rain-container">
-              <div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div>
-              <div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Scanner Button (Dark Green Theme Flat) -->
-        <div class="col-span-1 md:col-span-7 rounded-xl bg-white p-5 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-center justify-between gap-4 cursor-pointer group" @click="openScanner">
-          <div class="flex items-center gap-4">
-            <div class="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-slate-900 tracking-tight">Pindai AI Pintar</h3>
-              <p class="text-sm text-slate-500 font-normal mt-0.5 tracking-tight">Gunakan kamera untuk otomatisasi ceklis.</p>
-            </div>
-          </div>
-          <!-- Buka Kamera Button with Dark Green Color -->
-          <button class="shrink-0 rounded-lg bg-[#023C23] px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-600 transition-colors shadow-sm">
-            Buka Kamera
-          </button>
-        </div>
-
-        <!-- Category Bento Boxes -->
-        <div 
-          v-for="(cat) in categories" 
-          :key="cat.key"
-          class="rounded-xl bg-white shadow-sm flex flex-col overflow-hidden relative z-0 h-fit"
-          :class="[cat.span]"
-        >
-          <!-- Big Background Icon Opacity 50% -->
-          <div class="absolute -bottom-6 -right-6 h-40 w-40 opacity-50 z-[-1] pointer-events-none" :class="`text-${cat.color}-50`">
-            <span v-html="cat.iconSvg" class="block w-full h-full"></span>
-          </div>
-
-          <!-- Category Header -->
-          <div class="px-5 py-4 flex items-center justify-between" :class="`bg-${cat.color}-50/60`">
-            <div class="flex items-center gap-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-lg" :class="`bg-${cat.color}-100 text-${cat.color}-600`">
-                <span v-html="cat.iconSvg" class="h-4 w-4"></span>
-              </div>
-              <div>
-                <h3 class="text-sm font-medium tracking-tight" :class="`text-${cat.color}-900`">{{ cat.label }}</h3>
-                <p class="text-xs font-normal tracking-tight" :class="`text-${cat.color}-600/80`">
-                  {{ cat.items.filter(i => i.packed).length }} dari {{ cat.items.length }} Siap
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Items List -->
-          <div class="flex-1 px-3 py-3">
-            <div
-              v-for="item in cat.items"
-              :key="item.name"
-              @click="toggleItem(cat.key, item.name)"
-              class="group flex cursor-pointer items-start gap-3 px-3 py-2.5 transition-colors hover:bg-slate-50/80 rounded-lg"
-            >
-              <!-- Checkbox -->
-              <div
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-[1.5px] transition-all mt-0.5 relative overflow-hidden"
-                :class="item.packed ? `border-${cat.color}-500 bg-${cat.color}-500 text-white` : `border-slate-300 bg-white group-hover:border-${cat.color}-400`"
-              >
-                <div v-if="item.autoDetected" class="absolute inset-0 bg-white/30 animate-pulse"></div>
-                <svg v-if="item.packed" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-              </div>
-
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2">
-                  <span v-html="item.icon" class="h-4 w-4 text-slate-400"></span>
-                  <p class="text-[13px] tracking-tight transition-colors truncate" :class="item.packed ? 'text-slate-400 line-through' : (item.required ? 'font-medium text-slate-800' : 'text-slate-600')">
-                    {{ item.name }}
-                  </p>
-                  <span v-if="item.autoDetected" class="flex h-1.5 w-1.5 rounded-full animate-ping" :class="`bg-${cat.color}-500`"></span>
-                </div>
-                <div v-if="item.note || item.required" class="mt-1 flex items-center gap-2">
-                  <span v-if="item.required && !item.packed" class="px-2 py-0.5 rounded-md text-[10px] font-medium tracking-tight" :class="`bg-${cat.color}-100 text-${cat.color}-700`">
-                    Wajib
-                  </span>
-                  <p v-if="item.note" class="text-xs text-slate-400 font-normal truncate tracking-tight">{{ item.note }}</p>
-                </div>
-              </div>
-
-              <!-- Quantity Badge -->
-              <div class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-normal transition-colors" :class="item.packed ? 'bg-slate-100 text-slate-400' : `bg-${cat.color}-100 text-${cat.color}-700`">
-                {{ item.qty }}x
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <Footer />
-  </div>
-</div>
-
-    <!-- AI Scanner Modal -->
-    <div v-if="isModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="closeScanner"></div>
-      
-      <div class="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        <!-- Light Header -->
-        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-white">
-          <div class="flex items-center gap-2">
-            <span class="flex h-2 w-2 rounded-full bg-danger animate-pulse"></span>
-            <span class="text-sm font-medium text-slate-800 tracking-tight">Kamera Pintar AI</span>
-          </div>
-          <button @click="closeScanner" class="h-8 w-8 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-200 transition-colors">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-        
-        <!-- Camera Area -->
-        <div class="relative h-72 w-full bg-slate-100 overflow-hidden flex flex-col items-center justify-center">
-          <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1596706798150-590fb69c4f74?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-all duration-700" :class="{'opacity-100': scanStatus === 'scanning' || scanStatus === 'success', 'opacity-50 grayscale': scanStatus === 'idle'}"></div>
-          
-          <div class="absolute inset-0 bg-white/20"></div>
-
-          <div v-if="scanStatus === 'scanning'" class="absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_15px_3px_rgba(17,140,19,0.5)] z-20 animate-scan"></div>
-          
-          <div v-if="scanStatus === 'success'" class="absolute top-[20%] left-[10%] w-32 h-24 border-2 border-primary rounded-xl bg-primary/10 z-10 animate-in zoom-in">
-            <div class="absolute -top-3 left-2 bg-primary text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm tracking-tight">Carrier 60L (98%)</div>
-          </div>
-          <div v-if="scanStatus === 'success'" class="absolute bottom-[20%] right-[15%] w-24 h-16 border-2 border-primary rounded-xl bg-primary/10 z-10 animate-in zoom-in delay-100">
-            <div class="absolute -top-3 left-2 bg-primary text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm tracking-tight">Headlamp</div>
-          </div>
-
-          <div v-if="scanStatus === 'idle'" class="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none text-slate-700">
-            <svg class="h-10 w-10 mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            <span class="text-sm font-medium bg-white/80 px-3 py-1.5 rounded-full backdrop-blur-sm tracking-tight">Siap Memindai</span>
-          </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="p-6 bg-white border-t border-slate-100">
-          <button 
-            v-if="scanStatus === 'idle'" 
-            @click="startScan"
-            class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95"
-          >
-            Mulai Analisis Gambar
-          </button>
-          <button 
-            v-if="scanStatus === 'scanning'" 
-            disabled
-            class="w-full rounded-xl bg-slate-100 py-3.5 text-sm font-medium text-slate-500 flex items-center justify-center gap-2"
-          >
-            <svg class="animate-spin h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            Memproses Barang...
-          </button>
-          <button 
-            v-if="scanStatus === 'success'" 
-            @click="closeScanner"
-            class="w-full rounded-xl bg-[#023C23] py-3.5 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95"
-          >
-            Selesai (2 Barang Diceklis)
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -293,7 +52,7 @@ const itemIcon = {
 
 const categories = ref([
   {
-    key: 'clothing', label: 'Sistem Pakaian', color: 'blue', span: 'col-span-1 md:col-span-4', iconSvg: iconSvg.clothing,
+    key: 'clothing', label: 'Sistem Pakaian', color: 'blue', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.clothing,
     items: [
       { name: 'Pakaian Dalam (Dri-fit)', packed: true, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.shirt },
       { name: 'Jaket Gunung Tebal', packed: false, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.shirt },
@@ -303,7 +62,7 @@ const categories = ref([
     ],
   },
   {
-    key: 'gear', label: 'Peralatan Teknis', color: 'indigo', span: 'col-span-1 md:col-span-4', iconSvg: iconSvg.gear,
+    key: 'gear', label: 'Peralatan Teknis', color: 'indigo', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.gear,
     items: [
       { name: 'Trekking Poles', packed: true, qty: 2, note: null, required: false, autoDetected: false, icon: itemIcon.tool },
       { name: 'Headlamp', packed: false, qty: 1, note: 'Minimal 400L', required: true, autoDetected: false, icon: itemIcon.tool },
@@ -313,7 +72,7 @@ const categories = ref([
     ],
   },
   {
-    key: 'nutrition', label: 'Nutrisi & Air', color: 'amber', span: 'col-span-1 md:col-span-4', iconSvg: iconSvg.nutrition,
+    key: 'nutrition', label: 'Nutrisi & Air', color: 'amber', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.nutrition,
     items: [
       { name: 'Air Minum (3 Liter)', packed: true, qty: 3, note: 'Wajib', required: true, autoDetected: false, icon: itemIcon.water },
       { name: 'Gel Energi', packed: false, qty: 6, note: null, required: false, autoDetected: false, icon: itemIcon.water },
@@ -321,7 +80,7 @@ const categories = ref([
     ],
   },
   {
-    key: 'health', label: 'Kesehatan & Medis', color: 'teal', span: 'col-span-1 md:col-span-6', iconSvg: iconSvg.health,
+    key: 'health', label: 'Kesehatan & Medis', color: 'teal', span: 'col-span-1 xl:col-span-2', iconSvg: iconSvg.health,
     items: [
       { name: 'P3K Pribadi', packed: true, qty: 1, note: 'Wajib', required: true, autoDetected: false, icon: itemIcon.meds },
       { name: 'Emergency Bivvy', packed: false, qty: 1, note: null, required: false, autoDetected: false, icon: itemIcon.meds },
@@ -329,7 +88,7 @@ const categories = ref([
     ],
   },
   {
-    key: 'emergency', label: 'Komunikasi Darurat', color: 'rose', span: 'col-span-1 md:col-span-6', iconSvg: iconSvg.emergency,
+    key: 'emergency', label: 'Komunikasi Darurat', color: 'rose', span: 'col-span-1 xl:col-span-4', iconSvg: iconSvg.emergency,
     items: [
       { name: 'Pesan Satelit', packed: false, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.alert },
       { name: 'Peluit Darurat', packed: true, qty: 1, note: null, required: true, autoDetected: false, icon: itemIcon.alert },
@@ -354,6 +113,254 @@ const toggleItem = (catKey, itemName) => {
   }
 }
 </script>
+
+<template>
+  <div class="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <!-- Sidebar -->
+    <Sidebar active="packing" />
+
+    <!-- Main Content Area -->
+    <main class="flex-1 h-full overflow-y-auto bg-slate-50 p-6 lg:p-6 flex flex-col">
+      <div class="w-full max-w-[1600px] mx-auto space-y-6">
+        
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 class="text-2xl font-heading font-medium text-slate-900">Asisten Packing</h1>
+            <p class="text-sm text-slate-500 mt-1">Ceklis perlengkapan pintar untuk ekspedisimu</p>
+          </div>
+        </header>
+
+        <!-- Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 auto-rows-max">
+        
+          <!-- Readiness Hero (2x2) -->
+          <div class="xl:col-span-2 xl:row-span-2 bg-[#023C23] text-white rounded-[2.5rem] p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group">
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-xs font-medium text-green-100 border border-white/5 w-fit">
+                  <svg class="w-3.5 h-3.5 fill-current text-green-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-10 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C1.118 12.87 5.477 9.246 10 8c2.656-.73 5.289-.529 7.551.454"/><path d="M15 15c-1.673 0-3-.385-3-1"/></svg>
+                  Kesiapan Ekspedisi
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-medium mt-6 font-heading leading-tight">
+                  Status Peralatan
+                </h2>
+                <p class="text-white/80 text-base mt-4 max-w-[400px]">
+                  Kamu sudah menyortir sebagian besar perlengkapan penting. Lanjutkan mengecek kategori teknis.
+                </p>
+              </div>
+
+              <div class="mt-8 border-t border-white/10 pt-6">
+                <div class="flex items-end justify-between mb-4">
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-medium font-heading">{{ readinessPercent }}</span>
+                    <span class="text-lg font-medium text-green-300">%</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xl font-medium text-white block">{{ packedCount }} / {{ totalCount }}</span>
+                    <span class="text-xs text-white/50 font-medium">Barang Siap</span>
+                  </div>
+                </div>
+                <!-- Progress Bar -->
+                <div class="h-3 w-full bg-black/20 rounded-full overflow-hidden border border-white/5">
+                  <div class="h-full bg-green-400 transition-all duration-700 ease-out" :style="{ width: readinessPercent + '%' }"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Decorative blur element -->
+            <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-500/20 blur-3xl rounded-full pointer-events-none"></div>
+          </div>
+
+          <!-- Destination (1x2) -->
+          <div class="xl:col-span-1 xl:row-span-2 rounded-[2.5rem] bg-white shadow-sm relative overflow-hidden group min-h-[300px] flex flex-col justify-end p-6 border border-slate-100">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+            
+            <div class="relative z-10">
+              <div class="flex items-center gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 22 10-10M16 8l-8 8M22 2 12 12" /><path d="m22 2-5.5 1.5L18 5l1.5 1.5Z" /></svg>
+                <span class="text-xs font-medium text-white/80">Destinasi</span>
+              </div>
+              <h2 class="text-3xl font-medium text-white leading-none font-heading">{{ destination }}</h2>
+              <span class="text-xs text-white/80 mt-2 block font-medium">Estimasi Pendakian: 3 Hari</span>
+            </div>
+          </div>
+
+          <!-- Weather (1x1) -->
+          <div class="xl:col-span-1 xl:row-span-1 rounded-[2.5rem] bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-sm relative overflow-hidden flex flex-col justify-center text-white border border-slate-700">
+            <div class="flex items-center gap-2 relative z-20 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></svg>
+              <span class="text-xs font-medium text-sky-200">Cuaca & Kondisi</span>
+            </div>
+            <div class="relative z-20">
+              <span class="text-3xl font-medium text-white font-heading">{{ conditions.split('/')[0].trim() }}</span>
+              <span class="text-sm font-medium text-sky-200 block mt-1">{{ conditions.split('/')[1].trim() }}</span>
+            </div>
+            <!-- Rain Animation Background -->
+            <div class="absolute inset-0 z-10 opacity-60 overflow-hidden pointer-events-none">
+              <div class="rain-container">
+                <div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div>
+                <div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Scanner Button (1x1) -->
+          <div class="xl:col-span-1 xl:row-span-1 rounded-[2.5rem] bg-white p-6 shadow-sm border border-slate-100 flex flex-col justify-center gap-4 cursor-pointer group" @click="openScanner">
+            <div class="flex items-center gap-4">
+              <div class="h-12 w-12 rounded-2xl bg-green-50 text-[#118c13] flex items-center justify-center group-hover:scale-110 transition-transform">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              </div>
+              <div>
+                <h3 class="text-base font-medium text-slate-800">Pindai AI</h3>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Otomatisasi ceklis</p>
+              </div>
+            </div>
+            <button class="w-full rounded-xl bg-[#023C23] py-2.5 text-xs font-medium text-white transition-colors shadow-sm text-center">
+              Buka Kamera
+            </button>
+          </div>
+
+          <!-- Category Bento Boxes -->
+          <div 
+            v-for="(cat) in categories" 
+            :key="cat.key"
+            class="rounded-[2.5rem] bg-white shadow-sm border border-slate-100 flex flex-col overflow-hidden relative z-0 h-fit"
+            :class="[cat.span]"
+          >
+            <!-- Big Background Icon Opacity 50% -->
+            <div class="absolute -bottom-6 -right-6 h-40 w-40 opacity-[0.15] z-[-1] pointer-events-none" :class="`text-${cat.color}-500`">
+              <span v-html="cat.iconSvg" class="block w-full h-full"></span>
+            </div>
+
+            <!-- Category Header -->
+            <div class="px-6 py-5 flex items-center justify-between" :class="`bg-${cat.color}-50/60`">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl" :class="`bg-${cat.color}-100 text-${cat.color}-600`">
+                  <span v-html="cat.iconSvg" class="h-5 w-5"></span>
+                </div>
+                <div>
+                  <h3 class="text-base font-medium text-slate-800">{{ cat.label }}</h3>
+                  <p class="text-xs font-medium" :class="`text-${cat.color}-600/80`">
+                    {{ cat.items.filter(i => i.packed).length }} dari {{ cat.items.length }} Siap
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Items List -->
+            <div class="flex-1 p-3">
+              <div
+                v-for="item in cat.items"
+                :key="item.name"
+                @click="toggleItem(cat.key, item.name)"
+                class="group flex cursor-pointer items-start gap-3 px-3 py-3 transition-colors hover:bg-slate-50 rounded-xl"
+              >
+                <!-- Checkbox -->
+                <div
+                  class="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-[1.5px] transition-all mt-0.5 relative overflow-hidden"
+                  :class="item.packed ? `border-${cat.color}-500 bg-${cat.color}-500 text-white` : `border-slate-300 bg-white group-hover:border-${cat.color}-400`"
+                >
+                  <div v-if="item.autoDetected" class="absolute inset-0 bg-white/30 animate-pulse"></div>
+                  <svg v-if="item.packed" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </div>
+
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span v-html="item.icon" class="h-4 w-4 text-slate-400"></span>
+                    <p class="text-sm transition-colors truncate" :class="item.packed ? 'text-slate-400 line-through' : (item.required ? 'font-medium text-slate-800' : 'text-slate-600')">
+                      {{ item.name }}
+                    </p>
+                    <span v-if="item.autoDetected" class="flex h-1.5 w-1.5 rounded-full animate-ping" :class="`bg-${cat.color}-500`"></span>
+                  </div>
+                  <div v-if="item.note || item.required" class="mt-1 flex items-center gap-2">
+                    <span v-if="item.required && !item.packed" class="px-2 py-0.5 rounded-md text-[10px] font-medium" :class="`bg-${cat.color}-100 text-${cat.color}-700`">
+                      Wajib
+                    </span>
+                    <p v-if="item.note" class="text-xs text-slate-400 font-medium truncate">{{ item.note }}</p>
+                  </div>
+                </div>
+
+                <!-- Quantity Badge -->
+                <div class="shrink-0 rounded-full px-2 py-0.5 text-xs font-medium transition-colors" :class="item.packed ? 'bg-slate-100 text-slate-400' : `bg-${cat.color}-100 text-${cat.color}-700`">
+                  {{ item.qty }}x
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <Footer class="mt-8"/>
+    </main>
+
+    <!-- AI Scanner Modal -->
+    <div v-if="isModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="closeScanner"></div>
+      
+      <div class="relative w-full max-w-sm bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <!-- Light Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-white">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span class="text-sm font-medium text-slate-800">Kamera Pintar AI</span>
+          </div>
+          <button @click="closeScanner" class="h-8 w-8 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-200 transition-colors">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        
+        <!-- Camera Area -->
+        <div class="relative h-72 w-full bg-slate-100 overflow-hidden flex flex-col items-center justify-center">
+          <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1596706798150-590fb69c4f74?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center transition-all duration-700" :class="{'opacity-100': scanStatus === 'scanning' || scanStatus === 'success', 'opacity-50 grayscale': scanStatus === 'idle'}"></div>
+          
+          <div class="absolute inset-0 bg-white/20"></div>
+
+          <div v-if="scanStatus === 'scanning'" class="absolute left-0 right-0 h-0.5 bg-[#118c13] shadow-[0_0_15px_3px_rgba(17,140,19,0.5)] z-20 animate-scan"></div>
+          
+          <div v-if="scanStatus === 'success'" class="absolute top-[20%] left-[10%] w-32 h-24 border-2 border-[#118c13] rounded-xl bg-[#118c13]/10 z-10 animate-in zoom-in">
+            <div class="absolute -top-3 left-2 bg-[#118c13] text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm">Carrier 60L (98%)</div>
+          </div>
+          <div v-if="scanStatus === 'success'" class="absolute bottom-[20%] right-[15%] w-24 h-16 border-2 border-[#118c13] rounded-xl bg-[#118c13]/10 z-10 animate-in zoom-in delay-100">
+            <div class="absolute -top-3 left-2 bg-[#118c13] text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm">Headlamp</div>
+          </div>
+
+          <div v-if="scanStatus === 'idle'" class="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none text-slate-700">
+            <svg class="h-10 w-10 mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <span class="text-xs font-medium bg-white/80 px-3 py-1.5 rounded-full backdrop-blur-sm">Siap Memindai</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="p-6 bg-white border-t border-slate-100">
+          <button 
+            v-if="scanStatus === 'idle'" 
+            @click="startScan"
+            class="w-full rounded-xl bg-[#023C23] py-3.5 text-xs font-medium text-white transition-transform hover:scale-[1.02] active:scale-95"
+          >
+            Mulai Analisis Gambar
+          </button>
+          <button 
+            v-if="scanStatus === 'scanning'" 
+            disabled
+            class="w-full rounded-xl bg-slate-100 py-3.5 text-xs font-medium text-slate-500 flex items-center justify-center gap-2"
+          >
+            <svg class="animate-spin h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            Memproses Barang...
+          </button>
+          <button 
+            v-if="scanStatus === 'success'" 
+            @click="closeScanner"
+            class="w-full rounded-xl bg-[#023C23] py-3.5 text-xs font-medium text-white transition-transform hover:scale-[1.02] active:scale-95"
+          >
+            Selesai (2 Barang Diceklis)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style>
 /* Safe colors map for dynamic Tailwind classes */

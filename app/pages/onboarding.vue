@@ -9,7 +9,7 @@
         </div>
         <h1 class="font-heading text-3xl font-medium text-slate-900 mb-2 welcome-slide-up">Selamat Datang!</h1>
         <p class="text-sm text-slate-500 max-w-xs welcome-slide-up-delay">Profilmu sudah tersimpan. Kami akan menyesuaikan pengalaman pendakian terbaik untukmu.</p>
-        <div class="mt-8 flex gap-1.5 welcome-slide-up-delay2">
+        <div class="mt-6 flex gap-1.5 welcome-slide-up-delay2">
           <div class="h-1.5 w-1.5 rounded-full bg-[#023C23] animate-bounce" style="animation-delay:0s"></div>
           <div class="h-1.5 w-1.5 rounded-full bg-[#023C23] animate-bounce" style="animation-delay:0.15s"></div>
           <div class="h-1.5 w-1.5 rounded-full bg-[#023C23] animate-bounce" style="animation-delay:0.3s"></div>
@@ -17,17 +17,17 @@
       </div>
     </div>
 
-    <div v-if="!showWelcome" class="flex min-h-screen items-center justify-center px-6 py-10">
+    <div v-if="!showWelcome" class="flex min-h-screen items-center justify-center px-6 py-8">
 
       <div class="w-full max-w-lg">
         <!-- Logo -->
-        <NuxtLink to="/" class="mb-10 flex items-center gap-3">
+        <NuxtLink to="/" class="mb-6 flex items-center gap-3">
           <img src="/images/logo.svg" alt="Kaki Daki" class="h-9 w-9" />
           <span class="text-xl font-bold tracking-tight text-slate-800">Kaki Daki</span>
         </NuxtLink>
 
         <!-- Step Indicator -->
-        <div class="flex items-center gap-2 mb-8">
+        <div class="flex items-center gap-2 mb-6">
           <div
             v-for="s in totalSteps"
             :key="s"
@@ -43,7 +43,7 @@
           <!-- Step 1: Jenis Kelamin -->
           <div v-if="currentStep === 1" key="s1">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Apa jenis kelamin kamu?</h1>
-            <p class="text-sm text-slate-500 mb-8">Informasi ini membantu kami merekomendasikan perlengkapan yang lebih sesuai.</p>
+            <p class="text-sm text-slate-500 mb-6">Informasi ini membantu kami merekomendasikan perlengkapan yang lebih sesuai.</p>
 
             <div class="grid grid-cols-2 gap-4">
               <button
@@ -82,7 +82,7 @@
           <!-- Step 2: Tinggi & Berat Badan -->
           <div v-else-if="currentStep === 2" key="s2">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Data fisik kamu</h1>
-            <p class="text-sm text-slate-500 mb-8">Kami gunakan untuk menghitung kebutuhan kalori dan beban ideal carrier.</p>
+            <p class="text-sm text-slate-500 mb-6">Kami gunakan untuk menghitung kebutuhan kalori dan beban ideal carrier.</p>
 
             <div class="space-y-5">
               <div>
@@ -133,7 +133,7 @@
           <!-- Step 3: Riwayat Penyakit -->
           <div v-else-if="currentStep === 3" key="s3">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Riwayat penyakit</h1>
-            <p class="text-sm text-slate-500 mb-8">Pilih kondisi yang pernah atau sedang kamu alami. Bisa pilih lebih dari satu.</p>
+            <p class="text-sm text-slate-500 mb-6">Pilih kondisi yang pernah atau sedang kamu alami. Bisa pilih lebih dari satu.</p>
 
             <div class="grid grid-cols-2 gap-3">
               <button
@@ -179,7 +179,7 @@
           <!-- Step 4: Riwayat Cedera Fisik -->
           <div v-else-if="currentStep === 4" key="s4">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Riwayat cedera fisik</h1>
-            <p class="text-sm text-slate-500 mb-8">Cedera sebelumnya bisa mempengaruhi rute dan durasi pendakian yang kami rekomendasikan.</p>
+            <p class="text-sm text-slate-500 mb-6">Cedera sebelumnya bisa mempengaruhi rute dan durasi pendakian yang kami rekomendasikan.</p>
 
             <div class="grid grid-cols-2 gap-3">
               <button
@@ -225,7 +225,7 @@
           <!-- Step 5: Alergi Cuaca/Obat -->
           <div v-else-if="currentStep === 5" key="s5">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Alergi cuaca & obat</h1>
-            <p class="text-sm text-slate-500 mb-8">Agar kami bisa menyesuaikan rekomendasi obat P3K dan peringatan cuaca untukmu.</p>
+            <p class="text-sm text-slate-500 mb-6">Agar kami bisa menyesuaikan rekomendasi obat P3K dan peringatan cuaca untukmu.</p>
 
             <div class="grid grid-cols-2 gap-3">
               <button
@@ -271,7 +271,7 @@
           <!-- Step 6: Connect Strava -->
           <div v-else-if="currentStep === 6" key="s6">
             <h1 class="font-heading text-2xl font-medium text-slate-900 mb-2">Hubungkan Strava</h1>
-            <p class="text-sm text-slate-500 mb-8">Sinkronkan data aktivitas fisikmu untuk analisis kebugaran yang lebih akurat.</p>
+            <p class="text-sm text-slate-500 mb-6">Sinkronkan data aktivitas fisikmu untuk analisis kebugaran yang lebih akurat.</p>
 
             <div class="flex flex-col items-center text-center py-8">
               <div class="h-20 w-20 rounded-2xl bg-[#FC4C02]/10 flex items-center justify-center mb-6">
@@ -281,7 +281,7 @@
               </div>
 
               <h3 class="text-lg font-medium text-slate-800 mb-2">Strava</h3>
-              <p class="text-sm text-slate-500 max-w-xs mb-8">Dengan menghubungkan Strava, kami bisa menganalisis riwayat aktivitas dan tingkat kebugaranmu secara otomatis.</p>
+              <p class="text-sm text-slate-500 max-w-xs mb-6">Dengan menghubungkan Strava, kami bisa menganalisis riwayat aktivitas dan tingkat kebugaranmu secara otomatis.</p>
 
               <button
                 v-if="!form.stravaConnected"
@@ -300,7 +300,7 @@
         </div>
 
         <!-- Bottom Navigation -->
-        <div class="mt-8 flex items-center justify-between">
+        <div class="mt-6 flex items-center justify-between">
           <div>
             <button
               v-if="currentStep > 1"
@@ -343,7 +343,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="mt-10 text-center text-xs text-slate-400">
+        <div class="mt-6 text-center text-xs text-slate-400">
           &copy; {{ new Date().getFullYear() }} Kaki Daki. All rights reserved.
         </div>
       </div>

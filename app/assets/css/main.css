@@ -86,6 +86,7 @@
   body {
     @apply font-sans text-slate-800 antialiased;
     letter-spacing: -0.02em;
+    font-feature-settings: "cv11" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {

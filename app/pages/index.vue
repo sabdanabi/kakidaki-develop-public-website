@@ -9,7 +9,7 @@
           <span class="font-headline-md text-headline-md font-medium text-[#023C23] tracking-tight">KakiDaki</span>
         </NuxtLink>
         <!-- Navigation Links -->
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-5">
           <NuxtLink class="font-body-md text-[#023C23] font-medium border-b-2 border-[#023C23] pb-1 transition-colors" to="#">Explore</NuxtLink>
           <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="/health">Routes</NuxtLink>
           <NuxtLink class="font-body-md text-on-surface-variant hover:text-[#023C23] transition-colors" to="#">Community</NuxtLink>
@@ -35,19 +35,19 @@
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 px-gutter overflow-hidden hero-gradient">
-      <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
         <!-- Hero Column Left -->
         <div class="z-10">
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-100 text-[#023C23] mb-6">
             <svg class="w-4 h-4 text-[#023C23]" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
             </svg>
-            <span class="font-label-bold text-xs uppercase tracking-wider font-medium">PREMIUM ALPINE INTELLIGENCE</span>
+            <span class="font-label-bold text-xs tracking-wider font-medium">Premium Alpine Intelligence</span>
           </div>
           <h1 class="font-display-hero text-display-hero-mobile md:text-display-hero mb-6 text-slate-900 tracking-tight leading-tight">
             Prepared for the <span class="text-[#023C23]">Peak</span>,<br />Protected by <span class="text-[#023C23]">Data</span>.
           </h1>
-          <p class="font-body-lg text-body-lg text-slate-500 mb-10 max-w-xl leading-relaxed">
+          <p class="font-body-lg text-body-lg text-slate-500 mb-6 max-w-xl leading-relaxed">
             High-performance preparation for outdoor enthusiasts. KakiDaki combines real-time weather analytics with personalized biomechanical training to ensure every summit is reached safely.
           </p>
           <div class="flex flex-wrap gap-4">
@@ -87,20 +87,20 @@
             <!-- Stats Overlay Container -->
             <div class="bg-white/95 backdrop-blur border border-slate-100 p-6 rounded-2xl shadow-lg mt-5">
               <div class="flex justify-between items-center mb-4">
-                <span class="font-label-bold text-slate-800 text-xs tracking-wider">MONT BLANC SOUTH RIDGE</span>
-                <span class="px-2.5 py-1 bg-green-50 border border-green-100 text-[#023C23] text-[10px] rounded-full font-medium">LIVE STATUS</span>
+                <span class="font-label-bold text-slate-800 text-xs tracking-wider">Mont Blanc South Ridge</span>
+                <span class="px-2.5 py-1 bg-green-50 border border-green-100 text-[#023C23] text-xs rounded-full font-medium">Live Status</span>
               </div>
               <div class="grid grid-cols-3 gap-4">
                 <div>
-                  <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Elevation</p>
+                  <p class="text-xs text-slate-400 tracking-wider mb-1">Elevation</p>
                   <p class="font-headline-sm text-[#023C23] font-medium">4,810m</p>
                 </div>
                 <div>
-                  <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Weather</p>
-                  <p class="font-headline-sm text-[#005c7b] font-medium">-12°C</p>
+                  <p class="text-xs text-slate-400 tracking-wider mb-1">Weather</p>
+                  <p class="font-headline-sm text-[#005c7b] font-medium">-12°c</p>
                 </div>
                 <div>
-                  <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Safety</p>
+                  <p class="text-xs text-slate-400 tracking-wider mb-1">Safety</p>
                   <p class="font-headline-sm text-[#006e1c] font-medium">Optimal</p>
                 </div>
               </div>
@@ -112,15 +112,15 @@
 
     <!-- Bento Grid Services -->
     <section class="py-stack-lg px-gutter max-w-container-max mx-auto">
-      <div class="text-center mb-16">
+      <div class="text-center mb-6">
         <h2 class="font-headline-lg text-headline-lg mb-4 text-slate-900">Precision Engineering for Every Mile</h2>
         <p class="font-body-md text-slate-500 max-w-2xl mx-auto">Our four-pillar approach ensures you're physically ready, mentally sharp, and technologically equipped for any terrain.</p>
       </div>
 
       <!-- Bento Grid Asimetris -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:auto-rows-[240px] auto-rows-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:auto-rows-[240px] auto-rows-auto">
         <!-- Dashboard Card (Kiri Besar) -->
-        <div class="md:col-span-8 md:row-span-2 bg-white rounded-[2rem] p-8 border border-slate-100 bento-card shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+        <div class="md:col-span-8 md:row-span-2 bg-white rounded-[2rem] p-6 border border-slate-100 bento-card shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
           <div>
             <div class="w-12 h-12 bg-green-50 text-[#023C23] rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform border border-green-100">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -137,7 +137,7 @@
         </div>
 
         <!-- Training Card (Kanan Atas) -->
-        <div class="md:col-span-4 md:row-span-1 bg-[#0f4a5c] text-white rounded-[2rem] p-8 bento-card flex flex-col justify-between shadow-lg overflow-hidden relative group hover:scale-[1.01] transition-transform duration-300">
+        <div class="md:col-span-4 md:row-span-1 bg-[#0f4a5c] text-white rounded-[2rem] p-6 bento-card flex flex-col justify-between shadow-lg overflow-hidden relative group hover:scale-[1.01] transition-transform duration-300">
           <div class="relative z-10">
             <h3 class="font-headline-sm text-headline-sm mb-2 font-medium">Adaptive Training</h3>
             <p class="font-label-md opacity-80 text-xs leading-relaxed max-w-[250px]">Personalized endurance programs designed for alpine environments.</p>
@@ -154,13 +154,13 @@
         </div>
 
         <!-- Weather Card (Kanan Tengah) -->
-        <div class="md:col-span-4 md:row-span-1 bg-white rounded-[2rem] p-8 border border-slate-100 bento-card flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+        <div class="md:col-span-4 md:row-span-1 bg-white rounded-[2rem] p-6 border border-slate-100 bento-card flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
           <div>
             <div class="flex items-center gap-2 text-[#005c7b] mb-2">
               <svg class="w-5 h-5 text-[#005c7b]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
               </svg>
-              <span class="font-label-bold text-[10px] tracking-widest uppercase font-medium text-[#005c7b]">WEATHER INTELLIGENCE</span>
+              <span class="font-label-bold text-xs tracking-widest font-medium text-[#005c7b]">Weather Intelligence</span>
             </div>
             <h3 class="font-headline-sm text-headline-sm font-medium text-slate-900">Hyper-Local Forecasts</h3>
           </div>
@@ -175,7 +175,7 @@
         </div>
 
         <!-- Gear Card (Kiri Bawah) -->
-        <div class="md:col-span-4 md:row-span-1 bg-slate-50 rounded-[2rem] p-8 bento-card flex items-center gap-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+        <div class="md:col-span-4 md:row-span-1 bg-slate-50 rounded-[2rem] p-6 bento-card flex items-center gap-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
           <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-slate-100">
             <svg class="w-7 h-7 text-[#023C23]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v3.5m-3.35 0h14.2v9.75a1.5 1.5 0 01-1.5 1.5H5.4a1.5 1.5 0 01-1.5-1.5V10.5z" />
@@ -188,13 +188,13 @@
         </div>
 
         <!-- Safety Card (Kanan Bawah) -->
-        <div class="md:col-span-8 md:row-span-1 bg-green-50/60 rounded-[2rem] p-8 border border-green-100 bento-card flex flex-col md:flex-row items-center gap-8 shadow-sm hover:shadow-md transition-shadow justify-between">
+        <div class="md:col-span-8 md:row-span-1 bg-green-50/60 rounded-[2rem] p-6 border border-green-100 bento-card flex flex-col md:flex-row items-center gap-5 shadow-sm hover:shadow-md transition-shadow justify-between">
           <div class="md:w-1/2">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#023C23]/10 border border-[#023C23]/20 text-[#023C23] mb-4">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
-              <span class="font-label-bold text-[9px] tracking-widest font-medium">SAFETY FIRST PROTOCOL</span>
+              <span class="font-label-bold text-xs tracking-widest font-medium">Safety First Protocol</span>
             </div>
             <h3 class="font-headline-sm text-headline-sm font-medium text-slate-900 mb-2">AI-Powered SOS</h3>
             <p class="font-body-sm text-slate-500 text-xs leading-relaxed">Real-time hazard detection and automated emergency outreach even in low-signal areas.</p>
@@ -203,7 +203,7 @@
           <div class="md:w-1/2 flex justify-center w-full">
             <div class="w-full h-24 bg-white border border-slate-100 rounded-2xl flex items-center justify-around px-4 shadow-sm">
               <div class="text-center flex flex-col items-center">
-                <p class="text-[9px] text-slate-400 font-medium uppercase tracking-wider mb-2">SIGNAL</p>
+                <p class="text-xs text-slate-400 font-medium tracking-wider mb-2">Signal</p>
                 <div class="flex gap-1 items-end h-5">
                   <div class="w-1 h-2 bg-[#023C23] rounded-full"></div>
                   <div class="w-1 h-3.5 bg-[#023C23] rounded-full"></div>
@@ -213,7 +213,7 @@
               </div>
               <div class="h-12 w-[1px] bg-slate-100"></div>
               <div class="text-center">
-                <p class="text-[9px] text-slate-400 font-medium uppercase tracking-wider mb-2">HEART RATE</p>
+                <p class="text-xs text-slate-400 font-medium tracking-wider mb-2">Heart Rate</p>
                 <p class="text-lg font-medium text-[#023C23]">72 <span class="text-xs font-medium text-slate-500">bpm</span></p>
               </div>
             </div>
@@ -224,14 +224,14 @@
 
     <!-- Trail Status Callout (CTA) -->
     <section class="py-stack-lg bg-slate-50/50 px-gutter">
-      <div class="max-w-container-max mx-auto bg-white rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden shadow-xl border-l-[8px] border-[#023C23] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-container-max mx-auto bg-white rounded-[2.5rem] p-6 md:p-6 relative overflow-hidden shadow-xl border-l-[8px] border-[#023C23] grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
         <!-- Text Left -->
         <div>
           <h2 class="font-headline-lg text-headline-lg mb-6 leading-tight text-slate-900 font-medium text-3xl">
             Your Next Peak is Waiting.<br />
             <span class="text-[#023C23]">Are You Prepared?</span>
           </h2>
-          <p class="font-body-lg text-slate-500 mb-8 text-sm leading-relaxed max-w-lg">
+          <p class="font-body-lg text-slate-500 mb-6 text-sm leading-relaxed max-w-lg">
             Join over 50,000 professional mountaineers and weekend explorers who trust KakiDaki for their trail intelligence.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
@@ -251,7 +251,7 @@
     <footer class="bg-white border-t border-slate-100 pt-20 pb-10 px-gutter relative">
       <div class="max-w-container-max mx-auto">
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-6">
           <div class="lg:col-span-2">
             <div class="flex items-center gap-2 mb-6">
               <svg class="w-7 h-7 text-[#023C23]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -259,7 +259,7 @@
               </svg>
               <span class="font-headline-md text-headline-md font-medium text-[#023C23] tracking-tight">KakiDaki</span>
             </div>
-            <p class="font-body-md text-slate-500 max-w-xs mb-8 leading-relaxed text-sm">
+            <p class="font-body-md text-slate-500 max-w-xs mb-6 leading-relaxed text-sm">
               AI-powered hiking preparation for safer adventures. Our mission is to democratize elite mountain expertise for everyone.
             </p>
             <div class="flex gap-4">
@@ -280,9 +280,9 @@
               </button>
             </div>
           </div>
-          <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-5">
             <div>
-              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Explore</h4>
+              <h4 class="font-label-bold text-slate-900 mb-6 tracking-widest text-xs font-medium">Explore</h4>
               <ul class="space-y-4">
                 <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Mountains</NuxtLink></li>
                 <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="/health">Routes</NuxtLink></li>
@@ -292,7 +292,7 @@
             </div>
 
             <div>
-              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Company</h4>
+              <h4 class="font-label-bold text-slate-900 mb-6 tracking-widest text-xs font-medium">Company</h4>
               <ul class="space-y-4">
                 <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">About Us</NuxtLink></li>
                 <li><NuxtLink class="text-slate-500 hover:text-[#023C23] text-sm transition-colors" to="#">Safety First</NuxtLink></li>
@@ -302,7 +302,7 @@
             </div>
 
             <div class="col-span-2 md:col-span-1">
-              <h4 class="font-label-bold text-slate-900 mb-6 uppercase tracking-widest text-[11px] font-medium">Join the summit</h4>
+              <h4 class="font-label-bold text-slate-900 mb-6 tracking-widest text-xs font-medium">Join the summit</h4>
               <p class="text-slate-500 mb-4 text-xs leading-relaxed">Get the latest trail alerts and alpine insights weekly.</p>
               <div class="space-y-3">
                 <input class="w-full bg-slate-50 border border-slate-200/60 rounded-xl px-4 py-3 text-xs focus:ring-2 focus:ring-[#023C23] outline-none text-slate-800" placeholder="Email address" type="email"/>
@@ -315,9 +315,9 @@
         </div>
 
         <!-- Copyright -->
-        <div class="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
           <p class="text-xs text-slate-400 font-medium">© 2024 KakiDaki. All rights reserved. Prepared for the peak.</p>
-          <div class="flex gap-8 text-xs text-slate-400">
+          <div class="flex gap-5 text-xs text-slate-400">
             <NuxtLink class="hover:text-[#023C23] transition-colors" to="#">Privacy Policy</NuxtLink>
             <NuxtLink class="hover:text-[#023C23] transition-colors" to="#">Terms of Service</NuxtLink>
             <NuxtLink class="hover:text-[#023C23] transition-colors" to="#">Cookies</NuxtLink>
